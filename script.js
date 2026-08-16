@@ -1,81 +1,176 @@
-// Image selection and preview
-const leafInput = document.getElementById('leafInput');
-const imagePreview = document.getElementById('imagePreview');
-const placeholderText = document.getElementById('placeholderText');
-const scanBtn = document.getElementById('scanBtn');
-const scanResultCard = document.getElementById('scanResultCard');
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-leafInput.addEventListener('change', function(event) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      imagePreview.src = e.target.result;
-      imagePreview.style.display = 'block';
-      placeholderText.style.display = 'none';
-      scanBtn.style.display = 'inline-block';
-      scanResultCard.style.display = 'none'; // reset previous results
-    };
-    reader.readAsDataURL(file);
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Enable CORS for API requests
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+// Middleware to parse incoming JSON payloads
+app.use(express.json());
+
+// Serve static frontend files (index.html, style.css, script.js)
+app.use(express.static(__dirname));
+
+// Initialize SQLite Database File
+const dbPath = path.resolve(__dirname, 'agriguard.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error connecting to SQLite database:', err.message);
+  } else {
+    console.log('Connected to the AgriGuard SQLite database.');
   }
 });
 
-// Diagnostic Engine
-function analyzeLeaf() {
-  scanBtn.innerText = "Analyzing leaf...";
-  scanBtn.disabled = true;
+// Create Required Database Tables
+db.serialize(() => {
+  // 1. Users Table (for Farmer Login & Registration)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      phone TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 
-  // Simulating analysis processing delay
-  setTimeout(() => {
-    scanBtn.innerText = "Re-Analyze";
-    scanBtn.disabled = false;
-    scanResultCard.style.display = 'block';
+  // 2. Contact Queries Table (for Support & Specialist Inquiries)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS contact_queries (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      crop TEXT NOT NULL,
+      issue TEXT NOT NULL,
+      status TEXT DEFAULT 'Pending',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+});
 
-    // Sample diagnostic variations
-    const diagnoses = [
-      {
-        condition: "Bacterial Leaf Blight (Early Stage)",
-        health: 68,
-        accuracy: 94,
-        water: 72,
-        pesticide: 25,
-        advice: "Water level is optimal. Apply Streptocycline (1g/10L) + Copper Oxychloride (25g/10L) spray in moderate concentration."
-      },
-      {
-        condition: "Healthy Crop / Minor Moisture Deficiency",
-        health: 91,
-        accuracy: 96,
-        water: 45,
-        pesticide: 0,
-        advice: "No pesticide required. Increase irrigation cycle by 20% to restore full leaf turgidity."
-      },
-      {
-        condition: "Fungal Cercospora Spot Detected",
-        health: 54,
-        accuracy: 92,
-        water: 60,
-        pesticide: 40,
-        advice: "Excess surface moisture detected. Spray Mancozeb @ 2.5g/L water during early morning hours."
+// ------------------- AUTHENTICATION ROUTES ------------------- //
+
+/**
+ * POST /api/register
+ * Registers a new farmer
+ */
+app.post('/api/register', (req, res) => {
+  const { name, phone, password } = req.body;
+
+  if (!name || !phone || !password) {
+    return res.status(400).json({ success: false, message: 'Name, phone, and password are required.' });
+  }
+
+  const sql = `INSERT INTO users (name, phone, password) VALUES (?, ?, ?)`;
+  db.run(sql, [name, phone, password], function (err) {
+    if (err) {
+      if (err.message.includes('UNIQUE constraint failed')) {
+        return res.status(400).json({ success: false, message: 'Phone number already registered. Please login.' });
       }
-    ];
+      return res.status(500).json({ success: false, message: 'Database registration error.' });
+    }
 
-    // Pick a result profile
-    const result = diagnoses[Math.floor(Math.random() * diagnoses.length)];
+    res.status(201).json({
+      success: true,
+      message: 'Farmer account created successfully!',
+      user: { id: this.lastID, name, phone }
+    });
+  });
+});
 
-    // Animate progress bars and values
-    document.getElementById('healthPercent').innerText = `${result.health}%`;
-    document.getElementById('healthBar').style.width = `${result.health}%`;
+/**
+ * POST /api/login
+ * Verifies farmer credentials
+ */
+app.post('/api/login', (req, res) => {
+  const { phone, password } = req.body;
 
-    document.getElementById('accuracyPercent').innerText = `${result.accuracy}%`;
-    document.getElementById('accuracyBar').style.width = `${result.accuracy}%`;
+  if (!phone || !password) {
+    return res.status(400).json({ success: false, message: 'Phone and password are required.' });
+  }
 
-    document.getElementById('waterPercent').innerText = `${result.water}%`;
-    document.getElementById('waterBar').style.width = `${result.water}%`;
+  const sql = `SELECT id, name, phone FROM users WHERE phone = ? AND password = ?`;
+  db.get(sql, [phone, password], (err, user) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: 'Database lookup error.' });
+    }
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Invalid mobile number or password.' });
+    }
 
-    document.getElementById('pesticidePercent').innerText = `${result.pesticide}% (Targeted)`;
-    document.getElementById('pesticideBar').style.width = `${result.pesticide}%`;
+    res.json({
+      success: true,
+      message: 'Login successful!',
+      user
+    });
+  });
+});
 
-    document.getElementById('detectedCondition').innerText = `Diagnosis: ${result.condition}`;
-    document.getElementById('rectificationAdvice').innerText = result.advice;
-  }, 1200);
-}
+// ------------------- FARMER SUPPORT ROUTES ------------------- //
+
+/**
+ * POST /api/contact
+ * Saves a new crop inquiry
+ */
+app.post('/api/contact', (req, res) => {
+  const { name, phone, crop, issue } = req.body;
+
+  if (!name || !phone || !crop || !issue) {
+    return res.status(400).json({ success: false, message: 'All fields are required.' });
+  }
+
+  const sql = `INSERT INTO contact_queries (name, phone, crop, issue) VALUES (?, ?, ?, ?)`;
+  db.run(sql, [name, phone, crop, issue], function (err) {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ success: false, message: 'Failed to record query.' });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Support request recorded successfully!',
+      queryId: this.lastID
+    });
+  });
+});
+
+/**
+ * GET /api/queries
+ * Fetches all submitted support requests
+ */
+app.get('/api/queries', (req, res) => {
+  const sql = `SELECT * FROM contact_queries ORDER BY created_at DESC`;
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: 'Failed to retrieve queries.' });
+    }
+
+    res.json({ success: true, count: rows.length, data: rows });
+  });
+});
+
+// ------------------- ROOT FALLBACK ROUTE ------------------- //
+
+/**
+ * GET /
+ * Delivers index.html directly
+ */
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`AgriGuard server is running at http://localhost:${PORT}`);
+});

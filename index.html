@@ -1,27 +1,84 @@
-<!-- AI Crop Health & Disease Scanner -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriGuard - Smart Farmer Support & Protection</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">🌿 AgriGuard</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#features">Services</a></li>
+      <li><a href="#scanner">AI Scanner</a></li>
+      <li><a href="#advisory">Live Alerts</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header id="home" class="hero">
+    <div class="hero-content">
+      <h1>Protecting Crops, Empowering Farmers</h1>
+      <p>AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.</p>
+      <a href="#scanner" class="btn-primary">Scan Crop Health</a>
+    </div>
+  </header>
+
+  <!-- Features / Services -->
+  <section id="features" class="features-section">
+    <h2>Our Core Services</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Crop Disease Guard</h3>
+        <p>Instant diagnosis and treatment recommendations for pest attacks and leaf damage.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🧪</div>
+        <h3>Soil & Fertilizer Guide</h3>
+        <p>Tailored NPK and micronutrient advice based on your soil type and crop selection.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🌦️</div>
+        <h3>Weather & Pest Warnings</h3>
+        <p>Localized forecasts and preventive measures against upcoming climate risks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Crop Health & Leaf Scanner -->
   <section id="scanner" class="scanner-section">
-    <h2>📸 AgriGuard AI Crop Scanner</h2>
-    <p>Capture or upload a photo of your crop leaf for instant diagnosis, moisture levels, and pesticide recommendations.</p>
+    <h2>📸 AgriGuard AI Leaf & Health Scanner</h2>
+    <p>Take a photo or upload a crop leaf to calculate accuracy, water moisture, pesticide dosage, and health score.</p>
     
     <div class="scanner-card">
       <div class="upload-container">
-        <!-- Allows both Camera capture on mobile and file upload on PC -->
+        <!-- Allows Camera on Mobile & File Upload on Desktop -->
         <input type="file" id="leafInput" accept="image/*" capture="environment" hidden>
         <button type="button" class="btn-primary" onclick="document.getElementById('leafInput').click()">📷 Take Photo / Upload Leaf</button>
+        
         <div id="imagePreviewContainer" class="preview-box">
           <img id="imagePreview" src="" alt="Leaf preview" style="display: none;">
-          <p id="placeholderText">No photo selected yet</p>
+          <p id="placeholderText">No leaf photo selected</p>
         </div>
+
         <button id="scanBtn" class="btn-secondary" style="display: none;" onclick="analyzeLeaf()">Analyze Crop Health</button>
       </div>
 
-      <!-- Results Card Dashboard -->
+      <!-- Real-time Diagnostic Dashboard -->
       <div id="scanResultCard" class="result-dashboard" style="display: none;">
-        <h3>Analysis Results</h3>
+        <h3>Crop Diagnostics Report</h3>
         
         <div class="metrics-grid">
           <div class="metric-item">
-            <span class="metric-label">Crop Health Score</span>
+            <span class="metric-label">Overall Crop Health</span>
             <div class="progress-bar-bg"><div id="healthBar" class="progress-bar-fill"></div></div>
             <span id="healthPercent" class="metric-value">--%</span>
           </div>
@@ -33,13 +90,13 @@
           </div>
 
           <div class="metric-item">
-            <span class="metric-label">Leaf Moisture / Water</span>
+            <span class="metric-label">Water / Moisture Level</span>
             <div class="progress-bar-bg"><div id="waterBar" class="progress-bar-fill bg-teal"></div></div>
             <span id="waterPercent" class="metric-value">--%</span>
           </div>
 
           <div class="metric-item">
-            <span class="metric-label">Pesticide Dosage Needed</span>
+            <span class="metric-label">Pesticide Requirement</span>
             <div class="progress-bar-bg"><div id="pesticideBar" class="progress-bar-fill bg-orange"></div></div>
             <span id="pesticidePercent" class="metric-value">--%</span>
           </div>
@@ -47,8 +104,45 @@
 
         <div class="diagnosis-summary">
           <h4 id="detectedCondition">Condition: Analyzing...</h4>
-          <p id="rectificationAdvice">Recommendation will appear here.</p>
+          <p id="rectificationAdvice">Treatment advice will appear here.</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Interactive Advisory Section -->
+  <section id="advisory" class="advisory-section">
+    <h2>AgriGuard Advisory Board</h2>
+    <div class="alert-box" id="alertBox">
+      <strong>Today's Recommendation:</strong> 
+      <span id="advisoryText">Ensure adequate drainage in low-lying fields ahead of upcoming seasonal rain.</span>
+    </div>
+    <button class="btn-secondary" onclick="loadNextTip()">Next Farming Tip</button>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2>Ask an Agri Specialist</h2>
+    <form id="contactForm" class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="tel" placeholder="Phone Number" required>
+      <select required>
+        <option value="" disabled selected>Select Your Main Crop</option>
+        <option value="rice">Paddy / Rice</option>
+        <option value="cotton">Cotton</option>
+        <option value="chilli">Chilli / Spices</option>
+        <option value="other">Other</option>
+      </select>
+      <textarea rows="4" placeholder="Describe the issue or ask a question..." required></textarea>
+      <button type="submit" class="btn-primary">Submit Request</button>
+    </form>
+    <p id="formStatus" class="form-status"></p>
+  </section>
+
+  <footer>
+    <p>© 2026 AgriGuard Support Information System. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
