@@ -1,76 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriGuard - Smart Agriculture Monitor</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:,">
-</head>
-<body>
-    <header class="navbar">
-        <div class="logo">🌾 AgriGuard</div>
-        <div class="system-tag">Smart Field Assistant</div>
-    </header>
+<!-- AI Crop Health & Disease Scanner -->
+  <section id="scanner" class="scanner-section">
+    <h2>📸 AgriGuard AI Crop Scanner</h2>
+    <p>Capture or upload a photo of your crop leaf for instant diagnosis, moisture levels, and pesticide recommendations.</p>
+    
+    <div class="scanner-card">
+      <div class="upload-container">
+        <!-- Allows both Camera capture on mobile and file upload on PC -->
+        <input type="file" id="leafInput" accept="image/*" capture="environment" hidden>
+        <button type="button" class="btn-primary" onclick="document.getElementById('leafInput').click()">📷 Take Photo / Upload Leaf</button>
+        <div id="imagePreviewContainer" class="preview-box">
+          <img id="imagePreview" src="" alt="Leaf preview" style="display: none;">
+          <p id="placeholderText">No photo selected yet</p>
+        </div>
+        <button id="scanBtn" class="btn-secondary" style="display: none;" onclick="analyzeLeaf()">Analyze Crop Health</button>
+      </div>
 
-    <main class="container">
-        <!-- Dashboard Metrics Cards -->
-        <section class="cards-grid">
-            <div class="card">
-                <h3>Temperature</h3>
-                <p class="card-value" id="tempValue">-- °C</p>
-                <span class="status-indicator normal">Optimal</span>
-            </div>
+      <!-- Results Card Dashboard -->
+      <div id="scanResultCard" class="result-dashboard" style="display: none;">
+        <h3>Analysis Results</h3>
+        
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <span class="metric-label">Crop Health Score</span>
+            <div class="progress-bar-bg"><div id="healthBar" class="progress-bar-fill"></div></div>
+            <span id="healthPercent" class="metric-value">--%</span>
+          </div>
 
-            <div class="card">
-                <h3>Humidity</h3>
-                <p class="card-value" id="humidityValue">-- %</p>
-                <span class="status-indicator normal">Normal</span>
-            </div>
+          <div class="metric-item">
+            <span class="metric-label">Diagnosis Accuracy</span>
+            <div class="progress-bar-bg"><div id="accuracyBar" class="progress-bar-fill bg-blue"></div></div>
+            <span id="accuracyPercent" class="metric-value">--%</span>
+          </div>
 
-            <div class="card">
-                <h3>Soil Moisture</h3>
-                <p class="card-value" id="moistureValue">-- %</p>
-                <span class="status-indicator normal">Sufficient</span>
-            </div>
+          <div class="metric-item">
+            <span class="metric-label">Leaf Moisture / Water</span>
+            <div class="progress-bar-bg"><div id="waterBar" class="progress-bar-fill bg-teal"></div></div>
+            <span id="waterPercent" class="metric-value">--%</span>
+          </div>
 
-            <div class="card">
-                <h3>Crop Condition</h3>
-                <p class="card-value" id="cropHealthValue">Monitoring</p>
-                <span class="status-indicator normal">Active</span>
-            </div>
-        </section>
+          <div class="metric-item">
+            <span class="metric-label">Pesticide Dosage Needed</span>
+            <div class="progress-bar-bg"><div id="pesticideBar" class="progress-bar-fill bg-orange"></div></div>
+            <span id="pesticidePercent" class="metric-value">--%</span>
+          </div>
+        </div>
 
-        <!-- Advisory Section (Silent Notification Only) -->
-        <section class="status-panel">
-            <h2>System Advisory</h2>
-            <div id="advisoryBox" class="advisory-box">
-                System operational. All agricultural parameters within nominal range.
-            </div>
-        </section>
-
-        <!-- Data Log Section -->
-        <section class="log-section">
-            <h2>Recent Telemetry</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Temp (°C)</th>
-                        <th>Humidity (%)</th>
-                        <th>Moisture (%)</th>
-                        <th>Crop Status</th>
-                    </tr>
-                </thead>
-                <tbody id="logTableBody">
-                    <tr>
-                        <td colspan="5" style="text-align:center;">Awaiting data...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
-
-    <script src="script.js"></script>
-</body>
-</html>
+        <div class="diagnosis-summary">
+          <h4 id="detectedCondition">Condition: Analyzing...</h4>
+          <p id="rectificationAdvice">Recommendation will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>

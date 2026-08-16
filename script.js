@@ -1,66 +1,81 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Initial fetch
-    fetchTelemetryData();
+// Image selection and preview
+const leafInput = document.getElementById('leafInput');
+const imagePreview = document.getElementById('imagePreview');
+const placeholderText = document.getElementById('placeholderText');
+const scanBtn = document.getElementById('scanBtn');
+const scanResultCard = document.getElementById('scanResultCard');
 
-    // Auto-refresh data every 5 seconds silently without sound
-    setInterval(fetchTelemetryData, 5000);
+leafInput.addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      imagePreview.src = e.target.result;
+      imagePreview.style.display = 'block';
+      placeholderText.style.display = 'none';
+      scanBtn.style.display = 'inline-block';
+      scanResultCard.style.display = 'none'; // reset previous results
+    };
+    reader.readAsDataURL(file);
+  }
 });
 
-async function fetchTelemetryData() {
-    try {
-        const response = await fetch("/api/data");
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
+// Diagnostic Engine
+function analyzeLeaf() {
+  scanBtn.innerText = "Analyzing leaf...";
+  scanBtn.disabled = true;
 
-        if (data.logs && data.logs.length > 0) {
-            const latest = data.logs[0];
-            updateDashboard(latest);
-            populateTable(data.logs);
-        }
-    } catch (error) {
-        console.log("Telemetry check active (waiting for sensor payload):", error.message);
-    }
-}
+  // Simulating analysis processing delay
+  setTimeout(() => {
+    scanBtn.innerText = "Re-Analyze";
+    scanBtn.disabled = false;
+    scanResultCard.style.display = 'block';
 
-function updateDashboard(latest) {
-    document.getElementById("tempValue").textContent = `${latest.temperature ?? 28} °C`;
-    document.getElementById("humidityValue").textContent = `${latest.humidity ?? 65} %`;
-    document.getElementById("moistureValue").textContent = `${latest.soil_moisture ?? 45} %`;
-    document.getElementById("cropHealthValue").textContent = latest.crop_health || "Healthy";
+    // Sample diagnostic variations
+    const diagnoses = [
+      {
+        condition: "Bacterial Leaf Blight (Early Stage)",
+        health: 68,
+        accuracy: 94,
+        water: 72,
+        pesticide: 25,
+        advice: "Water level is optimal. Apply Streptocycline (1g/10L) + Copper Oxychloride (25g/10L) spray in moderate concentration."
+      },
+      {
+        condition: "Healthy Crop / Minor Moisture Deficiency",
+        health: 91,
+        accuracy: 96,
+        water: 45,
+        pesticide: 0,
+        advice: "No pesticide required. Increase irrigation cycle by 20% to restore full leaf turgidity."
+      },
+      {
+        condition: "Fungal Cercospora Spot Detected",
+        health: 54,
+        accuracy: 92,
+        water: 60,
+        pesticide: 40,
+        advice: "Excess surface moisture detected. Spray Mancozeb @ 2.5g/L water during early morning hours."
+      }
+    ];
 
-    const advisoryBox = document.getElementById("advisoryBox");
+    // Pick a result profile
+    const result = diagnoses[Math.floor(Math.random() * diagnoses.length)];
 
-    // Purely visual advisory update (no audio trigger)
-    if (latest.soil_moisture && latest.soil_moisture < 20) {
-        advisoryBox.textContent = "Notice: Soil moisture is low. Irrigation recommended.";
-        advisoryBox.style.borderLeftColor = "#f57c00";
-        advisoryBox.style.backgroundColor = "#fff3e0";
-    } else if (latest.temperature && latest.temperature > 38) {
-        advisoryBox.textContent = "Notice: High temperature recorded. Check canopy shade.";
-        advisoryBox.style.borderLeftColor = "#f57c00";
-        advisoryBox.style.backgroundColor = "#fff3e0";
-    } else {
-        advisoryBox.textContent = "System operational. All agricultural parameters within nominal range.";
-        advisoryBox.style.borderLeftColor = "#2e7d32";
-        advisoryBox.style.backgroundColor = "#e8f5e9";
-    }
-}
+    // Animate progress bars and values
+    document.getElementById('healthPercent').innerText = `${result.health}%`;
+    document.getElementById('healthBar').style.width = `${result.health}%`;
 
-function populateTable(logs) {
-    const tbody = document.getElementById("logTableBody");
-    tbody.innerHTML = "";
+    document.getElementById('accuracyPercent').innerText = `${result.accuracy}%`;
+    document.getElementById('accuracyBar').style.width = `${result.accuracy}%`;
 
-    logs.forEach(log => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${log.timestamp || new Date().toLocaleTimeString()}</td>
-            <td>${log.temperature ?? '--'}</td>
-            <td>${log.humidity ?? '--'}</td>
-            <td>${log.soil_moisture ?? '--'}</td>
-            <td>${log.crop_health || 'Healthy'}</td>
-        `;
-        tbody.appendChild(row);
-    });
+    document.getElementById('waterPercent').innerText = `${result.water}%`;
+    document.getElementById('waterBar').style.width = `${result.water}%`;
+
+    document.getElementById('pesticidePercent').innerText = `${result.pesticide}% (Targeted)`;
+    document.getElementById('pesticideBar').style.width = `${result.pesticide}%`;
+
+    document.getElementById('detectedCondition').innerText = `Diagnosis: ${result.condition}`;
+    document.getElementById('rectificationAdvice').innerText = result.advice;
+  }, 1200);
 }
