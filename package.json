@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "sqlite3": "^6.0.1"
   },
   "name": "agriguard",
   "version": "1.0.0",
@@ -14,6 +16,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {}
+  "type": "commonjs"
 }
