@@ -2,7 +2,6 @@
   "dependencies": {
     "express": "^5.2.1",
     "pg": "^8.13.1"
-}
   },
   "name": "agriguard",
   "version": "1.0.0",
