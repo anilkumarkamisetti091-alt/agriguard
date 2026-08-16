@@ -57,13 +57,12 @@
   <section id="scanner" class="scanner-section">
     <h2>📸 AgriGuard AI Leaf & Health Scanner</h2>
     <p>Take a photo or upload a crop leaf to calculate accuracy, water moisture, pesticide dosage, and health score.</p>
-    
+
     <div class="scanner-card">
       <div class="upload-container">
-        <!-- Allows Camera on Mobile & File Upload on Desktop -->
         <input type="file" id="leafInput" accept="image/*" capture="environment" hidden>
         <button type="button" class="btn-primary" onclick="document.getElementById('leafInput').click()">📷 Take Photo / Upload Leaf</button>
-        
+
         <div id="imagePreviewContainer" class="preview-box">
           <img id="imagePreview" src="" alt="Leaf preview" style="display: none;">
           <p id="placeholderText">No leaf photo selected</p>
@@ -72,10 +71,9 @@
         <button id="scanBtn" class="btn-secondary" style="display: none;" onclick="analyzeLeaf()">Analyze Crop Health</button>
       </div>
 
-      <!-- Real-time Diagnostic Dashboard -->
       <div id="scanResultCard" class="result-dashboard" style="display: none;">
         <h3>Crop Diagnostics Report</h3>
-        
+
         <div class="metrics-grid">
           <div class="metric-item">
             <span class="metric-label">Overall Crop Health</span>
@@ -110,30 +108,28 @@
     </div>
   </section>
 
-  <!-- Interactive Advisory Section -->
   <section id="advisory" class="advisory-section">
     <h2>AgriGuard Advisory Board</h2>
     <div class="alert-box" id="alertBox">
-      <strong>Today's Recommendation:</strong> 
+      <strong>Today's Recommendation:</strong>
       <span id="advisoryText">Ensure adequate drainage in low-lying fields ahead of upcoming seasonal rain.</span>
     </div>
-    <button class="btn-secondary" onclick="loadNextTip()">Next Farming Tip</button>
+    <button class="btn-secondary" type="button" onclick="loadNextTip()">Next Farming Tip</button>
   </section>
 
-  <!-- Contact Section -->
   <section id="contact" class="contact-section">
     <h2>Ask an Agri Specialist</h2>
     <form id="contactForm" class="contact-form">
-      <input type="text" placeholder="Your Name" required>
-      <input type="tel" placeholder="Phone Number" required>
-      <select required>
+      <input type="text" name="name" id="name" placeholder="Your Name" required>
+      <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
+      <select name="crop" id="crop" required>
         <option value="" disabled selected>Select Your Main Crop</option>
         <option value="rice">Paddy / Rice</option>
         <option value="cotton">Cotton</option>
         <option value="chilli">Chilli / Spices</option>
         <option value="other">Other</option>
       </select>
-      <textarea rows="4" placeholder="Describe the issue or ask a question..." required></textarea>
+      <textarea name="issue" id="issue" rows="4" placeholder="Describe the issue or ask a question..." required></textarea>
       <button type="submit" class="btn-primary">Submit Request</button>
     </form>
     <p id="formStatus" class="form-status"></p>

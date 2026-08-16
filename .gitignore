@@ -18,6 +18,8 @@ yarn-error.log*
 *.db
 *.sqlite
 agriguard.db
+*.db-shm
+*.db-wal
 
 # IDE / Editor
 .vscode/
