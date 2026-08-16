@@ -1,24 +1,22 @@
 const express = require('express');
-const Database = require('better-sqlite3');
+const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Initialize SQLite Database
-let db;
-try {
-  db = new Database('./agriguard.db');
-  db.pragma('journal_mode = WAL');
-  console.log('✅ Connected to AgriGuard SQLite database.');
-} catch (err) {
-  console.error('❌ Error connecting to database:', err.message);
-  process.exit(1);
-}
+const db = new sqlite3.Database('./agriguard.db', (err) => {
+  if (err) {
+    console.error('❌ Error connecting to SQLite database:', err.message);
+  } else {
+    console.log('✅ Connected to AgriGuard SQLite database.');
+  }
+});
 
 // Initialize database schema
-try {
-  db.exec(`
+db.serialize(() => {
+  db.run(`
     CREATE TABLE IF NOT EXISTS contact_queries (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -29,11 +27,14 @@ try {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
-  `);
-  console.log('✅ Database schema initialized.');
-} catch (err) {
-  console.error('❌ Error creating table:', err.message);
-}
+  `, (err) => {
+    if (err) {
+      console.error('❌ Error creating table:', err.message);
+    } else {
+      console.log('✅ Database schema initialized.');
+    }
+  });
+});
 
 // Enable CORS
 app.use((req, res, next) => {
@@ -90,20 +91,18 @@ app.post('/api/contact', (req, res) => {
   }
 
   const sql = `INSERT INTO contact_queries (name, phone, crop, issue) VALUES (?, ?, ?, ?)`;
-  try {
-    const stmt = db.prepare(sql);
-    const result = stmt.run(name.trim(), phone.trim(), crop.trim(), issue.trim());
-    
+  db.run(sql, [name.trim(), phone.trim(), crop.trim(), issue.trim()], function(err) {
+    if (err) {
+      console.error('Database error:', err.message);
+      return res.status(500).json({ success: false, message: 'Failed to submit query. Please try again.' });
+    }
     res.status(201).json({
       success: true,
       message: 'Request submitted successfully!',
-      queryId: result.lastInsertRowid,
+      queryId: this.lastID,
       createdAt: new Date().toISOString()
     });
-  } catch (err) {
-    console.error('Database error:', err.message);
-    return res.status(500).json({ success: false, message: 'Failed to submit query. Please try again.' });
-  }
+  });
 });
 
 /**
@@ -119,32 +118,36 @@ app.get('/api/queries', (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid pagination parameters.' });
   }
 
-  try {
-    const countStmt = db.prepare(`SELECT COUNT(*) as count FROM contact_queries`);
-    const countResult = countStmt.get();
-    const total = countResult.count;
+  db.get(`SELECT COUNT(*) as count FROM contact_queries`, (err, countRow) => {
+    if (err) {
+      console.error('Count error:', err.message);
+      return res.status(500).json({ success: false, message: 'Failed to fetch data.' });
+    }
 
-    const stmt = db.prepare(`
-      SELECT * FROM contact_queries
-      ORDER BY created_at DESC
-      LIMIT ? OFFSET ?
-    `);
-    const rows = stmt.all(limit, offset);
+    const total = countRow.count;
 
-    res.json({
-      success: true,
-      data: rows || [],
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
+    db.all(
+      `SELECT * FROM contact_queries ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+      [limit, offset],
+      (err, rows) => {
+        if (err) {
+          console.error('Fetch error:', err.message);
+          return res.status(500).json({ success: false, message: 'Failed to fetch data.' });
+        }
+
+        res.json({
+          success: true,
+          data: rows || [],
+          pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit)
+          }
+        });
       }
-    });
-  } catch (err) {
-    console.error('Fetch error:', err.message);
-    res.status(500).json({ success: false, message: 'Failed to fetch data.' });
-  }
+    );
+  });
 });
 
 /**
@@ -158,18 +161,16 @@ app.get('/api/queries/:id', (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid query ID.' });
   }
 
-  try {
-    const stmt = db.prepare(`SELECT * FROM contact_queries WHERE id = ?`);
-    const row = stmt.get(id);
-    
+  db.get(`SELECT * FROM contact_queries WHERE id = ?`, [id], (err, row) => {
+    if (err) {
+      console.error('Fetch error:', err.message);
+      return res.status(500).json({ success: false, message: 'Failed to fetch query.' });
+    }
     if (!row) {
       return res.status(404).json({ success: false, message: 'Query not found.' });
     }
     res.json({ success: true, data: row });
-  } catch (err) {
-    console.error('Fetch error:', err.message);
-    res.status(500).json({ success: false, message: 'Failed to fetch query.' });
-  }
+  });
 });
 
 /**
@@ -189,22 +190,20 @@ app.put('/api/queries/:id', (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid query ID.' });
   }
 
-  try {
-    const stmt = db.prepare(`
-      UPDATE contact_queries
-      SET status = ?, updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `);
-    const result = stmt.run(status, id);
-    
-    if (result.changes === 0) {
-      return res.status(404).json({ success: false, message: 'Query not found.' });
+  db.run(
+    `UPDATE contact_queries SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+    [status, id],
+    function(err) {
+      if (err) {
+        console.error('Update error:', err.message);
+        return res.status(500).json({ success: false, message: 'Failed to update query.' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ success: false, message: 'Query not found.' });
+      }
+      res.json({ success: true, message: 'Status updated successfully!' });
     }
-    res.json({ success: true, message: 'Status updated successfully!' });
-  } catch (err) {
-    console.error('Update error:', err.message);
-    res.status(500).json({ success: false, message: 'Failed to update query.' });
-  }
+  );
 });
 
 /**
@@ -218,18 +217,16 @@ app.delete('/api/queries/:id', (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid query ID.' });
   }
 
-  try {
-    const stmt = db.prepare(`DELETE FROM contact_queries WHERE id = ?`);
-    const result = stmt.run(id);
-    
-    if (result.changes === 0) {
+  db.run(`DELETE FROM contact_queries WHERE id = ?`, [id], function(err) {
+    if (err) {
+      console.error('Delete error:', err.message);
+      return res.status(500).json({ success: false, message: 'Failed to delete query.' });
+    }
+    if (this.changes === 0) {
       return res.status(404).json({ success: false, message: 'Query not found.' });
     }
     res.json({ success: true, message: 'Query deleted successfully!' });
-  } catch (err) {
-    console.error('Delete error:', err.message);
-    res.status(500).json({ success: false, message: 'Failed to delete query.' });
-  }
+  });
 });
 
 /**
@@ -245,35 +242,31 @@ app.get('/', (req, res) => {
  * Health check with database verification
  */
 app.get('/api/health', (req, res) => {
-  try {
-    // Verify database connection
-    const stmt = db.prepare('SELECT COUNT(*) as count FROM contact_queries');
-    const result = stmt.get();
+  db.get('SELECT COUNT(*) as count FROM contact_queries', (err, row) => {
+    if (err) {
+      console.error('Database verification failed:', err.message);
+      return res.status(503).json({
+        success: false,
+        message: 'Database connection failed',
+        timestamp: new Date().toISOString(),
+        database: {
+          status: 'disconnected',
+          error: err.message
+        }
+      });
+    }
     
-    res.json({ 
-      success: true, 
-      message: 'Server is healthy', 
+    res.json({
+      success: true,
+      message: 'Server is healthy',
       timestamp: new Date().toISOString(),
       database: {
         status: 'connected',
         type: 'sqlite3',
-        queries_count: result.count
-      },
-      version: '1.0.0'
+        queries_count: row.count
+      }
     });
-  } catch (err) {
-    console.error('Database verification failed:', err.message);
-    res.status(503).json({
-      success: false,
-      message: 'Database connection failed',
-      timestamp: new Date().toISOString(),
-      database: {
-        status: 'disconnected',
-        error: err.message
-      },
-      version: '1.0.0'
-    });
-  }
+  });
 });
 
 // 404 Handler
@@ -287,17 +280,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error.' });
 });
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\n✅ Closing database connection...');
-  db.close();
-  process.exit(0);
-});
-
 // Start Server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ AgriGuard server is running at http://localhost:${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📝 API endpoints: POST /api/contact, GET /api/queries`);
-  console.log(`🗄️  Database: SQLite with better-sqlite3 (agriguard.db)`);
+  console.log(`🗄️  Database: SQLite (agriguard.db)`);
 });
