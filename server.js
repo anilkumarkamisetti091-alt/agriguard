@@ -1,5 +1,5 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const { Pool } = require('pg');
 const path = require('path');
 
 const app = express();
@@ -21,62 +21,82 @@ app.use(express.json());
 // Serve static frontend files
 app.use(express.static(__dirname));
 
-// Initialize SQLite Database
-const dbPath = path.resolve(__dirname, 'agriguard.db');
-const db = new sqlite3.Database(dbPath, (err) => {
+// Initialize PostgreSQL Database
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com')
+    ? { rejectUnauthorized: false }
+    : false,
+});
+
+pool.connect((err, client, release) => {
   if (err) {
-    console.error('Error connecting to SQLite database:', err.message);
+    console.error('Error connecting to PostgreSQL database:', err.message);
   } else {
-    console.log('Connected to the AgriGuard SQLite database.');
+    console.log('Connected to the AgriGuard PostgreSQL database.');
+    release();
   }
 });
 
-// Initialize Contact Queries Table
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS contact_queries (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      phone TEXT NOT NULL,
-      crop TEXT NOT NULL,
-      issue TEXT NOT NULL,
-      status TEXT DEFAULT 'Pending',
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-});
-
+(async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS contact_queries (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        crop TEXT NOT NULL,
+        issue TEXT NOT NULL,
+        status TEXT DEFAULT 'Pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+  } catch (err) {
+    console.error('Error creating contact_queries table:', err.message);
+  }
+})();
 // ------------------- API ROUTES ------------------- //
 
 /**
  * POST /api/contact
  * Receives specialist inquiries from farmers
  */
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', async (req, res) => {
   const { name, phone, crop, issue } = req.body;
 
   if (!name || !phone || !crop || !issue) {
     return res.status(400).json({ success: false, message: 'All fields are required.' });
   }
 
-  const sql = `INSERT INTO contact_queries (name, phone, crop, issue) VALUES (?, ?, ?, ?)`;
-  db.run(sql, [name, phone, crop, issue], function (err) {
-    if (err) {
-      return res.status(500).json({ success: false, message: 'Database error.' });
-    }
-    res.status(201).json({ success: true, message: 'Request submitted successfully!', queryId: this.lastID });
-  });
+  try {
+    const sql = `INSERT INTO contact_queries (name, phone, crop, issue) VALUES ($1, $2, $3, $4) RETURNING id`;
+    const result = await pool.query(sql, [name, phone, crop, issue]);
+    res.status(201).json({ success: true, message: 'Request submitted successfully!', queryId: result.rows[0].id });
+  } catch (err) {
+    console.error('Database error:', err.message);
+    res.status(500).json({ success: false, message: 'Database error.' });
+  }
 });
-
 /**
  * GET /api/queries
  * View submitted queries
  */
-app.get('/api/queries', (req, res) => {
-  db.all(`SELECT * FROM contact_queries ORDER BY created_at DESC`, [], (err, rows) => {
-    if (err) return res.status(500).json({ success: false, message: 'Failed to fetch data.' });
-    res.json({ success: true, data: rows });
-  });
+app.get('/api/queries', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT * FROM contact_queries ORDER BY created_at DESC`);
+    res.json({ success: true, data: result.rows });
+  } catch (err) {
+    console.error('Fetch error:', err.message);
+    res.status(500).json({ success: false, message: 'Failed to fetch data.' });
+  }
 });
 
 /**
