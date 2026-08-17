@@ -136,45 +136,57 @@
   </section>
 
   <footer>
-    <p>© 2026 AgriGuard Support Information System. All rights reserved.</p>
+    <p>@ 2026 AgriGuard Support Information System. All rights reserved.</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
 </html>
-<!-- Multi-Language AgriGuard Voice Assistant -->
+<!-- AgriGuard Tap-to-Listen Voice Guide -->
 <div class="voice-assistant-container">
     <div id="voiceAssistantModal" class="voice-modal hidden">
         <div class="voice-modal-header">
-            <span id="modalTitle">🌾 AgriGuard Assistant</span>
+            <span id="modalTitle">🔊 AgriGuard Voice Guide</span>
             <button id="closeVoiceModalBtn" class="close-btn">&times;</button>
         </div>
 
+        <!-- Language Selector -->
         <div class="lang-selector-group">
             <button class="lang-chip active" data-lang="te-IN">తెలుగు</button>
             <button class="lang-chip" data-lang="hi-IN">हिंदी</button>
             <button class="lang-chip" data-lang="en-IN">English</button>
         </div>
 
-        <div class="voice-display-box">
-            <p id="userTranscript" class="user-text">...</p>
-            <p id="assistantReply" class="assistant-text">భాషను ఎంచుకుని మైక్ నొక్కండి (Select language and tap mic)</p>
+        <!-- Touch Quick Topics -->
+        <div class="voice-topic-list">
+            <button class="topic-btn" data-topic="scan">
+                <span class="topic-icon">📸</span>
+                <span class="topic-label" id="labelScan">పంట స్కాన్ (Crop Scan Guide)</span>
+            </button>
+            <button class="topic-btn" data-topic="weather">
+                <span class="topic-icon">🌦️</span>
+                <span class="topic-label" id="labelWeather">వాతావరణ సూచన (Weather Alert)</span>
+            </button>
+            <button class="topic-btn" data-topic="soil">
+                <span class="topic-icon">🌱</span>
+                <span class="topic-label" id="labelSoil">మట్టి & ఎరువులు (Soil & Fertilizer)</span>
+            </button>
+            <button class="topic-btn" data-topic="disease">
+                <span class="topic-icon">🛡️</span>
+                <span class="topic-label" id="labelDisease">తెగుళ్ల నివారణ (Disease Advice)</span>
+            </button>
         </div>
 
-        <div class="voice-controls">
-            <button id="voiceMicTrigger" class="mic-round-btn">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
-                </svg>
-            </button>
-            <span id="micStatusLabel" class="mic-status-label">నొక్కండి & మాట్లాడండి (Tap to Speak)</span>
+        <!-- Spoken Feedback Output -->
+        <div class="voice-display-box">
+            <p id="assistantReply" class="assistant-text">ఏదైనా అంశాన్ని తాకండి (Touch any topic to listen)</p>
         </div>
     </div>
 
-    <!-- Floating Trigger Icon -->
-    <button id="openVoiceAssistantFab" class="floating-voice-fab" title="Voice Assistant">
+    <!-- Floating Audio Icon -->
+    <button id="openVoiceAssistantFab" class="floating-voice-fab" title="Audio Guide">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
         </svg>
     </button>
 </div>

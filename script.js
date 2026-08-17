@@ -170,133 +170,90 @@ document.addEventListener("DOMContentLoaded", () => {
     const openFab = document.getElementById("openVoiceAssistantFab");
     const modal = document.getElementById("voiceAssistantModal");
     const closeBtn = document.getElementById("closeVoiceModalBtn");
-    const micBtn = document.getElementById("voiceMicTrigger");
-    const micStatus = document.getElementById("micStatusLabel");
-    const userText = document.getElementById("userTranscript");
     const assistantText = document.getElementById("assistantReply");
     const langChips = document.querySelectorAll(".lang-chip");
+    const topicButtons = document.querySelectorAll(".topic-btn");
 
-    let currentLang = "te-IN"; // Default to Telugu
-    let isListening = false;
+    let currentLang = "te-IN";
 
-    // Multi-Language Knowledge Base
-    const answers = {
+    // Multi-Language Content & Speech Audio
+    const languageData = {
         "te-IN": {
-            welcome: "నమస్కారం! పంట ఆరోగ్యం, వాతావరణం, లేదా తెగుళ్ల గురించి అడగండి.",
-            listening: "వింటున్నాను... మాట్లాడండి...",
-            crop_scan: "పంట ఫోటో తీయడానికి పైనున్న 'Scan Crop Health' బటన్‌పై నొక్కండి.",
-            weather: "రాబోయే వర్షాల కోసం పొలంలో నీటి పారుదల సౌకర్యం సరిగ్గా ఉందో లేదో చూసుకోండి.",
-            fertilizer: "మట్టి తేమను బట్టి ఎరువులు వేయండి. తక్కువ మోతాదులో వాడటం మంచిది.",
-            default: "నేను అగ్రిగార్డ్ సహాయకుడిని. పంట వివరాలు, నీటి పారుదల లేదా వాతావరణం గురించి అడగండి."
+            intro: "ఏదైనా అంశాన్ని తాకండి, వివరాలు వినిపిస్తాయి.",
+            scan_label: "పంట స్కాన్ (Crop Scan Guide)",
+            weather_label: "వాతావరణ సూచన (Weather Alert)",
+            soil_label: "మట్టి & ఎరువులు (Soil & Fertilizer)",
+            disease_label: "తెగుళ్ల నివారణ (Disease Advice)",
+            scan_text: "పంట ఆకుల ఫోటో తీయడానికి హోమ్‌పేజీలో ఉన్న స్కాన్ బటన్ నొక్కండి. తెగుళ్లు ఉంటే గుర్తిస్తుంది.",
+            weather_text: "రాబోయే వర్షాల కోసం పొలంలో నీరు నిల్వ ఉండకుండా కాలువలను శుభ్రం చేసుకోండి.",
+            soil_text: "పంటకు తగినంత తేమ ఉన్నప్పుడు మాత్రమే యూరియా లేదా డీఏపీ ఎరువులు వేయండి.",
+            disease_text: "ఆకులు పసుపు రంగులోకి మారితే వెంటనే వేప నూనె లేదా తగిన మందులను పిచికారీ చేయండి."
         },
         "hi-IN": {
-            welcome: "नमस्ते! फसल स्वास्थ्य, मौसम या कीटों के बारे में पूछें।",
-            listening: "सुन रहा हूँ... बोलिए...",
-            crop_scan: "फसल की फोटो स्कैन करने के लिए ऊपर 'Scan Crop Health' बटन दबाएं।",
-            weather: "मौसम चेतावनी: बारिश से पहले खेतों में जल निकासी की सही व्यवस्था करें।",
-            fertilizer: "मिट्टी की नमी जांचने के बाद ही खाद और कीटनाशक का प्रयोग करें।",
-            default: "मैं एग्रीगार्ड सहायक हूँ। फसल रोग, मौसम या सिंचाई के बारे में पूछ सकते हैं।"
+            intro: "किसी भी विषय पर टैप करें और सुनें।",
+            scan_label: "फसल स्कैन (Crop Scan Guide)",
+            weather_label: "मौसम अलर्ट (Weather Alert)",
+            soil_label: "मिट्टी और खाद (Soil & Fertilizer)",
+            disease_label: "कीट रोकथाम (Disease Advice)",
+            scan_text: "फसल की पत्ती की तस्वीर लेने के लिए स्कैन बटन दबाएं, यह तुरंत रोग की पहचान करेगा।",
+            weather_text: "बारिश के मौसम से पहले खेतों में उचित जल निकासी की व्यवस्था करें।",
+            soil_text: "मिट्टी में पर्याप्त नमी होने पर ही खाद और कीटनाशक का छिड़काव करें।",
+            disease_text: "पत्तियों में पीलापन दिखने पर तुरंत उचित कीटनाशक या नीम के तेल का छिड़काव करें।"
         },
         "en-IN": {
-            welcome: "Hello! Ask about crop health, weather alerts, or scanning leaves.",
-            listening: "Listening... Speak now...",
-            crop_scan: "Click 'Scan Crop Health' above to scan leaf photos for disease detection.",
-            weather: "Ensure adequate drainage in low-lying fields ahead of seasonal rain.",
-            fertilizer: "Check soil moisture before applying top fertilizer to avoid runoff.",
-            default: "I am your AgriGuard assistant. You can ask about soil, weather, or crops."
+            intro: "Touch any topic to listen to guidance.",
+            scan_label: "Crop Scan (Guide)",
+            weather_label: "Weather Alerts",
+            soil_label: "Soil & Fertilizer",
+            disease_label: "Disease Prevention",
+            scan_text: "Tap 'Scan Crop Health' on the homepage to capture leaf photos and detect plant diseases.",
+            weather_text: "Ensure proper drainage in low-lying fields ahead of seasonal rainfall.",
+            soil_text: "Check soil moisture before applying fertilizer to ensure optimal root uptake.",
+            disease_text: "For yellowing leaves or spot blight, inspect the undersides and apply organic spray early."
         }
     };
 
-    // Language switch handlers
-    langChips.forEach(chip => {
-        chip.addEventListener("click", () => {
-            langChips.forEach(c => c.classList.remove("active"));
-            chip.classList.add("active");
-            currentLang = chip.getAttribute("data-lang");
-            assistantText.textContent = answers[currentLang].welcome;
-            speakResponse(answers[currentLang].welcome, currentLang);
-        });
-    });
-
+    // Toggle Modal
     openFab.addEventListener("click", () => {
         modal.classList.toggle("hidden");
     });
 
     closeBtn.addEventListener("click", () => {
         modal.classList.add("hidden");
-        if (isListening && recognition) recognition.stop();
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     });
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-        assistantText.textContent = "Speech recognition is not supported in this browser. Please use Chrome.";
-        return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    micBtn.addEventListener("click", async () => {
-        if (isListening) {
-            recognition.stop();
-            return;
-        }
-
-        try {
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(t => t.stop());
-            }
-            recognition.lang = currentLang;
-            recognition.start();
-        } catch (err) {
-            micStatus.textContent = "Microphone blocked in browser";
-        }
+    // Language Switching
+    langChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+            langChips.forEach(c => c.classList.remove("active"));
+            chip.classList.add("active");
+            currentLang = chip.getAttribute("data-lang");
+            updateLabels(currentLang);
+        });
     });
 
-    recognition.onstart = () => {
-        isListening = true;
-        micBtn.classList.add("active");
-        micStatus.textContent = answers[currentLang].listening;
-    };
-
-    recognition.onresult = (event) => {
-        const text = event.results[0][0].transcript;
-        userText.textContent = `"${text}"`;
-        processQuery(text.toLowerCase(), currentLang);
-    };
-
-    recognition.onerror = (event) => {
-        isListening = false;
-        micBtn.classList.remove("active");
-        micStatus.textContent = "మళ్ళీ ప్రయత్నించండి (Try again)";
-    };
-
-    recognition.onend = () => {
-        isListening = false;
-        micBtn.classList.remove("active");
-        micStatus.textContent = "నొక్కండి & మాట్లాడండి (Tap to Speak)";
-    };
-
-    function processQuery(query, lang) {
-        const dict = answers[lang];
-        let reply = dict.default;
-
-        if (query.includes("scan") || query.includes"ఫోటో" || query.includes("స్కాన్") || query.includes("फोटो") || query.includes("स्कैन")) {
-            reply = dict.crop_scan;
-        } else if (query.includes("weather") || query.includes("rain") || query.includes("వర్షం") || query.includes("వాతావరణం") || query.includes("मौसम") || query.includes("बारिश")) {
-            reply = dict.weather;
-        } else if (query.includes("soil") || query.includes("fertilizer") || query.includes("ఎరువు") || query.includes("మట్టి") || query.includes("खाद") || query.includes("मिट्टी")) {
-            reply = dict.fertilizer;
-        }
-
-        assistantText.textContent = reply;
-        speakResponse(reply, lang);
+    function updateLabels(lang) {
+        const d = languageData[lang];
+        document.getElementById("labelScan").textContent = d.scan_label;
+        document.getElementById("labelWeather").textContent = d.weather_label;
+        document.getElementById("labelSoil").textContent = d.soil_label;
+        document.getElementById("labelDisease").textContent = d.disease_label;
+        assistantText.textContent = d.intro;
     }
 
-    function speakResponse(text, lang) {
+    // Tap to Speak
+    topicButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const topic = btn.getAttribute("data-topic");
+            const textToSpeak = languageData[currentLang][`${topic}_text`];
+            
+            assistantText.textContent = textToSpeak;
+            speakNow(textToSpeak, currentLang);
+        });
+    });
+
+    function speakNow(text, lang) {
         if ("speechSynthesis" in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
