@@ -262,3 +262,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+recognition.onerror = (event) => {
+        isListening = false;
+        fab.classList.remove("recording");
+        
+        if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+            statusText.textContent = "Microphone blocked. Please allow mic permission in browser settings.";
+        } else if (event.error === 'no-speech') {
+            statusText.textContent = "No voice heard. Tap mic and speak clearly.";
+        } else if (event.error === 'network') {
+            statusText.textContent = "Network error connecting to speech recognition.";
+        } else {
+            statusText.textContent = `Error (${event.error}). Tap mic to try again.`;
+        }
+    };
