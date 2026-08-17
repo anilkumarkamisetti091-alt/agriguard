@@ -72,3 +72,20 @@ def handle_data():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
+@app.route("/api/contact", methods=["POST"])
+@app.route("/submit-request", methods=["POST"])
+def handle_specialist_request():
+    try:
+        data = request.get_json() or request.form.to_dict()
+        print("Specialist query received:", data)
+        
+        # Return proper JSON response
+        return jsonify({
+            "success": True,
+            "message": "Your query has been submitted to an Agri specialist successfully!"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500

@@ -263,3 +263,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+const form = document.querySelector("form") || document.getElementById("specialistForm");
+const submitBtn = document.querySelector("button[type='submit']") || document.getElementById("submitRequestBtn");
+
+async function submitSpecialistForm(formData) {
+    try {
+        const response = await fetch("/submit-request", { // Check that this URL matches your backend route
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(formData)
+        });
+
+        // Check if response is OK before parsing JSON
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Server returned ${response.status}: ${errorText || 'No response body'}`);
+        }
+
+        const result = await response.json();
+        alert(result.message || "Submitted successfully!");
+    } catch (error) {
+        console.error("Submission error:", error);
+        alert("Failed to submit: " + error.message);
+    }
+}
