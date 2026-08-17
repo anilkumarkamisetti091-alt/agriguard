@@ -166,3 +166,99 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+// --- AgriGuard Voice Assistant Integration ---
+document.addEventListener("DOMContentLoaded", () => {
+    const fab = document.getElementById("voiceAssistantFab");
+    const popup = document.getElementById("voiceChatPopup");
+    const statusText = document.getElementById("voiceStatusText");
+    const closeBtn = document.getElementById("closeVoiceBtn");
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        if (fab) {
+            fab.addEventListener("click", () => {
+                popup.classList.remove("hidden");
+                statusText.textContent = "Speech recognition is not supported in this browser. Please use Chrome.";
+            });
+        }
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = "en-US"; // Change to "te-IN" for Telugu or "hi-IN" for Hindi
+
+    let isListening = false;
+
+    fab.addEventListener("click", () => {
+        popup.classList.remove("hidden");
+        if (!isListening) {
+            try {
+                recognition.start();
+            } catch (e) {
+                recognition.stop();
+            }
+        } else {
+            recognition.stop();
+        }
+    });
+
+    closeBtn.addEventListener("click", () => {
+        popup.classList.add("hidden");
+        if (isListening) recognition.stop();
+    });
+
+    recognition.onstart = () => {
+        isListening = true;
+        fab.classList.add("recording");
+        statusText.textContent = "Listening to your voice... Speak now.";
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        statusText.textContent = `You: "${transcript}"`;
+        handleAssistantResponse(transcript);
+    };
+
+    recognition.onerror = () => {
+        isListening = false;
+        fab.classList.remove("recording");
+        statusText.textContent = "Could not catch that clearly. Tap the mic to try again.";
+    };
+
+    recognition.onend = () => {
+        isListening = false;
+        fab.classList.remove("recording");
+    };
+
+    function handleAssistantResponse(query) {
+        let answer = "I am your AgriGuard assistant. You can ask about crop scan, soil guidance, disease detection, or alerts.";
+
+        if (query.includes("scan") || query.includes("camera") || query.includes("photo") || query.includes("leaf")) {
+            answer = "Opening the scanner. You can click 'Scan Crop Health' to detect plant diseases instantly.";
+            const scanBtn = document.querySelector(".hero button, .hero a, .cta-button, [href*='scan']");
+            if (scanBtn) scanBtn.scrollIntoView({ behavior: "smooth" });
+        } else if (query.includes("weather") || query.includes("rain") || query.includes("alert")) {
+            answer = "Checking live farm alerts. Weather conditions and moisture levels are being monitored.";
+        } else if (query.includes("soil") || query.includes("fertilizer")) {
+            answer = "Soil guidance recommends testing nitrogen and moisture levels before applying top fertilizer.";
+        } else if (query.includes("hello") || query.includes("hi") || query.includes("agriguard")) {
+            answer = "Hello farmer! I am AgriGuard. How can I assist your crop monitoring today?";
+        }
+
+        setTimeout(() => {
+            statusText.textContent = `AgriGuard: "${answer}"`;
+            speakText(answer);
+        }, 300);
+    }
+
+    function speakText(msg) {
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(msg);
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+});
