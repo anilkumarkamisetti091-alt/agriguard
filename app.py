@@ -69,31 +69,22 @@ def handle_data():
 
     return jsonify({"logs": rows, "success": True})
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
-@app.route("/api/contact", methods=["POST"])
-@app.route("/submit-request", methods=["POST"])
-def handle_specialist_request():
-    try:
-        data = request.get_json() or request.form.to_dict()
-        print("Specialist query received:", data)
-        
-        # Return proper JSON response
-        return jsonify({
-            "success": True,
-            "message": "Your query has been submitted to an Agri specialist successfully!"
-        }), 200
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
-@app.route('/api/contact', methods=['POST'])
+# Place all routes BEFORE app.run
+@app.route('/api/contact', methods=['POST', 'OPTIONS'])
+@app.route('/submit-request', methods=['POST', 'OPTIONS'])
 def contact():
-    data = request.get_json(silent=True) or {}
-    print("Form submission received:", data)
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'ok'}), 200
+
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    print("Specialist query received:", data)
+    
     return jsonify({
         "status": "success",
         "message": "Your request was submitted successfully."
-    }), 200    
+    }), 200
+
+# app.run MUST be the last lines in app.py
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)

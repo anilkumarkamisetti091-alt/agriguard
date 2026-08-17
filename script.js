@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const response = await fetch('/api/contact', {
+        const response = await fetch('https://your-render-backend-url.onrender.com/api/contact', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
