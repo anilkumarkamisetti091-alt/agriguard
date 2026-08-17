@@ -145,17 +145,22 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(payload)
         });
 
-        const result = await response.json();
+       const text = await response.text();
+        let result = {};
+        try {
+            result = text ? JSON.parse(text) : {};
+        } catch (e) {
+            result = {};
+        }
 
         if (!response.ok) {
-          throw new Error(result.message || 'Request failed');
+            throw new Error(result.message || 'Server error: Route /api/contact not responding with JSON');
         }
 
         if (formStatus) {
-          formStatus.textContent = result.message || 'Your request was submitted successfully.';
-          formStatus.style.color = '#166534';
+            formStatus.textContent = result.message || 'Your request was submitted successfully.';
+            formStatus.style.color = '#166534';
         }
-
         contactForm.reset();
       } catch (error) {
         if (formStatus) {

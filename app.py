@@ -89,3 +89,11 @@ def handle_specialist_request():
             "success": False,
             "error": str(e)
         }), 500
+@app.route('/api/contact', methods=['POST'])
+def contact():
+    data = request.get_json(silent=True) or {}
+    print("Form submission received:", data)
+    return jsonify({
+        "status": "success",
+        "message": "Your request was submitted successfully."
+    }), 200    
