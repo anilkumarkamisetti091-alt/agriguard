@@ -166,113 +166,143 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-// --- AgriGuard Voice Assistant Integration ---
 document.addEventListener("DOMContentLoaded", () => {
-    const fab = document.getElementById("voiceAssistantFab");
-    const popup = document.getElementById("voiceChatPopup");
-    const statusText = document.getElementById("voiceStatusText");
-    const closeBtn = document.getElementById("closeVoiceBtn");
+    const openFab = document.getElementById("openVoiceAssistantFab");
+    const modal = document.getElementById("voiceAssistantModal");
+    const closeBtn = document.getElementById("closeVoiceModalBtn");
+    const micBtn = document.getElementById("voiceMicTrigger");
+    const micStatus = document.getElementById("micStatusLabel");
+    const userText = document.getElementById("userTranscript");
+    const assistantText = document.getElementById("assistantReply");
+    const langChips = document.querySelectorAll(".lang-chip");
+
+    let currentLang = "te-IN"; // Default to Telugu
+    let isListening = false;
+
+    // Multi-Language Knowledge Base
+    const answers = {
+        "te-IN": {
+            welcome: "నమస్కారం! పంట ఆరోగ్యం, వాతావరణం, లేదా తెగుళ్ల గురించి అడగండి.",
+            listening: "వింటున్నాను... మాట్లాడండి...",
+            crop_scan: "పంట ఫోటో తీయడానికి పైనున్న 'Scan Crop Health' బటన్‌పై నొక్కండి.",
+            weather: "రాబోయే వర్షాల కోసం పొలంలో నీటి పారుదల సౌకర్యం సరిగ్గా ఉందో లేదో చూసుకోండి.",
+            fertilizer: "మట్టి తేమను బట్టి ఎరువులు వేయండి. తక్కువ మోతాదులో వాడటం మంచిది.",
+            default: "నేను అగ్రిగార్డ్ సహాయకుడిని. పంట వివరాలు, నీటి పారుదల లేదా వాతావరణం గురించి అడగండి."
+        },
+        "hi-IN": {
+            welcome: "नमस्ते! फसल स्वास्थ्य, मौसम या कीटों के बारे में पूछें।",
+            listening: "सुन रहा हूँ... बोलिए...",
+            crop_scan: "फसल की फोटो स्कैन करने के लिए ऊपर 'Scan Crop Health' बटन दबाएं।",
+            weather: "मौसम चेतावनी: बारिश से पहले खेतों में जल निकासी की सही व्यवस्था करें।",
+            fertilizer: "मिट्टी की नमी जांचने के बाद ही खाद और कीटनाशक का प्रयोग करें।",
+            default: "मैं एग्रीगार्ड सहायक हूँ। फसल रोग, मौसम या सिंचाई के बारे में पूछ सकते हैं।"
+        },
+        "en-IN": {
+            welcome: "Hello! Ask about crop health, weather alerts, or scanning leaves.",
+            listening: "Listening... Speak now...",
+            crop_scan: "Click 'Scan Crop Health' above to scan leaf photos for disease detection.",
+            weather: "Ensure adequate drainage in low-lying fields ahead of seasonal rain.",
+            fertilizer: "Check soil moisture before applying top fertilizer to avoid runoff.",
+            default: "I am your AgriGuard assistant. You can ask about soil, weather, or crops."
+        }
+    };
+
+    // Language switch handlers
+    langChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+            langChips.forEach(c => c.classList.remove("active"));
+            chip.classList.add("active");
+            currentLang = chip.getAttribute("data-lang");
+            assistantText.textContent = answers[currentLang].welcome;
+            speakResponse(answers[currentLang].welcome, currentLang);
+        });
+    });
+
+    openFab.addEventListener("click", () => {
+        modal.classList.toggle("hidden");
+    });
+
+    closeBtn.addEventListener("click", () => {
+        modal.classList.add("hidden");
+        if (isListening && recognition) recognition.stop();
+    });
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-        if (fab) {
-            fab.addEventListener("click", () => {
-                popup.classList.remove("hidden");
-                statusText.textContent = "Speech recognition is not supported in this browser. Please use Chrome.";
-            });
-        }
+        assistantText.textContent = "Speech recognition is not supported in this browser. Please use Chrome.";
         return;
     }
 
     const recognition = new SpeechRecognition();
     recognition.continuous = false;
-    recognition.lang = "en-US"; // Change to "te-IN" for Telugu or "hi-IN" for Hindi
+    recognition.interimResults = false;
 
-    let isListening = false;
-
-    fab.addEventListener("click", () => {
-        popup.classList.remove("hidden");
-        if (!isListening) {
-            try {
-                recognition.start();
-            } catch (e) {
-                recognition.stop();
-            }
-        } else {
+    micBtn.addEventListener("click", async () => {
+        if (isListening) {
             recognition.stop();
+            return;
         }
-    });
 
-    closeBtn.addEventListener("click", () => {
-        popup.classList.add("hidden");
-        if (isListening) recognition.stop();
+        try {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(t => t.stop());
+            }
+            recognition.lang = currentLang;
+            recognition.start();
+        } catch (err) {
+            micStatus.textContent = "Microphone blocked in browser";
+        }
     });
 
     recognition.onstart = () => {
         isListening = true;
-        fab.classList.add("recording");
-        statusText.textContent = "Listening to your voice... Speak now.";
+        micBtn.classList.add("active");
+        micStatus.textContent = answers[currentLang].listening;
     };
 
     recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        statusText.textContent = `You: "${transcript}"`;
-        handleAssistantResponse(transcript);
+        const text = event.results[0][0].transcript;
+        userText.textContent = `"${text}"`;
+        processQuery(text.toLowerCase(), currentLang);
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
         isListening = false;
-        fab.classList.remove("recording");
-        statusText.textContent = "Could not catch that clearly. Tap the mic to try again.";
+        micBtn.classList.remove("active");
+        micStatus.textContent = "మళ్ళీ ప్రయత్నించండి (Try again)";
     };
 
     recognition.onend = () => {
         isListening = false;
-        fab.classList.remove("recording");
+        micBtn.classList.remove("active");
+        micStatus.textContent = "నొక్కండి & మాట్లాడండి (Tap to Speak)";
     };
 
-    function handleAssistantResponse(query) {
-        let answer = "I am your AgriGuard assistant. You can ask about crop scan, soil guidance, disease detection, or alerts.";
+    function processQuery(query, lang) {
+        const dict = answers[lang];
+        let reply = dict.default;
 
-        if (query.includes("scan") || query.includes("camera") || query.includes("photo") || query.includes("leaf")) {
-            answer = "Opening the scanner. You can click 'Scan Crop Health' to detect plant diseases instantly.";
-            const scanBtn = document.querySelector(".hero button, .hero a, .cta-button, [href*='scan']");
-            if (scanBtn) scanBtn.scrollIntoView({ behavior: "smooth" });
-        } else if (query.includes("weather") || query.includes("rain") || query.includes("alert")) {
-            answer = "Checking live farm alerts. Weather conditions and moisture levels are being monitored.";
-        } else if (query.includes("soil") || query.includes("fertilizer")) {
-            answer = "Soil guidance recommends testing nitrogen and moisture levels before applying top fertilizer.";
-        } else if (query.includes("hello") || query.includes("hi") || query.includes("agriguard")) {
-            answer = "Hello farmer! I am AgriGuard. How can I assist your crop monitoring today?";
+        if (query.includes("scan") || query.includes"ఫోటో" || query.includes("స్కాన్") || query.includes("फोटो") || query.includes("स्कैन")) {
+            reply = dict.crop_scan;
+        } else if (query.includes("weather") || query.includes("rain") || query.includes("వర్షం") || query.includes("వాతావరణం") || query.includes("मौसम") || query.includes("बारिश")) {
+            reply = dict.weather;
+        } else if (query.includes("soil") || query.includes("fertilizer") || query.includes("ఎరువు") || query.includes("మట్టి") || query.includes("खाद") || query.includes("मिट्टी")) {
+            reply = dict.fertilizer;
         }
 
-        setTimeout(() => {
-            statusText.textContent = `AgriGuard: "${answer}"`;
-            speakText(answer);
-        }, 300);
+        assistantText.textContent = reply;
+        speakResponse(reply, lang);
     }
 
-    function speakText(msg) {
+    function speakResponse(text, lang) {
         if ("speechSynthesis" in window) {
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(msg);
-            utterance.rate = 1.0;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = 0.95;
             window.speechSynthesis.speak(utterance);
         }
     }
 });
-recognition.onerror = (event) => {
-        isListening = false;
-        fab.classList.remove("recording");
-        
-        if (event.error === 'not-allowed' || event.error === 'permission-denied') {
-            statusText.textContent = "Microphone blocked. Please allow mic permission in browser settings.";
-        } else if (event.error === 'no-speech') {
-            statusText.textContent = "No voice heard. Tap mic and speak clearly.";
-        } else if (event.error === 'network') {
-            statusText.textContent = "Network error connecting to speech recognition.";
-        } else {
-            statusText.textContent = `Error (${event.error}). Tap mic to try again.`;
-        }
-    };

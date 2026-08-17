@@ -142,19 +142,38 @@
   <script src="script.js"></script>
 </body>
 </html>
-<!-- AgriGuard Floating Voice Assistant -->
-<div class="voice-widget-container">
-    <div id="voiceChatPopup" class="voice-chat-popup hidden">
-        <div class="voice-popup-header">
-            <span>🎙️ AgriGuard Voice Assistant</span>
-            <button id="closeVoiceBtn" class="close-voice-btn">&times;</button>
+<!-- Multi-Language AgriGuard Voice Assistant -->
+<div class="voice-assistant-container">
+    <div id="voiceAssistantModal" class="voice-modal hidden">
+        <div class="voice-modal-header">
+            <span id="modalTitle">🌾 AgriGuard Assistant</span>
+            <button id="closeVoiceModalBtn" class="close-btn">&times;</button>
         </div>
-        <div id="voiceStatusText" class="voice-popup-body">
-            Tap the microphone and ask: "How is crop health?", "Check weather", or "Help me scan".
+
+        <div class="lang-selector-group">
+            <button class="lang-chip active" data-lang="te-IN">తెలుగు</button>
+            <button class="lang-chip" data-lang="hi-IN">हिंदी</button>
+            <button class="lang-chip" data-lang="en-IN">English</button>
+        </div>
+
+        <div class="voice-display-box">
+            <p id="userTranscript" class="user-text">...</p>
+            <p id="assistantReply" class="assistant-text">భాషను ఎంచుకుని మైక్ నొక్కండి (Select language and tap mic)</p>
+        </div>
+
+        <div class="voice-controls">
+            <button id="voiceMicTrigger" class="mic-round-btn">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+                </svg>
+            </button>
+            <span id="micStatusLabel" class="mic-status-label">నొక్కండి & మాట్లాడండి (Tap to Speak)</span>
         </div>
     </div>
-    <button id="voiceAssistantFab" class="voice-fab" title="AgriGuard Voice Assistant">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="white">
+
+    <!-- Floating Trigger Icon -->
+    <button id="openVoiceAssistantFab" class="floating-voice-fab" title="Voice Assistant">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
             <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
         </svg>
     </button>
