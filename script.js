@@ -295,3 +295,46 @@ async function submitSpecialistForm(formData) {
         alert("Failed to submit: " + error.message);
     }
 }
+const translations = {
+  en: {
+    hero_title: "Protecting Crops, Empowering Farmers",
+    hero_desc: "AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.",
+    scan_btn: "Scan Crop Health"
+  },
+  hi: {
+    hero_title: "फसलों की सुरक्षा, किसानों का सशक्तिकरण",
+    hero_desc: "एग्रीगार्ड आपकी फसल को सुरक्षित करने के लिए वास्तविक समय में फसल रोग पहचान, मिट्टी मार्गदर्शन और मौसम अलर्ट प्रदान करता है।",
+    scan_btn: "फसल स्वास्थ्य की जांच करें"
+  },
+  te: {
+    hero_title: "పంటల రక్షణ, రైతుల సాధికారత",
+    hero_desc: "మీ పంటను రక్షించడానికి అగ్రిగార్డ్ రియల్-టైమ్ పంట వ్యాధి గుర్తింపు, నేల మార్గదర్శకత్వం మరియు వాతావరణ హెచ్చరికలను అందిస్తుంది.",
+    scan_btn: "పంట ఆరోగ్యాన్ని స్కాన్ చేయండి"
+  }
+};
+
+function changeLanguage(lang) {
+  localStorage.setItem("selectedLang", lang);
+  document.querySelectorAll("[data-i18n]").forEach(element => {
+    const key = element.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      // Check if it's an input/placeholder or text element
+      if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+        element.placeholder = translations[lang][key];
+      } else {
+        element.textContent = translations[lang][key];
+      }
+    }
+  });
+}
+
+document.getElementById("lang-selector").addEventListener("change", (e) => {
+  changeLanguage(e.target.value);
+});
+
+// Load saved language on startup
+const savedLang = localStorage.getItem("selectedLang") || "en";
+document.getElementById("lang-selector").value = savedLang;
+changeLanguage(savedLang);
+const { t } = useTranslation();
+return <h1>{t('hero_title')}</h1>;
