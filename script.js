@@ -425,3 +425,74 @@ document.addEventListener("DOMContentLoaded", () => {
     // Auto-detect on page load
     detectUserLocation();
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const langModal = document.getElementById("languagePromptModal");
+    const langButtons = document.querySelectorAll(".lang-select-btn");
+    const skipBtn = document.getElementById("changeLangLaterBtn");
+
+    // Translations Dictionary for Core UI
+    const siteTranslations = {
+        te: {
+            heroTitle: "పంటల రక్షణ, రైతుల సాధికారత",
+            heroSubtitle: "అగ్రిగార్డ్ మీ పంటను కాపాడటానికి రియల్-టైమ్ వ్యాధి గుర్తింపు, మట్టి సలహాలు మరియు వాతావరణ హెచ్చరికలను అందిస్తుంది.",
+            scanBtn: "పంట ఆరోగ్యాన్ని స్కాన్ చేయండి",
+            servicesTitle: "మా ప్రధాన సేవలు"
+        },
+        hi: {
+            heroTitle: "फसलों की सुरक्षा, किसानों का सशक्तिकरण",
+            heroSubtitle: "एग्रीगार्ड आपकी फसल को सुरक्षित रखने के लिए रीयल-टाइम रोग पहचान, मिट्टी सलाह और मौसम चेतावनी प्रदान करता है।",
+            scanBtn: "फसल स्वास्थ्य स्कैन करें",
+            servicesTitle: "हमारी मुख्य सेवाएं"
+        },
+        en: {
+            heroTitle: "Protecting Crops, Empowering Farmers",
+            heroSubtitle: "AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.",
+            scanBtn: "Scan Crop Health",
+            servicesTitle: "Our Core Services"
+        }
+    };
+
+    // Check if user already picked a language before
+    const savedLang = localStorage.getItem("agriguard_language");
+
+    if (!savedLang) {
+        // Show modal if first visit
+        langModal.classList.remove("hidden");
+    } else {
+        // Apply previously chosen language
+        langModal.classList.add("hidden");
+        applyLanguage(savedLang);
+    }
+
+    // Handle user selection
+    langButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const selectedLang = btn.getAttribute("data-lang");
+            localStorage.setItem("agriguard_language", selectedLang);
+            applyLanguage(selectedLang);
+            langModal.classList.add("hidden");
+        });
+    });
+
+    if (skipBtn) {
+        skipBtn.addEventListener("click", () => {
+            localStorage.setItem("agriguard_language", "en");
+            applyLanguage("en");
+            langModal.classList.add("hidden");
+        });
+    }
+
+    function applyLanguage(lang) {
+        const data = siteTranslations[lang] || siteTranslations.en;
+
+        const heroH1 = document.querySelector(".hero h1, .hero-content h1");
+        const heroP = document.querySelector(".hero p, .hero-content p");
+        const scanBtn = document.querySelector(".hero button, .hero a, .cta-button");
+        const serviceHeader = document.querySelector("#services h2, .services-title");
+
+        if (heroH1) heroH1.textContent = data.heroTitle;
+        if (heroP) heroP.textContent = data.heroSubtitle;
+        if (scanBtn) scanBtn.textContent = data.scanBtn;
+        if (serviceHeader) serviceHeader.textContent = data.servicesTitle;
+    }
+});

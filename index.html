@@ -7,6 +7,35 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Initial Language Selection Modal -->
+<div id="languagePromptModal" class="lang-modal-overlay">
+    <div class="lang-modal-card">
+        <div class="lang-modal-header">
+            <span class="leaf-icon">🌿</span>
+            <h2>Select Your Language</h2>
+            <p>భాషను ఎంచుకోండి / अपनी भाषा चुनें</p>
+        </div>
+
+        <div class="lang-options-grid">
+            <button class="lang-select-btn" data-lang="te">
+                <span class="native-lang">తెలుగు</span>
+                <span class="sub-lang">Telugu</span>
+            </button>
+            <button class="lang-select-btn" data-lang="hi">
+                <span class="native-lang">हिंदी</span>
+                <span class="sub-lang">Hindi</span>
+            </button>
+            <button class="lang-select-btn" data-lang="en">
+                <span class="native-lang">English</span>
+                <span class="sub-lang">English</span>
+            </button>
+        </div>
+
+        <button id="changeLangLaterBtn" class="change-later-link">
+            Continue with English &rarr;
+        </button>
+    </div>
+</div>
 
   <!-- Navigation Bar -->
   <nav class="navbar">

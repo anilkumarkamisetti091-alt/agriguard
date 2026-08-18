@@ -10,7 +10,110 @@ body {
   color: #2d3748;
   line-height: 1.6;
 }
+/* Language Selector Overlay */
+.lang-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.3s ease;
+}
 
+.lang-modal-overlay.hidden {
+    display: none;
+}
+
+.lang-modal-card {
+    background: #ffffff;
+    padding: 2rem 1.8rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.lang-modal-header .leaf-icon {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.lang-modal-header h2 {
+    color: #1e3a24;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.lang-modal-header p {
+    color: #555;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.lang-options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.lang-select-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: #f9fbf9;
+    border: 2px solid #2e7d32;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lang-select-btn:hover,
+.lang-select-btn:active {
+    background: #2e7d32;
+    color: #ffffff;
+}
+
+.lang-select-btn:hover .sub-lang,
+.lang-select-btn:active .sub-lang {
+    color: #e0f2fe;
+}
+
+.native-lang {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.sub-lang {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.change-later-link {
+    background: none;
+    border: none;
+    color: #2e7d32;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
 /* Navbar */
 .navbar {
   display: flex;
