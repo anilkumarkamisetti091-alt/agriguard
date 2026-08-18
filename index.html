@@ -37,50 +37,51 @@
     </div>
 </div>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar">
+ <!-- Navbar -->
+<nav class="navbar">
     <div class="logo">🌿 AgriGuard</div>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#features">Services</a></li>
-      <li><a href="#scanner">AI Scanner</a></li>
-      <li><a href="#advisory">Live Alerts</a></li>
-      <li><a href="#contact">Contact</a></li>
+        <li><a href="#home" data-i18n="navHome">Home</a></li>
+        <li><a href="#services" data-i18n="navServices">Services</a></li>
+        <li><a href="#scanner" data-i18n="navScanner">AI Scanner</a></li>
+        <li><a href="#alerts" data-i18n="navAlerts">Live Alerts</a></li>
+        <li><a href="#contact" data-i18n="navContact">Contact</a></li>
     </ul>
-  </nav>
+</nav>
 
-  <!-- Hero Section -->
-  <header id="home" class="hero">
-    <div class="hero-content">
-      <h1>Protecting Crops, Empowering Farmers</h1>
-      <p>AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.</p>
-      <a href="#scanner" class="btn-primary">Scan Crop Health</a>
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <h1 data-i18n="heroTitle">Protecting Crops, Empowering Farmers</h1>
+    <p data-i18n="heroDesc">AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.</p>
+    <button class="cta-button" data-i18n="heroBtn">Scan Crop Health</button>
+</section>
+
+<!-- Core Services Section -->
+<section class="services-section" id="services">
+    <h2 class="section-title" data-i18n="servicesTitle">Our Core Services</h2>
+    <div class="services-grid">
+        <!-- Service Card 1 -->
+        <div class="service-card">
+            <div class="icon">🛡️</div>
+            <h3 data-i18n="service1Title">Crop Disease Guard</h3>
+            <p data-i18n="service1Desc">Instant diagnosis and treatment recommendations for pest attacks and leaf damage.</p>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="service-card">
+            <div class="icon">🧪</div>
+            <h3 data-i18n="service2Title">Soil & Fertilizer Guide</h3>
+            <p data-i18n="service2Desc">Tailored NPK and micronutrient advice based on your soil type and crop selection.</p>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div class="service-card">
+            <div class="icon">🌦️</div>
+            <h3 data-i18n="service3Title">Weather & Pest Warnings</h3>
+            <p data-i18n="service3Desc">Localized forecasts and preventive measures against upcoming climate risks.</p>
+        </div>
     </div>
-  </header>
-
-  <!-- Features / Services -->
-  <section id="features" class="features-section">
-    <h2>Our Core Services</h2>
-    <div class="cards-grid">
-      <div class="card">
-        <div class="card-icon">🛡️</div>
-        <h3>Crop Disease Guard</h3>
-        <p>Instant diagnosis and treatment recommendations for pest attacks and leaf damage.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-icon">🧪</div>
-        <h3>Soil & Fertilizer Guide</h3>
-        <p>Tailored NPK and micronutrient advice based on your soil type and crop selection.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-icon">🌦️</div>
-        <h3>Weather & Pest Warnings</h3>
-        <p>Localized forecasts and preventive measures against upcoming climate risks.</p>
-      </div>
-    </div>
-  </section>
+</section>
 
   <!-- AI Crop Health & Leaf Scanner -->
   <section id="scanner" class="scanner-section">

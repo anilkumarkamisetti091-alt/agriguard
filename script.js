@@ -496,3 +496,86 @@ document.addEventListener("DOMContentLoaded", () => {
         if (serviceHeader) serviceHeader.textContent = data.servicesTitle;
     }
 });
+// --- AgriGuard Complete Multi-Language Engine ---
+const translations = {
+    te: {
+        navHome: "హోమ్",
+        navServices: "సేవలు",
+        navScanner: "AI స్కానర్",
+        navAlerts: "లైవ్ హెచ్చరికలు",
+        navContact: "సంప్రదించండి",
+        heroTitle: "పంటల రక్షణ, రైతుల సాధికారత",
+        heroDesc: "అగ్రిగార్డ్ మీ పంటను కాపాడటానికి రియల్-టైమ్ వ్యాధి గుర్తింపు, మట్టి సలహాలు మరియు వాతావరణ హెచ్చరికలను అందిస్తుంది.",
+        heroBtn: "పంట ఆరోగ్యాన్ని స్కాన్ చేయండి",
+        servicesTitle: "మా ప్రధాన సేవలు",
+        service1Title: "పంట తెగుళ్ల నివారణ",
+        service1Desc: "తెగుళ్ల దాడి మరియు ఆకుల వ్యాధులపై తక్షణ నిర్ధారణ మరియు చికిత్స సలహాలు.",
+        service2Title: "మట్టి & ఎరువుల మార్గదర్శి",
+        service2Desc: "మీ మట్టి రకం మరియు పంట ఎంపిక ఆధారంగా NPK మరియు సూక్ష్మ పోషకాల సలహాలు.",
+        service3Title: "వాతావరణ & తెగుళ్ల హెచ్చరికలు",
+        service3Desc: "రాబోయే వాతావరణ ముప్పుల నుండి పంటను రక్షించే స్థానిక సూచనలు మరియు నివారణ చర్యలు."
+    },
+    hi: {
+        navHome: "होम",
+        navServices: "सेवाएं",
+        navScanner: "एआई स्कैनर",
+        navAlerts: "लाइव अलर्ट",
+        navContact: "संपर्क करें",
+        heroTitle: "फसलों की सुरक्षा, किसानों का सशक्तिकरण",
+        heroDesc: "एग्रीगार्ड आपकी फसल को सुरक्षित रखने के लिए रीयल-टाइम रोग पहचान, मिट्टी सलाह और मौसम चेतावनी प्रदान करता है।",
+        heroBtn: "फसल स्वास्थ्य स्कैन करें",
+        servicesTitle: "हमारी मुख्य सेवाएं",
+        service1Title: "फसल रोग सुरक्षा",
+        service1Desc: "कीटों के हमलों और पत्तियों के नुकसान के लिए तुरंत निदान और उपचार सिफारिशें।",
+        service2Title: "मिट्टी और उर्वरक गाइड",
+        service2Desc: "आपकी मिट्टी के प्रकार और फसल के आधार पर NPK और सूक्ष्म पोषक तत्वों की सलाह।",
+        service3Title: "मौसम और कीट चेतावनी",
+        service3Desc: "आगामी जलवायु जोखिमों के खिलाफ स्थानीय पूर्वानुमान और निवारक उपाय।"
+    },
+    en: {
+        navHome: "Home",
+        navServices: "Services",
+        navScanner: "AI Scanner",
+        navAlerts: "Live Alerts",
+        navContact: "Contact",
+        heroTitle: "Protecting Crops, Empowering Farmers",
+        heroDesc: "AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.",
+        heroBtn: "Scan Crop Health",
+        servicesTitle: "Our Core Services",
+        service1Title: "Crop Disease Guard",
+        service1Desc: "Instant diagnosis and treatment recommendations for pest attacks and leaf damage.",
+        service2Title: "Soil & Fertilizer Guide",
+        service2Desc: "Tailored NPK and micronutrient advice based on your soil type and crop selection.",
+        service3Title: "Weather & Pest Warnings",
+        service3Desc: "Localized forecasts and preventive measures against upcoming climate risks."
+    }
+};
+
+function applyLanguage(lang) {
+    const selected = translations[lang] || translations.en;
+
+    // Updates all elements marked with data-i18n
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        const key = element.getAttribute("data-i18n");
+        if (selected[key]) {
+            element.textContent = selected[key];
+        }
+    });
+
+    document.documentElement.lang = lang;
+}
+
+// Initial setup from modal or saved preference
+document.addEventListener("DOMContentLoaded", () => {
+    const savedLang = localStorage.getItem("agriguard_language") || "en";
+    applyLanguage(savedLang);
+
+    // If you have language switch buttons or modal chips:
+    document.querySelectorAll(".lang-chip, .lang-select-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const chosenLang = btn.getAttribute("data-lang").replace("-IN", "");
+            localStorage.setItem("agriguard_language", chosenLang);
+            applyLanguage(chosenLang);
+        });
+    });
+});
