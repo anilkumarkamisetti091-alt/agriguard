@@ -191,3 +191,67 @@
         </svg>
     </button>
 </div>
+<!-- Localized Weather & Climate Warning Section -->
+<section id="weather-section" class="weather-dashboard-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">🌦️ Localized Weather & Climate Warning</h2>
+            <p class="section-subtitle">Real-time hyperlocal agricultural alerts and climate forecast for your field.</p>
+        </div>
+
+        <!-- Extreme Weather Alert Banner (Visible when warning triggers) -->
+        <div id="climateAlertBox" class="climate-alert-box alert-hidden">
+            <div class="alert-icon-wrap" id="alertIcon">⚠️</div>
+            <div class="alert-content">
+                <h4 id="alertHeadline">Climate Advisory</h4>
+                <p id="alertDescription">Monitoring current field conditions...</p>
+                <div id="alertAction" class="alert-action-tip">Recommended Action: Ensure adequate irrigation.</div>
+            </div>
+        </div>
+
+        <!-- Weather Stats Cards Grid -->
+        <div class="weather-grid">
+            <div class="weather-card">
+                <div class="card-icon">🌡️</div>
+                <div class="card-details">
+                    <span class="card-label">Temperature</span>
+                    <h3 id="currentTemp">-- °C</h3>
+                    <small id="tempFeel">Feels like -- °C</small>
+                </div>
+            </div>
+
+            <div class="weather-card">
+                <div class="card-icon">💧</div>
+                <div class="card-details">
+                    <span class="card-label">Humidity</span>
+                    <h3 id="currentHumidity">-- %</h3>
+                    <small id="humidityStatus">Normal</small>
+                </div>
+            </div>
+
+            <div class="weather-card">
+                <div class="card-icon">🌧️</div>
+                <div class="card-details">
+                    <span class="card-label">Precipitation & Rain</span>
+                    <h3 id="currentRain">-- mm</h3>
+                    <small id="rainChance">Chance: --%</small>
+                </div>
+            </div>
+
+            <div class="weather-card">
+                <div class="card-icon">💨</div>
+                <div class="card-details">
+                    <span class="card-label">Wind Speed</span>
+                    <h3 id="currentWind">-- km/h</h3>
+                    <small id="windStatus">Calm</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Location Controls -->
+        <div class="weather-footer">
+            <span id="locationDisplay">📍 Detecting your field location...</span>
+            <button id="refreshWeatherBtn" class="weather-refresh-btn">🔄 Refresh Weather</button>
+        </div>
+    </div>
+</section>

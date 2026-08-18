@@ -421,3 +421,148 @@ footer {
     color: #333333;
     line-height: 1.4;
 }
+/* Localized Weather & Climate Advisory Styles */
+.weather-dashboard-section {
+    padding: 2.5rem 1rem;
+    background-color: #f7faf8;
+}
+
+.section-title-wrap {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    color: #1e3a24;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Climate Alert Box */
+.climate-alert-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.climate-alert-box.alert-danger {
+    background-color: #fff1f2;
+    border: 2px solid #e11d48;
+    color: #9f1239;
+}
+
+.climate-alert-box.alert-warning {
+    background-color: #fffbeb;
+    border: 2px solid #d97706;
+    color: #92400e;
+}
+
+.climate-alert-box.alert-safe {
+    background-color: #f0fdf4;
+    border: 2px solid #16a34a;
+    color: #166534;
+}
+
+.climate-alert-box.alert-hidden {
+    display: none;
+}
+
+.alert-icon-wrap {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.alert-content h4 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.alert-content p {
+    margin: 0 0 6px;
+    font-size: 0.9rem;
+}
+
+.alert-action-tip {
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding-top: 4px;
+    border-top: 1px dashed rgba(0,0,0,0.15);
+}
+
+/* Weather Grid */
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.weather-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #ffffff;
+    padding: 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.card-icon {
+    font-size: 2.2rem;
+}
+
+.card-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.card-details h3 {
+    margin: 3px 0;
+    font-size: 1.4rem;
+    color: #111827;
+}
+
+.card-details small {
+    color: #4b5563;
+    font-size: 0.8rem;
+}
+
+/* Weather Footer */
+.weather-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #4b5563;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.weather-refresh-btn {
+    background-color: #2e7d32;
+    color: #ffffff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.weather-refresh-btn:hover {
+    background-color: #1e5923;
+}

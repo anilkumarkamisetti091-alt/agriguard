@@ -295,3 +295,133 @@ async function submitSpecialistForm(formData) {
         alert("Failed to submit: " + error.message);
     }
 }
+// --- AgriGuard Localized Weather & Climate Warning System ---
+document.addEventListener("DOMContentLoaded", () => {
+    const tempEl = document.getElementById("currentTemp");
+    const feelEl = document.getElementById("tempFeel");
+    const humEl = document.getElementById("currentHumidity");
+    const humStatusEl = document.getElementById("humidityStatus");
+    const rainEl = document.getElementById("currentRain");
+    const rainChanceEl = document.getElementById("rainChance");
+    const windEl = document.getElementById("currentWind");
+    const windStatusEl = document.getElementById("windStatus");
+    const locEl = document.getElementById("locationDisplay");
+    const refreshBtn = document.getElementById("refreshWeatherBtn");
+
+    const alertBox = document.getElementById("climateAlertBox");
+    const alertIcon = document.getElementById("alertIcon");
+    const alertHeadline = document.getElementById("alertHeadline");
+    const alertDesc = document.getElementById("alertDescription");
+    const alertAction = document.getElementById("alertAction");
+
+    function fetchFarmWeather(lat = 16.3067, lon = 80.4365, locationName = "Current Farm Location") {
+        locEl.textContent = `📍 Location: ${locationName}`;
+
+        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,wind_speed_10m&daily=precipitation_probability_max&timezone=auto`;
+
+        fetch(apiUrl)
+            .then(res => {
+                if (!res.ok) throw new Error("Unable to retrieve weather data.");
+                return res.json();
+            })
+            .then(data => {
+                const current = data.current;
+                const daily = data.daily;
+
+                const temp = current.temperature_2m;
+                const feels = current.apparent_temperature;
+                const humidity = current.relative_humidity_2m;
+                const rain = current.rain;
+                const wind = current.wind_speed_10m;
+                const rainProb = (daily && daily.precipitation_probability_max) ? daily.precipitation_probability_max[0] : 0;
+
+                // Update UI Values
+                tempEl.textContent = `${temp} °C`;
+                feelEl.textContent = `Feels like ${feels} °C`;
+                humEl.textContent = `${humidity} %`;
+                humStatusEl.textContent = humidity > 70 ? "High (Fungal Risk)" : humidity < 30 ? "Dry" : "Optimal";
+                rainEl.textContent = `${rain} mm`;
+                rainChanceEl.textContent = `Rain Chance: ${rainProb}%`;
+                windEl.textContent = `${wind} km/h`;
+                windStatusEl.textContent = wind > 25 ? "High Winds" : "Moderate";
+
+                // Process Climate Warning for Farmers
+                generateClimateAdvisories(temp, humidity, rain, rainProb, wind);
+            })
+            .catch(err => {
+                console.error("Weather error:", err);
+                locEl.textContent = "📍 Using default region data (Network issue)";
+            });
+    }
+
+    function generateClimateAdvisories(temp, humidity, rain, rainProb, wind) {
+        alertBox.classList.remove("alert-hidden", "alert-danger", "alert-warning", "alert-safe");
+
+        // Extreme Heat / Heatwave
+        if (temp >= 38) {
+            alertBox.classList.add("alert-danger");
+            alertIcon.textContent = "🔥";
+            alertHeadline.textContent = "Extreme Heatwave Warning";
+            alertDesc.textContent = `Current temperature is ${temp}°C. High evaporation and heat stress can cause flower dropping and crop wilting.`;
+            alertAction.textContent = "Action: Irrigate fields early morning or night. Avoid pesticide spray during peak sun.";
+        }
+        // Heavy Rain / Inundation
+        else if (rain > 15 || rainProb >= 80) {
+            alertBox.classList.add("alert-danger");
+            alertIcon.textContent = "⛈️";
+            alertHeadline.textContent = "Heavy Rain & Waterlogging Advisory";
+            alertDesc.textContent = `Rainfall expected (${rain} mm recorded, ${rainProb}% probability). Risk of root rot and fertilizer wash-off.`;
+            alertAction.textContent = "Action: Ensure proper field drainage channels. Postpone fertilizer/pesticide sprays.";
+        }
+        // High Wind / Storm
+        else if (wind >= 30) {
+            alertBox.classList.add("alert-warning");
+            alertIcon.textContent = "💨";
+            alertHeadline.textContent = "High Wind / Gust Alert";
+            alertDesc.textContent = `Wind speeds reaching ${wind} km/h. Danger of crop lodging (falling) and sprinkler drift.`;
+            alertAction.textContent = "Action: Provide staking for tall crops like banana or maize. Halt chemical spraying.";
+        }
+        // High Humidity & Fungal Threat
+        else if (humidity >= 80) {
+            alertBox.classList.add("alert-warning");
+            alertIcon.textContent = "🍄";
+            alertHeadline.textContent = "High Humidity & Fungal Disease Alert";
+            alertDesc.textContent = `Humidity is at ${humidity}%. Warm and damp conditions accelerate leaf blight and fungal spore spread.`;
+            alertAction.textContent = "Action: Scout leaves for spots/mildew. Keep bio-fungicide sprays on standby.";
+        }
+        // Optimal Weather
+        else {
+            alertBox.classList.add("alert-safe");
+            alertIcon.textContent = "✅";
+            alertHeadline.textContent = "Favorable Weather Conditions";
+            alertDesc.textContent = `Temperature (${temp}°C) and humidity (${humidity}%) are within standard agricultural growth range.`;
+            alertAction.textContent = "Action: Suitable for regular intercultural operations, fertilizer top-dressing, and weeding.";
+        }
+    }
+
+    function detectUserLocation() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    fetchFarmWeather(lat, lon, `Field Coordinates (${lat.toFixed(2)}, ${lon.toFixed(2)})`);
+                },
+                () => {
+                    // Fallback to default coordinates
+                    fetchFarmWeather();
+                },
+                { timeout: 8000 }
+            );
+        } else {
+            fetchFarmWeather();
+        }
+    }
+
+    if (refreshBtn) {
+        refreshBtn.addEventListener("click", detectUserLocation);
+    }
+
+    // Auto-detect on page load
+    detectUserLocation();
+});
