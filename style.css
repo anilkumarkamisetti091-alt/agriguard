@@ -1,3 +1,12 @@
+/* ==========================================================================
+   AgriGuard Master Stylesheet
+   Covers: Language Prompt Modal, Navigation, Hero, Services, AI Scanner,
+   Weather & Climate Warnings, Advisory Board, Contact, and Audio Guide
+   ========================================================================== */
+
+/* --------------------------------------------------
+   1. GLOBAL RESET & BASE STYLES
+   -------------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -5,121 +14,140 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #f7faf7;
   color: #2d3748;
   line-height: 1.6;
+  position: relative;
+  min-height: 100vh;
 }
-/* Language Selector Overlay */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* --------------------------------------------------
+   2. INITIAL MULTI-LANGUAGE SELECTION MODAL
+   -------------------------------------------------- */
 .lang-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-    transition: opacity 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: opacity 0.3s ease;
 }
 
 .lang-modal-overlay.hidden {
-    display: none;
+  display: none;
 }
 
 .lang-modal-card {
-    background: #ffffff;
-    padding: 2rem 1.8rem;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    animation: popIn 0.3s ease-out;
+  background: #ffffff;
+  padding: 2.2rem 1.8rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  animation: popIn 0.3s ease-out;
 }
 
 @keyframes popIn {
-    0% { transform: scale(0.9); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .lang-modal-header .leaf-icon {
-    font-size: 2.2rem;
-    display: block;
-    margin-bottom: 0.3rem;
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
 .lang-modal-header h2 {
-    color: #1e3a24;
-    font-size: 1.4rem;
-    margin: 0;
+  color: #1e3a24;
+  font-size: 1.45rem;
+  margin: 0;
+  font-weight: 700;
 }
 
 .lang-modal-header p {
-    color: #555;
-    font-size: 0.85rem;
-    margin-top: 4px;
-    margin-bottom: 1.5rem;
+  color: #555;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  margin-bottom: 1.5rem;
 }
 
 .lang-options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 1.5rem;
 }
 
 .lang-select-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 18px;
-    background: #f9fbf9;
-    border: 2px solid #2e7d32;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: #f9fbf9;
+  border: 2px solid #2e7d32;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .lang-select-btn:hover,
 .lang-select-btn:active {
-    background: #2e7d32;
-    color: #ffffff;
+  background: #2e7d32;
+  color: #ffffff;
 }
 
 .lang-select-btn:hover .sub-lang,
 .lang-select-btn:active .sub-lang {
-    color: #e0f2fe;
+  color: #e0f2fe;
 }
 
 .native-lang {
-    font-size: 1.15rem;
-    font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .sub-lang {
-    font-size: 0.85rem;
-    color: #666;
+  font-size: 0.85rem;
+  color: #666;
 }
 
 .change-later-link {
-    background: none;
-    border: none;
-    color: #2e7d32;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: underline;
+  background: none;
+  border: none;
+  color: #2e7d32;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
 }
-/* Navbar */
+
+/* --------------------------------------------------
+   3. NAVIGATION BAR
+   -------------------------------------------------- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 8%;
+  padding: 1.1rem 8%;
   background: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   position: sticky;
@@ -142,7 +170,8 @@ body {
 .nav-links a {
   text-decoration: none;
   color: #4a5568;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
   transition: color 0.2s;
 }
 
@@ -150,32 +179,70 @@ body {
   color: #2e7d32;
 }
 
-/* Hero */
+/* --------------------------------------------------
+   4. HERO SECTION
+   -------------------------------------------------- */
 .hero {
-  background: linear-gradient(rgba(46, 125, 50, 0.85), rgba(27, 94, 32, 0.9)), 
+  background: linear-gradient(rgba(46, 125, 50, 0.85), rgba(27, 94, 32, 0.92)),
               url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80') center/cover;
-  color: white;
+  color: #ffffff;
   text-align: center;
-  padding: 5rem 1.5rem;
+  padding: 5.5rem 1.5rem;
 }
 
 .hero h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  font-weight: 800;
 }
 
 .hero p {
   font-size: 1.15rem;
-  max-width: 650px;
-  margin: 0 auto 2rem;
+  max-width: 680px;
+  margin: 0 auto 2.2rem;
+  line-height: 1.6;
 }
 
-/* Buttons */
+.cta-button {
+  display: inline-block;
+  background-color: #fbc02d;
+  color: #1a202c;
+  padding: 0.85rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cta-button:hover {
+  background-color: #f9a825;
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------
+   5. GENERAL SECTION & BUTTON UTILITIES
+   -------------------------------------------------- */
+section {
+  padding: 4rem 8%;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #1b5e20;
+  font-weight: 700;
+}
+
 .btn-primary {
   display: inline-block;
   background-color: #fbc02d;
   color: #1a202c;
-  padding: 0.75rem 1.5rem;
+  padding: 0.8rem 1.6rem;
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
@@ -190,56 +257,69 @@ body {
 
 .btn-secondary {
   background-color: #2e7d32;
-  color: white;
-  padding: 0.75rem 1.5rem;
+  color: #ffffff;
+  padding: 0.8rem 1.6rem;
   border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
 }
 
 .btn-secondary:hover {
   background-color: #1b5e20;
 }
 
-/* Sections */
-section {
-  padding: 4rem 8%;
-  text-align: center;
+/* --------------------------------------------------
+   6. CORE SERVICES SECTION
+   -------------------------------------------------- */
+.services-section {
+  background-color: #ffffff;
 }
 
-h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #1b5e20;
-}
-
-/* Features Grid */
-.cards-grid {
+.services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
+  margin-top: 2.5rem;
 }
 
-.card {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+.service-card {
+  background: #fdfdfd;
+  padding: 2.2rem 1.8rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e8ede8;
   border-top: 4px solid #2e7d32;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-icon {
-  font-size: 2.5rem;
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.service-card .icon {
+  font-size: 2.4rem;
   margin-bottom: 1rem;
 }
 
-.card h3 {
-  margin-bottom: 0.5rem;
+.service-card h3 {
+  margin-bottom: 0.6rem;
   color: #2e7d32;
+  font-size: 1.2rem;
 }
 
-/* Scanner Section & Metrics */
+.service-card p {
+  font-size: 0.92rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------
+   7. AI LEAF & HEALTH SCANNER
+   -------------------------------------------------- */
 .scanner-section {
   background: #f0f7f0;
 }
@@ -247,30 +327,39 @@ h2 {
 .scanner-card {
   background: #ffffff;
   max-width: 650px;
-  margin: 1.5rem auto 0;
-  border-radius: 12px;
+  margin: 2rem auto 0;
+  border-radius: 14px;
   padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid #dce8dd;
 }
 
 .preview-box {
   width: 100%;
-  max-width: 320px;
-  height: 220px;
+  max-width: 340px;
+  height: 230px;
   border: 2px dashed #a0aec0;
-  border-radius: 8px;
-  margin: 1.2rem auto;
+  border-radius: 10px;
+  margin: 1.3rem auto;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background-color: #fafafa;
+  padding: 8px;
 }
 
 .preview-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 6px;
+}
+
+.preview-box p {
+  color: #718096;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .result-dashboard {
@@ -280,6 +369,12 @@ h2 {
   text-align: left;
 }
 
+.result-dashboard h3 {
+  color: #1e3a24;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
 .metrics-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -287,23 +382,18 @@ h2 {
   margin: 1.2rem 0;
 }
 
-@media (max-width: 600px) {
-  .metrics-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .metric-item {
   background: #f7fafc;
-  padding: 0.8rem 1rem;
+  padding: 0.85rem 1rem;
   border-radius: 8px;
   border: 1px solid #edf2f7;
 }
 
 .metric-label {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #4a5568;
+  text-transform: uppercase;
 }
 
 .progress-bar-bg {
@@ -319,7 +409,7 @@ h2 {
   height: 100%;
   width: 0%;
   background-color: #2e7d32;
-  transition: width 1s ease-in-out;
+  transition: width 0.8s ease-in-out;
 }
 
 .bg-blue { background-color: #0288d1; }
@@ -328,344 +418,437 @@ h2 {
 
 .metric-value {
   font-size: 0.95rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #1a202c;
 }
 
 .diagnosis-summary {
   background: #e8f5e9;
   border-left: 4px solid #2e7d32;
-  padding: 1rem;
-  border-radius: 4px;
+  padding: 1rem 1.2rem;
+  border-radius: 6px;
+  margin-top: 1.2rem;
 }
 
 .diagnosis-summary h4 {
   color: #1b5e20;
   margin-bottom: 0.3rem;
-}
-
-/* Advisory & Contact */
-.advisory-section {
-  background-color: #ffffff;
-}
-
-.alert-box {
-  background: #f7fafc;
-  border-left: 5px solid #fbc02d;
-  padding: 1.2rem;
-  max-width: 600px;
-  margin: 0 auto 1.5rem;
-  border-radius: 4px;
   font-size: 1.05rem;
 }
 
-.contact-form {
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.diagnosis-summary p {
+  font-size: 0.92rem;
+  color: #2e7d32;
 }
 
-.contact-form input, 
-.contact-form select, 
+/* --------------------------------------------------
+   8. LOCALIZED WEATHER & CLIMATE ADVISORY
+   -------------------------------------------------- */
+.weather-dashboard-section {
+  padding: 3.5rem 8%;
+  background-color: #ffffff;
+}
+
+.section-title-wrap {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title-wrap .section-title {
+  color: #1e3a24;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.section-title-wrap .section-subtitle {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.climate-alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.8rem;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.climate-alert-box.alert-danger {
+  background-color: #fff1f2;
+  border: 2px solid #e11d48;
+  color: #9f1239;
+}
+
+.climate-alert-box.alert-warning {
+  background-color: #fffbeb;
+  border: 2px solid #d97706;
+  color: #92400e;
+}
+
+.climate-alert-box.alert-safe {
+  background-color: #f0fdf4;
+  border: 2px solid #16a34a;
+  color: #166534;
+}
+
+.climate-alert-box.alert-hidden {
+  display: none;
+}
+
+.alert-icon-wrap {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.alert-content h4 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.alert-content p {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+}
+
+.alert-action-tip {
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.weather-card {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background: #fcfdfc;
+  padding: 1.3rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.weather-card .card-icon {
+  font-size: 2.4rem;
+}
+
+.weather-card .card-label {
+  font-size: 0.78rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.weather-card h3 {
+  margin: 2px 0;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.weather-card small {
+  color: #4b5563;
+  font-size: 0.82rem;
+}
+
+.weather-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  color: #4b5563;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.weather-refresh-btn {
+  background-color: #2e7d32;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.weather-refresh-btn:hover {
+  background-color: #1b5e20;
+}
+
+/* --------------------------------------------------
+   9. ADVISORY BOARD & CONTACT FORM
+   -------------------------------------------------- */
+.advisory-section {
+  background-color: #f7faf7;
+}
+
+.alert-box {
+  background: #ffffff;
+  border-left: 5px solid #fbc02d;
+  padding: 1.4rem;
+  max-width: 650px;
+  margin: 0 auto 1.8rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+.contact-section {
+  background-color: #ffffff;
+}
+
+.contact-form {
+  max-width: 520px;
+  margin: 1.5rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: left;
+}
+
+.contact-form input,
+.contact-form select,
 .contact-form textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem 1rem;
   border: 1px solid #cbd5e0;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #fafafa;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+  background-color: #ffffff;
 }
 
 .form-status {
   margin-top: 1rem;
   font-weight: 600;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
-footer {
-  text-align: center;
-  padding: 1.5rem;
-  background: #1b5e20;
-  color: white;
-}
-/* Floating Audio Guide Widget */
+/* --------------------------------------------------
+   10. TAP-TO-LISTEN AUDIO ASSISTANT WIDGET
+   -------------------------------------------------- */
 .voice-assistant-container {
-    position: fixed;
-    bottom: 25px;
-    right: 20px;
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+  position: fixed;
+  bottom: 25px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .floating-voice-fab {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background-color: #2e7d32;
-    border: 3px solid #ffffff;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #2e7d32;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.2s;
 }
 
 .floating-voice-fab:hover {
-    transform: scale(1.08);
+  transform: scale(1.08);
+  background-color: #1b5e20;
 }
 
 .voice-modal {
-    width: 310px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.22);
-    margin-bottom: 12px;
-    overflow: hidden;
-    border: 1px solid #dcdcdc;
-    display: flex;
-    flex-direction: column;
+  width: 320px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 1px solid #dcdcdc;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(15px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
 .voice-modal.hidden {
-    display: none;
+  display: none;
 }
 
 .voice-modal-header {
-    background: #2e7d32;
-    color: #ffffff;
-    padding: 12px 16px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background: #2e7d32;
+  color: #ffffff;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .close-btn {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 1.4rem;
-    cursor: pointer;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
 }
 
 .lang-selector-group {
-    display: flex;
-    gap: 8px;
-    padding: 10px 14px;
-    background: #f4f6f5;
-    border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f4f6f5;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .lang-chip {
-    flex: 1;
-    padding: 6px 0;
-    border: 1px solid #2e7d32;
-    background: #ffffff;
-    color: #2e7d32;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
+  flex: 1;
+  padding: 6px 0;
+  border: 1px solid #2e7d32;
+  background: #ffffff;
+  color: #2e7d32;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .lang-chip.active {
-    background: #2e7d32;
-    color: #ffffff;
+  background: #2e7d32;
+  color: #ffffff;
 }
 
 .voice-topic-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
 }
 
 .topic-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: #f9fbf9;
-    border: 1px solid #d0e1d4;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: left;
-    transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #f9fbf9;
+  border: 1px solid #d0e1d4;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.topic-btn:hover, .topic-btn:active {
-    background-color: #e8f5e9;
-    border-color: #2e7d32;
+.topic-btn:hover, 
+.topic-btn:active {
+  background-color: #e8f5e9;
+  border-color: #2e7d32;
 }
 
 .topic-icon {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .topic-label {
-    font-size: 0.88rem;
-    color: #1b5e20;
-    font-weight: 600;
+  font-size: 0.88rem;
+  color: #1b5e20;
+  font-weight: 600;
 }
 
 .voice-display-box {
-    padding: 12px 14px 16px;
-    background: #ffffff;
-    border-top: 1px solid #eee;
-    min-height: 60px;
+  padding: 12px 14px 16px;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+  min-height: 65px;
+  text-align: left;
 }
 
 .assistant-text {
-    font-size: 0.9rem;
-    color: #333333;
-    line-height: 1.4;
-}
-/* Localized Weather & Climate Advisory Styles */
-.weather-dashboard-section {
-    padding: 2.5rem 1rem;
-    background-color: #f7faf8;
+  font-size: 0.88rem;
+  color: #333333;
+  line-height: 1.45;
 }
 
-.section-title-wrap {
-    text-align: center;
-    margin-bottom: 1.5rem;
+/* --------------------------------------------------
+   11. FOOTER
+   -------------------------------------------------- */
+footer {
+  text-align: center;
+  padding: 1.8rem;
+  background: #1b5e20;
+  color: #ffffff;
+  font-size: 0.9rem;
 }
 
-.section-title {
-    color: #1e3a24;
-    font-size: 1.6rem;
-    font-weight: 700;
-}
+/* --------------------------------------------------
+   12. RESPONSIVE MEDIA QUERIES
+   -------------------------------------------------- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 5%;
+  }
 
-.section-subtitle {
-    color: #555;
-    font-size: 0.95rem;
-}
+  .nav-links {
+    gap: 0.9rem;
+  }
 
-/* Climate Alert Box */
-.climate-alert-box {
-    display: flex;
+  .nav-links a {
+    font-size: 0.85rem;
+  }
+
+  .hero {
+    padding: 4rem 1rem;
+  }
+
+  .hero h1 {
+    font-size: 1.9rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  section {
+    padding: 3rem 5%;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-footer {
+    flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
-    padding: 1.2rem;
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-}
-
-.climate-alert-box.alert-danger {
-    background-color: #fff1f2;
-    border: 2px solid #e11d48;
-    color: #9f1239;
-}
-
-.climate-alert-box.alert-warning {
-    background-color: #fffbeb;
-    border: 2px solid #d97706;
-    color: #92400e;
-}
-
-.climate-alert-box.alert-safe {
-    background-color: #f0fdf4;
-    border: 2px solid #16a34a;
-    color: #166534;
-}
-
-.climate-alert-box.alert-hidden {
-    display: none;
-}
-
-.alert-icon-wrap {
-    font-size: 2rem;
-    line-height: 1;
-}
-
-.alert-content h4 {
-    margin: 0 0 4px;
-    font-size: 1.05rem;
-    font-weight: 700;
-}
-
-.alert-content p {
-    margin: 0 0 6px;
-    font-size: 0.9rem;
-}
-
-.alert-action-tip {
-    font-weight: 600;
-    font-size: 0.88rem;
-    padding-top: 4px;
-    border-top: 1px dashed rgba(0,0,0,0.15);
-}
-
-/* Weather Grid */
-.weather-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-}
-
-.weather-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: #ffffff;
-    padding: 1.2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    border: 1px solid #e5e7eb;
-}
-
-.card-icon {
-    font-size: 2.2rem;
-}
-
-.card-label {
-    font-size: 0.8rem;
-    color: #6b7280;
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-.card-details h3 {
-    margin: 3px 0;
-    font-size: 1.4rem;
-    color: #111827;
-}
-
-.card-details small {
-    color: #4b5563;
-    font-size: 0.8rem;
-}
-
-/* Weather Footer */
-.weather-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    color: #4b5563;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
-
-.weather-refresh-btn {
-    background-color: #2e7d32;
-    color: #ffffff;
-    border: none;
-    padding: 7px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.weather-refresh-btn:hover {
-    background-color: #1e5923;
+  }
 }

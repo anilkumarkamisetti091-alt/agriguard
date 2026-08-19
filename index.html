@@ -7,165 +7,278 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Initial Language Selection Modal -->
-<div id="languagePromptModal" class="lang-modal-overlay">
+
+  <!-- STEP 1: Multi-Language Selector Modal (Always Prompts User on Page Load) -->
+  <div id="languagePromptModal" class="lang-modal-overlay">
     <div class="lang-modal-card">
-        <div class="lang-modal-header">
-            <span class="leaf-icon">🌿</span>
-            <h2>Select Your Language</h2>
-            <p>భాషను ఎంచుకోండి / अपनी भाषा चुनें</p>
-        </div>
+      <div class="lang-modal-header">
+        <span class="leaf-icon">🌿</span>
+        <h2>Select Your Language</h2>
+        <p>భాషను ఎంచుకోండి / अपनी भाषा चुनें</p>
+      </div>
 
-        <div class="lang-options-grid">
-            <button class="lang-select-btn" data-lang="te">
-                <span class="native-lang">తెలుగు</span>
-                <span class="sub-lang">Telugu</span>
-            </button>
-            <button class="lang-select-btn" data-lang="hi">
-                <span class="native-lang">हिंदी</span>
-                <span class="sub-lang">Hindi</span>
-            </button>
-            <button class="lang-select-btn" data-lang="en">
-                <span class="native-lang">English</span>
-                <span class="sub-lang">English</span>
-            </button>
-        </div>
-
-        <button id="changeLangLaterBtn" class="change-later-link">
-            Continue with English &rarr;
+      <div class="lang-options-grid">
+        <button type="button" class="lang-select-btn" data-lang="te">
+          <span class="native-lang">తెలుగు</span>
+          <span class="sub-lang">Telugu</span>
         </button>
-    </div>
-</div>
+        <button type="button" class="lang-select-btn" data-lang="hi">
+          <span class="native-lang">हिंदी</span>
+          <span class="sub-lang">Hindi</span>
+        </button>
+        <button type="button" class="lang-select-btn" data-lang="en">
+          <span class="native-lang">English</span>
+          <span class="sub-lang">English</span>
+        </button>
+      </div>
 
- <!-- Navbar -->
-<nav class="navbar">
+      <button type="button" id="changeLangLaterBtn" class="change-later-link">
+        Continue with English &rarr;
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Navigation Bar -->
+  <nav class="navbar">
     <div class="logo">🌿 AgriGuard</div>
     <ul class="nav-links">
-        <li><a href="#home" data-i18n="navHome">Home</a></li>
-        <li><a href="#services" data-i18n="navServices">Services</a></li>
-        <li><a href="#scanner" data-i18n="navScanner">AI Scanner</a></li>
-        <li><a href="#alerts" data-i18n="navAlerts">Live Alerts</a></li>
-        <li><a href="#contact" data-i18n="navContact">Contact</a></li>
+      <li><a href="#home" data-i18n="navHome">Home</a></li>
+      <li><a href="#services" data-i18n="navServices">Services</a></li>
+      <li><a href="#scanner" data-i18n="navScanner">AI Scanner</a></li>
+      <li><a href="#weather-section" data-i18n="navWeather">Weather Alerts</a></li>
+      <li><a href="#advisory" data-i18n="navAdvisory">Advisory</a></li>
+      <li><a href="#contact" data-i18n="navContact">Contact</a></li>
     </ul>
-</nav>
+  </nav>
 
-<!-- Hero Section -->
-<section class="hero" id="home">
+  <!-- STEP 3: Hero Section -->
+  <section class="hero" id="home">
     <h1 data-i18n="heroTitle">Protecting Crops, Empowering Farmers</h1>
     <p data-i18n="heroDesc">AgriGuard provides real-time crop disease detection, soil guidance, and weather alerts to secure your harvest.</p>
-    <button class="cta-button" data-i18n="heroBtn">Scan Crop Health</button>
-</section>
+    <a href="#scanner" class="cta-button" data-i18n="heroBtn">Scan Crop Health</a>
+  </section>
 
-<!-- Core Services Section -->
-<section class="services-section" id="services">
+  <!-- STEP 4: Core Services Section -->
+  <section class="services-section" id="services">
     <h2 class="section-title" data-i18n="servicesTitle">Our Core Services</h2>
     <div class="services-grid">
-        <!-- Service Card 1 -->
-        <div class="service-card">
-            <div class="icon">🛡️</div>
-            <h3 data-i18n="service1Title">Crop Disease Guard</h3>
-            <p data-i18n="service1Desc">Instant diagnosis and treatment recommendations for pest attacks and leaf damage.</p>
-        </div>
+      <div class="service-card">
+        <div class="icon">🛡️</div>
+        <h3 data-i18n="service1Title">Crop Disease Guard</h3>
+        <p data-i18n="service1Desc">Instant diagnosis and treatment recommendations for pest attacks and leaf damage.</p>
+      </div>
 
-        <!-- Service Card 2 -->
-        <div class="service-card">
-            <div class="icon">🧪</div>
-            <h3 data-i18n="service2Title">Soil & Fertilizer Guide</h3>
-            <p data-i18n="service2Desc">Tailored NPK and micronutrient advice based on your soil type and crop selection.</p>
-        </div>
+      <div class="service-card">
+        <div class="icon">🧪</div>
+        <h3 data-i18n="service2Title">Soil & Fertilizer Guide</h3>
+        <p data-i18n="service2Desc">Tailored NPK and micronutrient advice based on your soil type and crop selection.</p>
+      </div>
 
-        <!-- Service Card 3 -->
-        <div class="service-card">
-            <div class="icon">🌦️</div>
-            <h3 data-i18n="service3Title">Weather & Pest Warnings</h3>
-            <p data-i18n="service3Desc">Localized forecasts and preventive measures against upcoming climate risks.</p>
-        </div>
+      <div class="service-card">
+        <div class="icon">🌦️</div>
+        <h3 data-i18n="service3Title">Weather & Pest Warnings</h3>
+        <p data-i18n="service3Desc">Localized forecasts and preventive measures against upcoming climate risks.</p>
+      </div>
     </div>
-</section>
+  </section>
 
-  <!-- AI Crop Health & Leaf Scanner -->
+  <!-- STEP 5: AI Crop Health & Leaf Scanner -->
   <section id="scanner" class="scanner-section">
-    <h2>📸 AgriGuard AI Leaf & Health Scanner</h2>
-    <p>Take a photo or upload a crop leaf to calculate accuracy, water moisture, pesticide dosage, and health score.</p>
+    <h2 data-i18n="scannerTitle">📸 AgriGuard AI Leaf & Health Scanner</h2>
+    <p data-i18n="scannerSubtitle">Take a photo or upload a crop leaf to calculate accuracy, water moisture, pesticide dosage, and health score.</p>
 
     <div class="scanner-card">
       <div class="upload-container">
         <input type="file" id="leafInput" accept="image/*" capture="environment" hidden>
-        <button type="button" class="btn-primary" onclick="document.getElementById('leafInput').click()">📷 Take Photo / Upload Leaf</button>
+        <button type="button" class="btn-primary" onclick="document.getElementById('leafInput').click()" data-i18n="uploadBtn">📷 Take Photo / Upload Leaf</button>
 
         <div id="imagePreviewContainer" class="preview-box">
           <img id="imagePreview" src="" alt="Leaf preview" style="display: none;">
-          <p id="placeholderText">No leaf photo selected</p>
+          <p id="placeholderText" data-i18n="noPhotoText">No leaf photo selected</p>
         </div>
 
-        <button id="scanBtn" class="btn-secondary" style="display: none;" onclick="analyzeLeaf()">Analyze Crop Health</button>
+        <button id="scanBtn" class="btn-secondary" style="display: none;" onclick="analyzeLeaf()" data-i18n="analyzeBtn">Analyze Crop Health</button>
       </div>
 
+      <!-- Live Diagnostics Results -->
       <div id="scanResultCard" class="result-dashboard" style="display: none;">
-        <h3>Crop Diagnostics Report</h3>
+        <h3 data-i18n="reportTitle">Crop Diagnostics Report</h3>
 
         <div class="metrics-grid">
           <div class="metric-item">
-            <span class="metric-label">Overall Crop Health</span>
+            <span class="metric-label" data-i18n="metricHealth">Overall Crop Health</span>
             <div class="progress-bar-bg"><div id="healthBar" class="progress-bar-fill"></div></div>
             <span id="healthPercent" class="metric-value">--%</span>
           </div>
 
           <div class="metric-item">
-            <span class="metric-label">Diagnosis Accuracy</span>
+            <span class="metric-label" data-i18n="metricAccuracy">Diagnosis Accuracy</span>
             <div class="progress-bar-bg"><div id="accuracyBar" class="progress-bar-fill bg-blue"></div></div>
             <span id="accuracyPercent" class="metric-value">--%</span>
           </div>
 
           <div class="metric-item">
-            <span class="metric-label">Water / Moisture Level</span>
+            <span class="metric-label" data-i18n="metricWater">Water / Moisture Level</span>
             <div class="progress-bar-bg"><div id="waterBar" class="progress-bar-fill bg-teal"></div></div>
             <span id="waterPercent" class="metric-value">--%</span>
           </div>
 
           <div class="metric-item">
-            <span class="metric-label">Pesticide Requirement</span>
+            <span class="metric-label" data-i18n="metricPesticide">Pesticide Requirement</span>
             <div class="progress-bar-bg"><div id="pesticideBar" class="progress-bar-fill bg-orange"></div></div>
             <span id="pesticidePercent" class="metric-value">--%</span>
           </div>
         </div>
 
         <div class="diagnosis-summary">
-          <h4 id="detectedCondition">Condition: Analyzing...</h4>
-          <p id="rectificationAdvice">Treatment advice will appear here.</p>
+          <h4 id="detectedCondition" data-i18n="analyzingCondition">Condition: Analyzing...</h4>
+          <p id="rectificationAdvice" data-i18n="treatmentPlaceholder">Treatment advice will appear here.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="advisory" class="advisory-section">
-    <h2>AgriGuard Advisory Board</h2>
-    <div class="alert-box" id="alertBox">
-      <strong>Today's Recommendation:</strong>
-      <span id="advisoryText">Ensure adequate drainage in low-lying fields ahead of upcoming seasonal rain.</span>
+  <!-- STEP 6: Localized Weather & Extreme Climate Warning -->
+  <section id="weather-section" class="weather-dashboard-section">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2 class="section-title" data-i18n="weatherSectionTitle">🌦️ Localized Weather & Climate Warning</h2>
+        <p class="section-subtitle" data-i18n="weatherSectionSubtitle">Real-time hyperlocal agricultural alerts and climate forecast for your field.</p>
+      </div>
+
+      <!-- Real-time Warning Banner -->
+      <div id="climateAlertBox" class="climate-alert-box alert-hidden">
+        <div class="alert-icon-wrap" id="alertIcon">⚠️</div>
+        <div class="alert-content">
+          <h4 id="alertHeadline" data-i18n="climateAdvisoryTitle">Climate Advisory</h4>
+          <p id="alertDescription" data-i18n="climateMonitoringText">Monitoring current field conditions...</p>
+          <div id="alertAction" class="alert-action-tip" data-i18n="climateDefaultAction">Recommended Action: Ensure adequate irrigation.</div>
+        </div>
+      </div>
+
+      <div class="weather-grid">
+        <div class="weather-card">
+          <div class="card-icon">🌡️</div>
+          <div class="card-details">
+            <span class="card-label" data-i18n="tempLabel">Temperature</span>
+            <h3 id="currentTemp">-- °C</h3>
+            <small id="tempFeel">Feels like -- °C</small>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <div class="card-icon">💧</div>
+          <div class="card-details">
+            <span class="card-label" data-i18n="humidityLabel">Humidity</span>
+            <h3 id="currentHumidity">-- %</h3>
+            <small id="humidityStatus">Normal</small>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <div class="card-icon">🌧️</div>
+          <div class="card-details">
+            <span class="card-label" data-i18n="rainLabel">Precipitation & Rain</span>
+            <h3 id="currentRain">-- mm</h3>
+            <small id="rainChance">Chance: --%</small>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <div class="card-icon">💨</div>
+          <div class="card-details">
+            <span class="card-label" data-i18n="windLabel">Wind Speed</span>
+            <h3 id="currentWind">-- km/h</h3>
+            <small id="windStatus">Calm</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="weather-footer">
+        <span id="locationDisplay" data-i18n="detectingLocation">📍 Detecting your field location...</span>
+        <button id="refreshWeatherBtn" class="weather-refresh-btn" type="button" data-i18n="refreshWeatherBtn">🔄 Refresh Weather</button>
+      </div>
     </div>
-    <button class="btn-secondary" type="button" onclick="loadNextTip()">Next Farming Tip</button>
   </section>
 
+  <!-- STEP 7: Advisory Board Section -->
+  <section id="advisory" class="advisory-section">
+    <h2 data-i18n="advisoryTitle">AgriGuard Advisory Board</h2>
+    <div class="alert-box" id="alertBox">
+      <strong data-i18n="recPrefix">Today's Recommendation: </strong>
+      <span id="advisoryText" data-i18n="advisoryTipText">Ensure adequate drainage in low-lying fields ahead of upcoming seasonal rain.</span>
+    </div>
+    <button class="btn-secondary" type="button" onclick="loadNextTip()" data-i18n="nextTipBtn">Next Farming Tip</button>
+  </section>
+
+  <!-- STEP 8: Ask an Agri Specialist (Contact Form) -->
   <section id="contact" class="contact-section">
-    <h2>Ask an Agri Specialist</h2>
+    <h2 data-i18n="specialistTitle">Ask an Agri Specialist</h2>
     <form id="contactForm" class="contact-form">
-      <input type="text" name="name" id="name" placeholder="Your Name" required>
-      <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
+      <input type="text" name="name" id="name" data-i18n-placeholder="namePlaceholder" placeholder="Your Name" required>
+      <input type="tel" name="phone" id="phone" data-i18n-placeholder="phonePlaceholder" placeholder="Phone Number" required>
+      
       <select name="crop" id="crop" required>
-        <option value="" disabled selected>Select Your Main Crop</option>
-        <option value="rice">Paddy / Rice</option>
-        <option value="cotton">Cotton</option>
-        <option value="chilli">Chilli / Spices</option>
-        <option value="vegitable">Vegitable</option>
-        <option value="other">Other</option>
+        <option value="" disabled selected data-i18n="selectCropOption">Select Your Main Crop</option>
+        <option value="rice" data-i18n="cropRice">Paddy / Rice</option>
+        <option value="cotton" data-i18n="cropCotton">Cotton</option>
+        <option value="chilli" data-i18n="cropChilli">Chilli / Spices</option>
+        <option value="vegetable" data-i18n="cropVegetable">Vegetable</option>
+        <option value="other" data-i18n="cropOther">Other</option>
       </select>
-      <textarea name="issue" id="issue" rows="4" placeholder="Describe the issue or ask a question..." required></textarea>
-      <button type="submit" class="btn-primary">Submit Request</button>
+
+      <textarea name="issue" id="issue" rows="4" data-i18n-placeholder="messagePlaceholder" placeholder="Describe the issue or ask a question..." required></textarea>
+      <button type="submit" class="btn-primary" data-i18n="submitBtn">Submit Request</button>
     </form>
     <p id="formStatus" class="form-status"></p>
   </section>
 
+  <!-- STEP 9: Voice Assistant Guide (Floating Modal) -->
+  <div class="voice-assistant-container">
+    <div id="voiceAssistantModal" class="voice-modal hidden">
+      <div class="voice-modal-header">
+        <span id="modalTitle">🔊 AgriGuard Voice Guide</span>
+        <button id="closeVoiceModalBtn" class="close-btn" type="button">&times;</button>
+      </div>
+
+      <div class="lang-selector-group">
+        <button class="lang-chip active" data-lang="te" type="button">తెలుగు</button>
+        <button class="lang-chip" data-lang="hi" type="button">हिंदी</button>
+        <button class="lang-chip" data-lang="en" type="button">English</button>
+      </div>
+
+      <div class="voice-topic-list">
+        <button class="topic-btn" data-topic="scan" type="button">
+          <span class="topic-icon">📸</span>
+          <span class="topic-label" id="labelScan" data-i18n="voiceTopicScan">పంట స్కాన్ మార్గదర్శి</span>
+        </button>
+        <button class="topic-btn" data-topic="weather" type="button">
+          <span class="topic-icon">🌦️</span>
+          <span class="topic-label" id="labelWeather" data-i18n="voiceTopicWeather">వాతావరణ హెచ్చరిక</span>
+        </button>
+        <button class="topic-btn" data-topic="soil" type="button">
+          <span class="topic-icon">🌱</span>
+          <span class="topic-label" id="labelSoil" data-i18n="voiceTopicSoil">మట్టి & ఎరువులు</span>
+        </button>
+        <button class="topic-btn" data-topic="disease" type="button">
+          <span class="topic-icon">🛡️</span>
+          <span class="topic-label" id="labelDisease" data-i18n="voiceTopicDisease">తెగుళ్ల నివారణ</span>
+        </button>
+      </div>
+
+      <div class="voice-display-box">
+        <p id="assistantReply" class="assistant-text" data-i18n="voiceDefaultPrompt">ఏదైనా అంశాన్ని తాకండి (Touch any topic to listen)</p>
+      </div>
+    </div>
+
+    <button id="openVoiceAssistantFab" class="floating-voice-fab" title="Audio Guide" type="button">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- STEP 10: Footer -->
   <footer>
     <p>@ 2026 AgriGuard Support Information System. All rights reserved.</p>
   </footer>
@@ -173,115 +286,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-<!-- AgriGuard Tap-to-Listen Voice Guide -->
-<div class="voice-assistant-container">
-    <div id="voiceAssistantModal" class="voice-modal hidden">
-        <div class="voice-modal-header">
-            <span id="modalTitle">🔊 AgriGuard Voice Guide</span>
-            <button id="closeVoiceModalBtn" class="close-btn">&times;</button>
-        </div>
-
-        <!-- Language Selector -->
-        <div class="lang-selector-group">
-            <button class="lang-chip active" data-lang="te-IN">తెలుగు</button>
-            <button class="lang-chip" data-lang="hi-IN">हिंदी</button>
-            <button class="lang-chip" data-lang="en-IN">English</button>
-        </div>
-
-        <!-- Touch Quick Topics -->
-        <div class="voice-topic-list">
-            <button class="topic-btn" data-topic="scan">
-                <span class="topic-icon">📸</span>
-                <span class="topic-label" id="labelScan">పంట స్కాన్ (Crop Scan Guide)</span>
-            </button>
-            <button class="topic-btn" data-topic="weather">
-                <span class="topic-icon">🌦️</span>
-                <span class="topic-label" id="labelWeather">వాతావరణ సూచన (Weather Alert)</span>
-            </button>
-            <button class="topic-btn" data-topic="soil">
-                <span class="topic-icon">🌱</span>
-                <span class="topic-label" id="labelSoil">మట్టి & ఎరువులు (Soil & Fertilizer)</span>
-            </button>
-            <button class="topic-btn" data-topic="disease">
-                <span class="topic-icon">🛡️</span>
-                <span class="topic-label" id="labelDisease">తెగుళ్ల నివారణ (Disease Advice)</span>
-            </button>
-        </div>
-
-        <!-- Spoken Feedback Output -->
-        <div class="voice-display-box">
-            <p id="assistantReply" class="assistant-text">ఏదైనా అంశాన్ని తాకండి (Touch any topic to listen)</p>
-        </div>
-    </div>
-
-    <!-- Floating Audio Icon -->
-    <button id="openVoiceAssistantFab" class="floating-voice-fab" title="Audio Guide">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
-    </button>
-</div>
-<!-- Localized Weather & Climate Warning Section -->
-<section id="weather-section" class="weather-dashboard-section">
-    <div class="container">
-        <div class="section-title-wrap">
-            <h2 class="section-title">🌦️ Localized Weather & Climate Warning</h2>
-            <p class="section-subtitle">Real-time hyperlocal agricultural alerts and climate forecast for your field.</p>
-        </div>
-
-        <!-- Extreme Weather Alert Banner (Visible when warning triggers) -->
-        <div id="climateAlertBox" class="climate-alert-box alert-hidden">
-            <div class="alert-icon-wrap" id="alertIcon">⚠️</div>
-            <div class="alert-content">
-                <h4 id="alertHeadline">Climate Advisory</h4>
-                <p id="alertDescription">Monitoring current field conditions...</p>
-                <div id="alertAction" class="alert-action-tip">Recommended Action: Ensure adequate irrigation.</div>
-            </div>
-        </div>
-
-        <!-- Weather Stats Cards Grid -->
-        <div class="weather-grid">
-            <div class="weather-card">
-                <div class="card-icon">🌡️</div>
-                <div class="card-details">
-                    <span class="card-label">Temperature</span>
-                    <h3 id="currentTemp">-- °C</h3>
-                    <small id="tempFeel">Feels like -- °C</small>
-                </div>
-            </div>
-
-            <div class="weather-card">
-                <div class="card-icon">💧</div>
-                <div class="card-details">
-                    <span class="card-label">Humidity</span>
-                    <h3 id="currentHumidity">-- %</h3>
-                    <small id="humidityStatus">Normal</small>
-                </div>
-            </div>
-
-            <div class="weather-card">
-                <div class="card-icon">🌧️</div>
-                <div class="card-details">
-                    <span class="card-label">Precipitation & Rain</span>
-                    <h3 id="currentRain">-- mm</h3>
-                    <small id="rainChance">Chance: --%</small>
-                </div>
-            </div>
-
-            <div class="weather-card">
-                <div class="card-icon">💨</div>
-                <div class="card-details">
-                    <span class="card-label">Wind Speed</span>
-                    <h3 id="currentWind">-- km/h</h3>
-                    <small id="windStatus">Calm</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Location Controls -->
-        <div class="weather-footer">
-            <span id="locationDisplay">📍 Detecting your field location...</span>
-            <button id="refreshWeatherBtn" class="weather-refresh-btn">🔄 Refresh Weather</button>
-        </div>
-    </div>
-</section>
