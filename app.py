@@ -68,6 +68,31 @@ def handle_data():
         rows = [dict(row) for row in cursor.fetchall()]
 
     return jsonify({"logs": rows, "success": True})
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import os
+
+app = Flask(__name__)
+# Enable CORS for all incoming domains (including Vercel)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+@app.route('/api/contact', methods=['POST', 'OPTIONS'])
+def contact():
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'ok'}), 200
+
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    print("Received specialist submission:", data)
+
+    return jsonify({
+        "status": "success",
+        "message": "Your request was submitted successfully!"
+    }), 200
+
+# app.run MUST be at the bottom
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 # Place all routes BEFORE app.run
 @app.route('/api/contact', methods=['POST', 'OPTIONS'])
