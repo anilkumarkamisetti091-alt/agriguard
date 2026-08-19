@@ -49,6 +49,7 @@
       <li><a href="#weather-section" data-i18n="navWeather">Weather Alerts</a></li>
       <li><a href="#advisory" data-i18n="navAdvisory">Advisory</a></li>
       <li><a href="#contact" data-i18n="navContact">Contact</a></li>
+      <li><a href="#mandi-section" data-i18n="navMandi">Mandi Rates</a></li>
     </ul>
   </nav>
 
@@ -211,6 +212,36 @@
     </div>
     <button class="btn-secondary" type="button" onclick="loadNextTip()" data-i18n="nextTipBtn">Next Farming Tip</button>
   </section>
+  <!-- Live Mandi & Market Prices Section -->
+<section id="mandi-section" class="mandi-dashboard-section">
+  <div class="container">
+    <div class="section-title-wrap">
+      <h2 class="section-title" data-i18n="mandiSectionTitle">📊 Live Mandi Market Prices (మార్కెట్ ధరలు)</h2>
+      <p class="section-subtitle" data-i18n="mandiSectionSubtitle">Real-time daily modal market rates and MSP updates across regional agricultural markets.</p>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="mandi-filter-bar">
+      <input type="text" id="mandiSearchInput" data-i18n-placeholder="mandiSearchPlaceholder" placeholder="🔍 Search crop (e.g. Cotton, Chilli, Rice)..." onkeyup="filterMandiCards()">
+      <select id="mandiStateFilter" onchange="filterMandiCards()">
+        <option value="all" data-i18n="allMarkets">All Markets</option>
+        <option value="Guntur">Guntur APMC</option>
+        <option value="Warangal">Warangal APMC</option>
+        <option value="Khammam">Khammam APMC</option>
+        <option value="Kurnool">Kurnool APMC</option>
+      </select>
+    </div>
+
+    <!-- Live Commodity Rates Cards Grid -->
+    <div class="mandi-grid" id="mandiGrid">
+      <!-- Cards will be populated dynamically by script.js -->
+    </div>
+
+    <div class="mandi-footer">
+      <small data-i18n="mandiDisclaimer">⚠️ Market rates reflect average daily modal trading prices per quintal (100 kg).</small>
+    </div>
+  </div>
+</section>
 
   <!-- STEP 8: Ask an Agri Specialist (Contact Form) -->
   <section id="contact" class="contact-section">

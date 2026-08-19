@@ -279,7 +279,13 @@ function applyLanguage(lang) {
   });
 
   document.documentElement.lang = lang;
+
+// Re-render mandi market cards in the chosen language
+  if (typeof renderMandiCards === "function") {
+    renderMandiCards();
+  }
 }
+
 
 // ==========================================
 // 2. ROTATING ADVISORY BOARD DATA
@@ -779,4 +785,159 @@ document.addEventListener("DOMContentLoaded", () => {
   initWeatherModule();
   initContactForm();
   initVoiceAssistant();
+  // 4. Initialize Mandi Market Prices on Load
+  if (typeof renderMandiCards === "function") {
+    renderMandiCards();
+  }
 });
+const mandiTranslations = {
+  te: {
+    navMandi: "మార్కెట్ ధరలు",
+    mandiSectionTitle: "📊 లైవ్ మండి మార్కెట్ ధరలు",
+    mandiSectionSubtitle: "స్థానిక వ్యవసాయ మార్కెట్లలో రోజువారీ సగటు ధరలు మరియు MSP రేట్లు.",
+    mandiSearchPlaceholder: "🔍 పంట పేరు శోధించండి (ఉదా: పత్తి, మిరప, వరి)...",
+    allMarkets: "అన్ని మార్కెట్లు",
+    mandiDisclaimer: "⚠️ మార్కెట్ ధరలు క్వింటాల్‌కు (100 కేజీలు) సగటు వ్యాపార ధరలను సూచిస్తాయి."
+  },
+  hi: {
+    navMandi: "मंडी भाव",
+    mandiSectionTitle: "📊 लाइव मंडी एवं बाजार भाव",
+    mandiSectionSubtitle: "क्षेत्रीय कृषि मंडियों में दैनिक औसत मॉडल मूल्य और एमएसपी दरें।",
+    mandiSearchPlaceholder: "🔍 फसल खोजें (उदा: कपास, मिर्च, धान)...",
+    allMarkets: "सभी मंडियां",
+    mandiDisclaimer: "⚠️ मंडी दरें प्रति क्विंटल (100 किग्रा) औसत मॉडल ट्रेडिंग कीमतों को दर्शाती हैं।"
+  },
+  en: {
+    navMandi: "Mandi Rates",
+    mandiSectionTitle: "📊 Live Mandi Market Prices",
+    mandiSectionSubtitle: "Real-time daily modal market rates and MSP updates across regional agricultural markets.",
+    mandiSearchPlaceholder: "🔍 Search crop (e.g. Cotton, Chilli, Rice)...",
+    allMarkets: "All Markets",
+    mandiDisclaimer: "⚠️ Market rates reflect average daily modal trading prices per quintal (100 kg)."
+  }
+};
+// --- Mandi Market Commodity Dataset ---
+const mandiCommodities = [
+  {
+    id: "chilli",
+    name_te: "తేజ మిరప (Teja Chilli)",
+    name_hi: "तेजा लाल मिर्च (Red Chilli)",
+    name_en: "Teja Red Chilli",
+    market: "Guntur",
+    price: 19500,
+    change: "+₹350 (1.8%)",
+    trend: "up",
+    msp: "₹18,000"
+  },
+  {
+    id: "cotton",
+    name_te: "పత్తి / దూది (Cotton)",
+    name_hi: "कपास (Cotton)",
+    name_en: "Medium Staple Cotton",
+    market: "Warangal",
+    price: 7420,
+    change: "+₹120 (1.6%)",
+    trend: "up",
+    msp: "₹7,122"
+  },
+  {
+    id: "paddy",
+    name_te: "వరి / బియ్యం (Paddy BPT)",
+    name_hi: "धान / चावल (Paddy Rice)",
+    name_en: "Paddy (Grade-A)",
+    market: "Khammam",
+    price: 2320,
+    change: "+₹40 (1.7%)",
+    trend: "up",
+    msp: "₹2,300"
+  },
+  {
+    id: "maize",
+    name_te: "మొక్కజొన్న (Maize / Corn)",
+    name_hi: "मक्का (Maize / Corn)",
+    name_en: "Yellow Maize",
+    market: "Kurnool",
+    price: 2180,
+    change: "-₹30 (1.3%)",
+    trend: "down",
+    msp: "₹2,090"
+  },
+  {
+    id: "turmeric",
+    name_te: "పసుపు (Turmeric)",
+    name_hi: "हल्दी (Turmeric)",
+    name_en: "Finger Turmeric",
+    market: "Warangal",
+    price: 14200,
+    change: "+₹500 (3.6%)",
+    trend: "up",
+    msp: "₹12,500"
+  },
+  {
+    id: "onion",
+    name_te: "ఉల్లిపాయలు (Onion)",
+    name_hi: "प्याज (Onion)",
+    name_en: "Red Onion",
+    market: "Kurnool",
+    price: 2450,
+    change: "-₹80 (3.1%)",
+    trend: "down",
+    msp: "₹1,900"
+  }
+];
+
+function renderMandiCards(filterText = "", marketFilter = "all") {
+  const grid = document.getElementById("mandiGrid");
+  if (!grid) return;
+
+  const currentLang = currentActiveLang || "en";
+  grid.innerHTML = "";
+
+  const filtered = mandiCommodities.filter(item => {
+    const cropName = (item[`name_${currentLang}`] || item.name_en).toLowerCase();
+    const matchesQuery = cropName.includes(filterText.toLowerCase()) || item.market.toLowerCase().includes(filterText.toLowerCase());
+    const matchesMarket = marketFilter === "all" || item.market === marketFilter;
+    return matchesQuery && matchesMarket;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 2rem;">No crop prices found for this search.</p>`;
+    return;
+  }
+
+  filtered.forEach(item => {
+    const cropTitle = item[`name_${currentLang}`] || item.name_en;
+    const trendIcon = item.trend === "up" ? "▲" : "▼";
+    const trendClass = item.trend === "up" ? "trend-up" : "trend-down";
+
+    const card = document.createElement("div");
+    card.className = "mandi-card";
+    card.innerHTML = `
+      <div>
+        <div class="mandi-card-header">
+          <span class="mandi-crop-name">${cropTitle}</span>
+          <span class="mandi-market-tag">${item.market} APMC</span>
+        </div>
+        <div class="mandi-price-wrap">
+          <div class="mandi-price">₹${item.price.toLocaleString("en-IN")} <span class="mandi-unit">/ Quintal</span></div>
+          <div class="mandi-trend ${trendClass}">
+            <span>${trendIcon} ${item.change}</span>
+          </div>
+        </div>
+      </div>
+      <div class="mandi-card-footer">
+        <span>MSP: ${item.msp}</span>
+        <span>Updated: Today</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterMandiCards() {
+  const query = document.getElementById("mandiSearchInput")?.value || "";
+  const market = document.getElementById("mandiStateFilter")?.value || "all";
+  renderMandiCards(query, market);
+}
+
+window.filterMandiCards = filterMandiCards;
