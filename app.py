@@ -97,7 +97,7 @@ if __name__ == "__main__":
 # Place all routes BEFORE app.run
 @app.route('/api/contact', methods=['POST', 'OPTIONS'])
 @app.route('/submit-request', methods=['POST', 'OPTIONS'])
-def contact():
+def submit_request():
     if request.method == 'OPTIONS':
         return jsonify({'status': 'ok'}), 200
 
@@ -112,35 +112,4 @@ def contact():
 # app.run MUST be the last lines in app.py
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "app.py"
-    }
-  ]
-} 
-# app.py
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-
-app = Flask(__name__)
-CORS(app)
-
-# Your routes here...
-@app.route('/api/contact', methods=['POST', 'OPTIONS'])
-def contact():
-    # ...
-    return jsonify({"status": "success", "message": "Received!"})
-
-# For local testing only (Vercel uses WSGI directly)
-if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=port, debug=True,)
