@@ -6,6 +6,7 @@
   <title>AgriGuard - Smart Farmer Support & Protection</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -50,6 +51,8 @@
       <li><a href="#advisory" data-i18n="navAdvisory">Advisory</a></li>
       <li><a href="#contact" data-i18n="navContact">Contact</a></li>
       <li><a href="#mandi-section" data-i18n="navMandi">Mandi Rates</a></li>
+      <li><a href="#fertilizer-section" data-i18n="navFertilizer">Fertilizer Guide</a></li>
+      <li><a href="#schemes-section" data-i18n="navSchemes">Govt Schemes</a></li>
     </ul>
   </nav>
 
@@ -309,6 +312,88 @@
       </svg>
     </button>
   </div>
+  <!-- Smart Fertilizer & NPK Calculator Section -->
+<section id="fertilizer-section" class="feature-section">
+  <div class="container">
+    <div class="section-title-wrap">
+      <h2 class="section-title" data-i18n="fertTitle">🧪 Smart Fertilizer & NPK Dosage Calculator</h2>
+      <p class="section-subtitle" data-i18n="fertSubtitle">Calculate exact Urea, DAP, and Potash requirements tailored to your field acreage.</p>
+    </div>
+
+    <div class="calculator-card">
+      <div class="calc-grid">
+        <div class="form-group">
+          <label data-i18n="lblCropSelect">Select Crop</label>
+          <select id="calcCrop">
+            <option value="paddy">Paddy / Rice (వరి / धान)</option>
+            <option value="cotton">Cotton (పత్తి / कपास)</option>
+            <option value="chilli">Chilli (మిరప / मिर्च)</option>
+            <option value="maize">Maize (మొక్కజొన్న / मक्का)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lblLandArea">Field Area (Acres)</label>
+          <input type="number" id="calcAcres" min="0.5" step="0.5" value="1.0">
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lblSoilType">Soil Type</label>
+          <select id="calcSoil">
+            <option value="black">Black Soil (నల్లరేగడి నేల)</option>
+            <option value="red">Red Soil (ఎర్ర నేల)</option>
+            <option value="sandy">Alluvial / Sandy (ఇసుక నేల)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-primary calc-btn" onclick="calculateFertilizer()" data-i18n="btnCalculateFert">Calculate Required Dosage</button>
+
+      <div id="fertResults" class="fert-result-box hidden">
+        <h4 data-i18n="fertResultsTitle">Recommended Total Nutrients & Bag Count:</h4>
+        <div class="fert-pills">
+          <div class="pill urea"><strong id="ureaVal">0</strong> kg Urea (46% N)</div>
+          <div class="pill dap"><strong id="dapVal">0</strong> kg DAP (18:46:0)</div>
+          <div class="pill mop"><strong id="mopVal">0</strong> kg MOP / Potash</div>
+        </div>
+        <p id="fertScheduleNote" class="fert-note"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Government Schemes & Farmer Subsidies Section -->
+<section id="schemes-section" class="feature-section alt-bg">
+  <div class="container">
+    <div class="section-title-wrap">
+      <h2 class="section-title" data-i18n="schemesTitle">🏛️ Agricultural Schemes & Financial Support</h2>
+      <p class="section-subtitle" data-i18n="schemesSubtitle">Direct financial benefits, crop insurance, and equipment subsidies for farmers.</p>
+    </div>
+
+    <div class="schemes-grid">
+      <div class="scheme-card">
+        <div class="scheme-tag">Direct Income</div>
+        <h3 class="scheme-name">PM-Kisan Samman Nidhi</h3>
+        <p class="scheme-desc" data-i18n="pmKisanDesc">Annual direct financial benefit of ₹6,000 in 3 equal four-monthly installments to farmer families.</p>
+        <a href="https://pmkisan.gov.in" target="_blank" class="scheme-link" data-i18n="btnApply">Apply / Check Status →</a>
+      </div>
+
+      <div class="scheme-card">
+        <div class="scheme-tag">Crop Insurance</div>
+        <h3 class="scheme-name">PM Fasal Bima Yojana (PMFBY)</h3>
+        <p class="scheme-desc" data-i18n="pmfbyDesc">Comprehensive risk insurance covering yield losses due to non-preventable natural risks, pests, and cyclones.</p>
+        <a href="https://pmfby.gov.in" target="_blank" class="scheme-link" data-i18n="btnApply">Apply / Check Status →</a>
+      </div>
+
+      <div class="scheme-card">
+        <div class="scheme-tag">Micro Irrigation</div>
+        <h3 class="scheme-name">Per Drop More Crop (Drip/Sprinkler)</h3>
+        <p class="scheme-desc" data-i18n="dripDesc">Up to 70% to 90% subsidy for micro-irrigation system installation to maximize water efficiency.</p>
+        <a href="https://pmksy.gov.in" target="_blank" class="scheme-link" data-i18n="btnApply">Apply / Check Status →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- STEP 10: Footer -->
   <footer>
@@ -316,5 +401,13 @@
   </footer>
 
   <script src="script.js"></script>
+  <div class="report-action-buttons">
+  <button id="downloadPdfBtn" class="btn-secondary" onclick="generatePdfReport()">
+    📄 <span data-i18n="btnDownloadPdf">Download Health Card (PDF)</span>
+  </button>
+  <button id="shareWhatsappBtn" class="btn-whatsapp" onclick="shareOnWhatsApp()">
+    💬 <span data-i18n="btnShareWhatsApp">Share to WhatsApp</span>
+  </button>
+</div>
 </body>
 </html>
