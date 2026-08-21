@@ -300,45 +300,38 @@ const translations = {
   }
 };
 
-let currentActiveLang = "en";
+// ==========================================
+// BULLETPROOF LANGUAGE SELECTION HANDLER
+// ==========================================
+function selectLanguage(lang) {
+  try {
+    // 1. Set chosen language
+    window.currentActiveLang = lang || "en";
+    localStorage.setItem("agriguard_lang", lang || "en");
 
-function applyLanguage(lang) {
-  currentActiveLang = lang;
-  const selected = translations[lang] || translations.en;
-
-  // 1. Text elements
-  document.querySelectorAll("[data-i18n]").forEach(element => {
-    const key = element.getAttribute("data-i18n");
-    if (selected[key]) {
-      element.textContent = selected[key];
+    // 2. Safe call to translation function
+    if (typeof applyLanguage === "function") {
+      applyLanguage(lang);
     }
-  });
 
-  // 2. Input and Textarea placeholders
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(input => {
-    const key = input.getAttribute("data-i18n-placeholder");
-    if (selected[key]) {
-      input.setAttribute("placeholder", selected[key]);
+    // 3. Safe call to mandi cards renderer
+    if (typeof renderMandiCards === "function") {
+      renderMandiCards();
     }
-  });
-
-  // Sync Voice Guide Chips
-  document.querySelectorAll(".lang-chip").forEach(chip => {
-    const chipLang = chip.getAttribute("data-lang").split("-")[0];
-    if (chipLang === lang) {
-      chip.classList.add("active");
-    } else {
-      chip.classList.remove("active");
+  } catch (err) {
+    console.error("Language application warning:", err);
+  } finally {
+    // 4. GUARANTEED DISMISS: Close and remove modal overlay from screen
+    const modal = document.getElementById("languageModalOverlay") || document.querySelector(".lang-modal-overlay");
+    if (modal) {
+      modal.style.setProperty("display", "none", "important");
+      modal.classList.add("hidden");
     }
-  });
-
-  document.documentElement.lang = lang;
-
-// Re-render mandi market cards in the chosen language
-  if (typeof renderMandiCards === "function") {
-    renderMandiCards();
   }
 }
+
+// Attach directly to the global window scope
+window.selectLanguage = selectLanguage;
 // ==========================================
 // MODAL SELECTION (SHOWS ON EVERY VISIT/REFRESH)
 // ==========================================

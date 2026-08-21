@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<!-- Every-Time Language Selection Modal -->
+<!-- Language Selection Modal Overlay -->
 <div id="languageModalOverlay" class="lang-modal-overlay">
   <div class="lang-modal-card">
     <div class="lang-icon">🌿</div>
@@ -19,20 +19,26 @@
 
     <div class="lang-btn-group">
       <button type="button" class="lang-choice-btn" onclick="selectLanguage('te')">
-        <span class="native-lang">తెలుగు</span>
-        <span class="sub-lang">Telugu</span>
+        <span style="font-size: 1.1rem; font-weight: 700;">తెలుగు</span>
+        <span style="color: #64748b;">Telugu</span>
       </button>
 
       <button type="button" class="lang-choice-btn" onclick="selectLanguage('hi')">
-        <span class="native-lang">हिंदी</span>
-        <span class="sub-lang">Hindi</span>
+        <span style="font-size: 1.1rem; font-weight: 700;">हिंदी</span>
+        <span style="color: #64748b;">Hindi</span>
       </button>
 
       <button type="button" class="lang-choice-btn" onclick="selectLanguage('en')">
-        <span class="native-lang">English</span>
-        <span class="sub-lang">English</span>
+        <span style="font-size: 1.1rem; font-weight: 700;">English</span>
+        <span style="color: #64748b;">English</span>
       </button>
     </div>
+
+    <button type="button" class="lang-continue-link" onclick="selectLanguage('en')">
+      Continue with English →
+    </button>
+  </div>
+</div>
 
     <button type="button" class="lang-continue-link" onclick="selectLanguage('en')">
       Continue with English →
