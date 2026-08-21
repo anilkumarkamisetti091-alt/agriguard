@@ -10,35 +10,35 @@
 </head>
 <body>
 
-  <!-- STEP 1: Multi-Language Selector Modal (Always Prompts User on Page Load) -->
-  <div id="languagePromptModal" class="lang-modal-overlay">
-    <div class="lang-modal-card">
-      <div class="lang-modal-header">
-        <span class="leaf-icon">🌿</span>
-        <h2>Select Your Language</h2>
-        <p>భాషను ఎంచుకోండి / अपनी भाषा चुनें</p>
-      </div>
+  <!-- Language Selection Modal -->
+<div id="languageModalOverlay" class="lang-modal-overlay">
+  <div class="lang-modal-card">
+    <div class="lang-icon">🌿</div>
+    <h2>Select Your Language</h2>
+    <p>భాషను ఎంచుకోండి / अपनी भाषा चुनें</p>
 
-      <div class="lang-options-grid">
-        <button type="button" class="lang-select-btn" data-lang="te">
-          <span class="native-lang">తెలుగు</span>
-          <span class="sub-lang">Telugu</span>
-        </button>
-        <button type="button" class="lang-select-btn" data-lang="hi">
-          <span class="native-lang">हिंदी</span>
-          <span class="sub-lang">Hindi</span>
-        </button>
-        <button type="button" class="lang-select-btn" data-lang="en">
-          <span class="native-lang">English</span>
-          <span class="sub-lang">English</span>
-        </button>
-      </div>
+    <div class="lang-btn-group">
+      <button type="button" class="lang-choice-btn" onclick="selectLanguage('te')">
+        <span>తెలుగు</span>
+        <small>Telugu</small>
+      </button>
 
-      <button type="button" id="changeLangLaterBtn" class="change-later-link">
-        Continue with English &rarr;
+      <button type="button" class="lang-choice-btn" onclick="selectLanguage('hi')">
+        <span>हिंदी</span>
+        <small>Hindi</small>
+      </button>
+
+      <button type="button" class="lang-choice-btn" onclick="selectLanguage('en')">
+        <span>English</span>
+        <small>English</small>
       </button>
     </div>
+
+    <button type="button" class="lang-continue-link" onclick="selectLanguage('en')">
+      Continue with English →
+    </button>
   </div>
+</div>
 
   <!-- STEP 2: Navigation Bar -->
   <nav class="navbar">

@@ -84,7 +84,25 @@ const translations = {
     voiceTopicWeather: "వాతావరణ సూచన",
     voiceTopicSoil: "మట్టి & ఎరువులు",
     voiceTopicDisease: "తెగుళ్ల నివారణ",
-    voiceDefaultPrompt: "ఏదైనా అంశాన్ని తాకండి, వివరాలు వినిపిస్తాయి."
+    voiceDefaultPrompt: "ఏదైనా అంశాన్ని తాకండి, వివరాలు వినిపిస్తాయి.",
+
+    navFertilizer: "ఎరువుల గైడ్",
+    navSchemes: "ప్రభుత్వ పథకాలు",
+    btnDownloadPdf: "హెల్త్ కార్డ్ (PDF) డౌన్‌లోడ్",
+    btnShareWhatsApp: "వాట్సాప్‌లో పంపండి",
+    fertTitle: "🧪 స్మార్ట్ ఎరువులు & NPK లెక్కింపు",
+    fertSubtitle: "మీ పొలం విస్తీర్ణానికి సరిపడే యూరియా, డీఏపీ, పొటాష్ ఖచ్చితమైన మోతాదు.",
+    lblCropSelect: "పంటను ఎంచుకోండి",
+    lblLandArea: "భూమి విస్తీర్ణం (ఎకరాలు)",
+    lblSoilType: "నేల రకం",
+    btnCalculateFert: "ఎరువుల మోతాదు లెక్కించండి",
+    fertResultsTitle: "సిఫార్సు చేసిన ఎరువుల పరిమాణం:",
+    schemesTitle: "🏛️ రైతు సంక్షేమ పథకాలు & సబ్సిడీలు",
+    schemesSubtitle: "రైతులకు అందుబాటులో ఉన్న ఆర్థిక సాయం, బీమా మరియు పరికరాల సబ్సిడీలు.",
+    pmKisanDesc: "రైతు కుటుంబాలకు ఏటా 3 విడతల్లో ₹6,000 నేరుగా బ్యాంకు ఖాతాలో జమ.",
+    pmfbyDesc: "ప్రకృతి వైపరీత్యాలు, తెగుళ్లు మరియు తుఫానుల వల్ల కలిగే నష్టానికి సమగ్ర పంట బీమా.",
+    dripDesc: "నీటి వినియోగ సామర్థ్యం కోసం డ్రిప్ మరియు స్ప్రింక్లర్ వ్యవస్థలపై 70% నుండి 90% వరకు రాయితీ.",
+    btnApply: "దరఖాస్తు చేసుకోండి / వివరాలు →"
   },
 
   hi: {
@@ -163,7 +181,25 @@ const translations = {
     voiceTopicWeather: "मौसम अलर्ट",
     voiceTopicSoil: "मिट्टी और खाद",
     voiceTopicDisease: "कीट रोकथाम",
-    voiceDefaultPrompt: "किसी भी विषय पर टैप करें और सुनें।"
+    voiceDefaultPrompt: "किसी भी विषय पर टैप करें और सुनें।",
+
+    navFertilizer: "उर्वरक कैलकुलेटर",
+    navSchemes: "सरकारी योजनाएं",
+    btnDownloadPdf: "हेल्थ कार्ड (PDF) डाउनलोड",
+    btnShareWhatsApp: "व्हाट्सएप पर शेयर करें",
+    fertTitle: "🧪 स्मार्ट उर्वरक एवं एनपीके कैलकुलेटर",
+    fertSubtitle: "अपने खेत के क्षेत्रफल के अनुसार यूरिया, डीएपी और पोटाश की सटीक मात्रा जानें।",
+    lblCropSelect: "फसल चुनें",
+    lblLandArea: "खेत का क्षेत्रफल (एकड़)",
+    lblSoilType: "मिट्टी का प्रकार",
+    btnCalculateFert: "आवश्यक खाद की गणना करें",
+    fertResultsTitle: "अनुशंसित उर्वरक और बैग की मात्रा:",
+    schemesTitle: "🏛️ कृषि योजनाएं एवं वित्तीय सहायता",
+    schemesSubtitle: "किसानों के लिए प्रत्यक्ष वित्तीय लाभ, फसल बीमा और उपकरण सब्सिडी।",
+    pmKisanDesc: "किसान परिवारों को 3 समान किस्तों में सालाना ₹6,000 का प्रत्यक्ष वित्तीय लाभ।",
+    pmfbyDesc: "प्राकृतिक आपदाओं, कीटों और बेमौसम बारिश से होने वाले नुकसान के लिए फसल बीमा।",
+    dripDesc: "ड्रिप और स्प्रिंकलर सिंचाई प्रणालियों की स्थापना पर 70% से 90% तक की सब्सिडी।",
+    btnApply: "आवेदन करें / स्थिति जांचें →"
   },
 
   en: {
@@ -242,7 +278,25 @@ const translations = {
     voiceTopicWeather: "Weather Alerts",
     voiceTopicSoil: "Soil & Fertilizer",
     voiceTopicDisease: "Disease Prevention",
-    voiceDefaultPrompt: "Touch any topic to listen to guidance."
+    voiceDefaultPrompt: "Touch any topic to listen to guidance.",
+
+    navFertilizer: "Fertilizer Guide",
+   navSchemes: "Govt Schemes",
+   btnDownloadPdf: "Download Health Card (PDF)",
+   btnShareWhatsApp: "Share to WhatsApp",
+   fertTitle: "🧪 Smart Fertilizer & NPK Dosage Calculator",
+   fertSubtitle: "Calculate exact Urea, DAP, and Potash requirements tailored to your field acreage.",
+   lblCropSelect: "Select Crop",
+   lblLandArea: "Field Area (Acres)",
+   lblSoilType: "Soil Type",
+   btnCalculateFert: "Calculate Required Dosage",
+   fertResultsTitle: "Recommended Total Nutrients & Bag Count:",
+   schemesTitle: "🏛️ Agricultural Schemes & Financial Support",
+   schemesSubtitle: "Direct financial benefits, crop insurance, and equipment subsidies for farmers.",
+   pmKisanDesc: "Annual direct financial benefit of ₹6,000 in 3 equal four-monthly installments to farmer families.",
+   pmfbyDesc: "Comprehensive risk insurance covering yield losses due to non-preventable natural risks, pests, and cyclones.",
+   dripDesc: "Up to 70% to 90% subsidy for micro-irrigation system installation to maximize water efficiency.",
+   btnApply: "Apply / Check Status →"
   }
 };
 
@@ -286,6 +340,17 @@ function applyLanguage(lang) {
   }
 }
 
+function selectLanguage(lang) {
+  localStorage.setItem("agriguard_lang", lang);
+  applyLanguage(lang);
+
+  const modalOverlay = document.getElementById("languageModalOverlay") || document.querySelector(".lang-modal-overlay");
+  if (modalOverlay) {
+    modalOverlay.style.display = "none";
+    modalOverlay.classList.add("hidden");
+  }
+}
+window.selectLanguage = selectLanguage;
 
 // ==========================================
 // 2. ROTATING ADVISORY BOARD DATA
@@ -941,65 +1006,7 @@ function filterMandiCards() {
 }
 
 window.filterMandiCards = filterMandiCards;
-const translations = {
-  te: { 
-    navFertilizer: "ఎరువుల గైడ్",
-    navSchemes: "ప్రభుత్వ పథకాలు",
-    btnDownloadPdf: "హెల్త్ కార్డ్ (PDF) డౌన్‌లోడ్",
-    btnShareWhatsApp: "వాట్సాప్‌లో పంపండి",
-    fertTitle: "🧪 స్మార్ట్ ఎరువులు & NPK లెక్కింపు",
-    fertSubtitle: "మీ పొలం విస్తీర్ణానికి సరిపడే యూరియా, డీఏపీ, పొటాష్ ఖచ్చితమైన మోతాదు.",
-    lblCropSelect: "పంటను ఎంచుకోండి",
-    lblLandArea: "భూమి విస్తీర్ణం (ఎకరాలు)",
-    lblSoilType: "నేల రకం",
-    btnCalculateFert: "ఎరువుల మోతాదు లెక్కించండి",
-    fertResultsTitle: "సిఫార్సు చేసిన ఎరువుల పరిమాణం:",
-    schemesTitle: "🏛️ రైతు సంక్షేమ పథకాలు & సబ్సిడీలు",
-    schemesSubtitle: "రైతులకు అందుబాటులో ఉన్న ఆర్థిక సాయం, బీమా మరియు పరికరాల సబ్సిడీలు.",
-    pmKisanDesc: "రైతు కుటుంబాలకు ఏటా 3 విడతల్లో ₹6,000 నేరుగా బ్యాంకు ఖాతాలో జమ.",
-    pmfbyDesc: "ప్రకృతి వైపరీత్యాలు, తెగుళ్లు మరియు తుఫానుల వల్ల కలిగే నష్టానికి సమగ్ర పంట బీమా.",
-    dripDesc: "నీటి వినియోగ సామర్థ్యం కోసం డ్రిప్ మరియు స్ప్రింక్లర్ వ్యవస్థలపై 70% నుండి 90% వరకు రాయితీ.",
-    btnApply: "దరఖాస్తు చేసుకోండి / వివరాలు →",
-  },
-  hi: {
-    navFertilizer: "उर्वरक कैलकुलेटर",
-    navSchemes: "सरकारी योजनाएं",
-    btnDownloadPdf: "हेल्थ कार्ड (PDF) डाउनलोड",
-    btnShareWhatsApp: "व्हाट्सएप पर शेयर करें",
-    fertTitle: "🧪 स्मार्ट उर्वरक एवं एनपीके कैलकुलेटर",
-    fertSubtitle: "अपने खेत के क्षेत्रफल के अनुसार यूरिया, डीएपी और पोटाश की सटीक मात्रा जानें।",
-    lblCropSelect: "फसल चुनें",
-    lblLandArea: "खेत का क्षेत्रफल (एकड़)",
-    lblSoilType: "मिट्टी का प्रकार",
-    btnCalculateFert: "आवश्यक खाद की गणना करें",
-    fertResultsTitle: "अनुशंसित उर्वरक और बैग की मात्रा:",
-    schemesTitle: "🏛️ कृषि योजनाएं एवं वित्तीय सहायता",
-    schemesSubtitle: "किसानों के लिए प्रत्यक्ष वित्तीय लाभ, फसल बीमा और उपकरण सब्सिडी।",
-    pmKisanDesc: "किसान परिवारों को 3 समान किस्तों में सालाना ₹6,000 का प्रत्यक्ष वित्तीय लाभ।",
-    pmfbyDesc: "प्राकृतिक आपदाओं, कीटों और बेमौसम बारिश से होने वाले नुकसान के लिए फसल बीमा।",
-    dripDesc: "ड्रिप और स्प्रिंकलर सिंचाई प्रणालियों की स्थापना पर 70% से 90% तक की सब्सिडी।",
-    btnApply: "आवेदन करें / स्थिति जांचें →",
-  },
- en: {
-   navFertilizer: "Fertilizer Guide",
-   navSchemes: "Govt Schemes",
-   btnDownloadPdf: "Download Health Card (PDF)",
-   btnShareWhatsApp: "Share to WhatsApp",
-   fertTitle: "🧪 Smart Fertilizer & NPK Dosage Calculator",
-   fertSubtitle: "Calculate exact Urea, DAP, and Potash requirements tailored to your field acreage.",
-   lblCropSelect: "Select Crop",
-   lblLandArea: "Field Area (Acres)",
-   lblSoilType: "Soil Type",
-   btnCalculateFert: "Calculate Required Dosage",
-   fertResultsTitle: "Recommended Total Nutrients & Bag Count:",
-   schemesTitle: "🏛️ Agricultural Schemes & Financial Support",
-   schemesSubtitle: "Direct financial benefits, crop insurance, and equipment subsidies for farmers.",
-   pmKisanDesc: "Annual direct financial benefit of ₹6,000 in 3 equal four-monthly installments to farmer families.",
-   pmfbyDesc: "Comprehensive risk insurance covering yield losses due to non-preventable natural risks, pests, and cyclones.",
-   dripDesc: "Up to 70% to 90% subsidy for micro-irrigation system installation to maximize water efficiency.",
-   btnApply: "Apply / Check Status →", 
- }
-};
+
 // --- 1. SMART FERTILIZER CALCULATOR ---
 function calculateFertilizer() {
   const crop = document.getElementById("calcCrop").value;
