@@ -332,6 +332,38 @@ function selectLanguage(lang) {
 
 // Attach directly to the global window scope
 window.selectLanguage = selectLanguage;
+function applyLanguage(lang) {
+  window.currentActiveLang = lang;
+  const selected = translations[lang] || translations.en;
+
+  // 1. Update all standard text elements with [data-i18n]
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (selected[key]) {
+      // If the element has child nodes with icons, preserve them or replace textContent directly
+      el.textContent = selected[key];
+    }
+  });
+
+  // 2. Update all inputs/textareas with [data-i18n-placeholder]
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((input) => {
+    const key = input.getAttribute("data-i18n-placeholder");
+    if (selected[key]) {
+      input.setAttribute("placeholder", selected[key]);
+    }
+  });
+
+  // 3. Update input submit/button values with [data-i18n-value]
+  document.querySelectorAll("[data-i18n-value]").forEach((btn) => {
+    const key = btn.getAttribute("data-i18n-value");
+    if (selected[key]) {
+      btn.value = selected[key];
+    }
+  });
+
+  // 4. Update html lang attribute for accessibility
+  document.documentElement.lang = lang;
+}
 
 // ==========================================
 // 2. ROTATING ADVISORY BOARD DATA
