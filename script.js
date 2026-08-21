@@ -332,42 +332,6 @@ function selectLanguage(lang) {
 
 // Attach directly to the global window scope
 window.selectLanguage = selectLanguage;
-// ==========================================
-// MODAL SELECTION (SHOWS ON EVERY VISIT/REFRESH)
-// ==========================================
-function selectLanguage(lang) {
-  // 1. Set chosen language
-  currentActiveLang = lang;
-
-  // 2. Translate text elements & inputs
-  if (typeof applyLanguage === "function") {
-    applyLanguage(lang);
-  }
-
-  // 3. Re-render dynamic mandi cards
-  if (typeof renderMandiCards === "function") {
-    renderMandiCards();
-  }
-
-  // 4. Dismiss modal immediately
-  const modalOverlay = document.getElementById("languageModalOverlay");
-  if (modalOverlay) {
-    modalOverlay.classList.add("hidden");
-    setTimeout(() => {
-      modalOverlay.style.display = "none";
-    }, 250);
-  }
-}
-window.selectLanguage = selectLanguage;
-
-// Make sure the modal always appears on fresh load/refresh
-document.addEventListener("DOMContentLoaded", () => {
-  const modalOverlay = document.getElementById("languageModalOverlay");
-  if (modalOverlay) {
-    modalOverlay.style.display = "flex";
-    modalOverlay.classList.remove("hidden");
-  }
-});
 
 // ==========================================
 // 2. ROTATING ADVISORY BOARD DATA
