@@ -340,30 +340,40 @@ function applyLanguage(lang) {
   }
 }
 // ==========================================
-// CLASSIC LANGUAGE SWITCHER HANDLER
+// MODAL SELECTION (SHOWS ON EVERY VISIT/REFRESH)
 // ==========================================
-function changeLanguage(lang) {
-  localStorage.setItem("agriguard_lang", lang);
+function selectLanguage(lang) {
+  // 1. Set chosen language
   currentActiveLang = lang;
-  
+
+  // 2. Translate text elements & inputs
   if (typeof applyLanguage === "function") {
     applyLanguage(lang);
   }
-  
+
+  // 3. Re-render dynamic mandi cards
   if (typeof renderMandiCards === "function") {
     renderMandiCards();
   }
-}
-window.changeLanguage = changeLanguage;
 
-// Auto-sync dropdown value on page load
-document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("agriguard_lang") || "en";
-  const langSelect = document.getElementById("langSelect");
-  if (langSelect) {
-    langSelect.value = savedLang;
+  // 4. Dismiss modal immediately
+  const modalOverlay = document.getElementById("languageModalOverlay");
+  if (modalOverlay) {
+    modalOverlay.classList.add("hidden");
+    setTimeout(() => {
+      modalOverlay.style.display = "none";
+    }, 250);
   }
-  changeLanguage(savedLang);
+}
+window.selectLanguage = selectLanguage;
+
+// Make sure the modal always appears on fresh load/refresh
+document.addEventListener("DOMContentLoaded", () => {
+  const modalOverlay = document.getElementById("languageModalOverlay");
+  if (modalOverlay) {
+    modalOverlay.style.display = "flex";
+    modalOverlay.classList.remove("hidden");
+  }
 });
 
 // ==========================================

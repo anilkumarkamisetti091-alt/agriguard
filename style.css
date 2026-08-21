@@ -1134,33 +1134,116 @@ footer {
   font-weight: 700;
   text-decoration: none;
 }
-/* Classic Header Language Switcher */
-.lang-switcher-container {
+
+/* ==========================================
+   POPUP LANGUAGE MODAL (SHOWS EVERY TIME)
+   ========================================== */
+.lang-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.lang-modal-overlay.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.lang-modal-card {
+  background: #ffffff;
+  width: 90%;
+  max-width: 440px;
+  border-radius: 20px;
+  padding: 2.2rem 1.8rem;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.lang-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.lang-modal-card h2 {
+  font-size: 1.45rem;
+  color: #14532d;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.lang-modal-card p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.lang-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.lang-choice-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  padding: 0.95rem 1.4rem;
+  border: 1.8px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-choice-btn:hover {
+  border-color: #166534;
   background: #f0fdf4;
-  border: 1.5px solid #86efac;
-  border-radius: 8px;
-  padding: 4px 10px;
+  transform: translateY(-1px);
 }
 
-.lang-globe-icon {
-  font-size: 1rem;
+.lang-choice-btn:active {
+  background: #166534;
+  border-color: #166534;
 }
 
-.lang-dropdown {
+.lang-choice-btn .native-lang {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.lang-choice-btn .sub-lang {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.lang-continue-link {
   background: transparent;
   border: none;
-  font-size: 0.9rem;
-  font-weight: 600;
   color: #166534;
-  outline: none;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-}
-
-.lang-dropdown option {
-  background: #ffffff;
-  color: #1f2937;
-  font-weight: 500;
+  text-decoration: underline;
+  padding: 6px;
 }
