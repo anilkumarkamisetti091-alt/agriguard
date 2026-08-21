@@ -40,11 +40,6 @@
   </div>
 </div>
 
-    <button type="button" class="lang-continue-link" onclick="selectLanguage('en')">
-      Continue with English →
-    </button>
-  </div>
-</div>
   <!-- STEP 2: Navigation Bar -->
   <nav class="navbar">
     <div class="logo">🌿 AgriGuard</div>
@@ -114,7 +109,7 @@
   <!-- STEP 8: Ask an Agri Specialist (Contact Form) -->
   <section id="contact" class="contact-section">
     <h2 data-i18n="specialistTitle">Ask an Agri Specialist</h2>
-    <form id="contactForm" class="contact-form">
+    <form id="specialistForm" onsubmit="event.preventDefault(); submitSpecialistRequest();"></form>
       <input type="text" name="name" id="name" data-i18n-placeholder="namePlaceholder" placeholder="Your Name" required>
       <input type="tel" name="phone" id="phone" data-i18n-placeholder="phonePlaceholder" placeholder="Phone Number" required>
       
@@ -128,9 +123,8 @@
       </select>
 
       <textarea name="issue" id="issue" rows="4" data-i18n-placeholder="messagePlaceholder" placeholder="Describe the issue or ask a question..." required></textarea>
-      <button type="submit" class="btn-primary" data-i18n="submitBtn">Submit Request</button>
+     <button type="submit" id="submitSpecialistBtn">Submit Request</button>
     </form>
-    <p id="formStatus" class="form-status"></p>
   </section>
 
   <!-- STEP 9: Voice Assistant Guide (Floating Modal) -->

@@ -874,13 +874,8 @@ function initContactForm() {
         formStatus.textContent = result.message || "Your request was submitted successfully!";
         formStatus.style.color = "#166534";
       }
-      contactForm.reset();
-    } catch (error) {
-      if (formStatus) {
-        formStatus.textContent = error.message || "Unable to submit your request right now.";
-        formStatus.style.color = "#b91c1c";
-      }
-    }
+      contactForm.success();
+    } 
   });
 }
 
