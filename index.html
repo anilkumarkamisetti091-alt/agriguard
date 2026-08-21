@@ -10,34 +10,14 @@
 </head>
 <body>
 
-  <!-- Language Selection Modal -->
-<div id="languageModalOverlay" class="lang-modal-overlay">
-  <div class="lang-modal-card">
-    <div class="lang-icon">🌿</div>
-    <h2>Select Your Language</h2>
-    <p>భాషను ఎంచుకోండి / अपनी भाषा चुनें</p>
-
-    <div class="lang-btn-group">
-      <button type="button" class="lang-choice-btn" onclick="selectLanguage('te')">
-        <span>తెలుగు</span>
-        <small>Telugu</small>
-      </button>
-
-      <button type="button" class="lang-choice-btn" onclick="selectLanguage('hi')">
-        <span>हिंदी</span>
-        <small>Hindi</small>
-      </button>
-
-      <button type="button" class="lang-choice-btn" onclick="selectLanguage('en')">
-        <span>English</span>
-        <small>English</small>
-      </button>
-    </div>
-
-    <button type="button" class="lang-continue-link" onclick="selectLanguage('en')">
-      Continue with English →
-    </button>
-  </div>
+ <!-- Classic Navbar Language Switcher -->
+<div class="lang-switcher-container">
+  <label for="langSelect" class="lang-globe-icon">🌐</label>
+  <select id="langSelect" class="lang-dropdown" onchange="changeLanguage(this.value)">
+    <option value="en">English</option>
+    <option value="te">తెలుగు (Telugu)</option>
+    <option value="hi">हिंदी (Hindi)</option>
+  </select>
 </div>
 
   <!-- STEP 2: Navigation Bar -->

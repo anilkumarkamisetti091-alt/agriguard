@@ -339,18 +339,32 @@ function applyLanguage(lang) {
     renderMandiCards();
   }
 }
-
-function selectLanguage(lang) {
+// ==========================================
+// CLASSIC LANGUAGE SWITCHER HANDLER
+// ==========================================
+function changeLanguage(lang) {
   localStorage.setItem("agriguard_lang", lang);
-  applyLanguage(lang);
-
-  const modalOverlay = document.getElementById("languageModalOverlay") || document.querySelector(".lang-modal-overlay");
-  if (modalOverlay) {
-    modalOverlay.style.display = "none";
-    modalOverlay.classList.add("hidden");
+  currentActiveLang = lang;
+  
+  if (typeof applyLanguage === "function") {
+    applyLanguage(lang);
+  }
+  
+  if (typeof renderMandiCards === "function") {
+    renderMandiCards();
   }
 }
-window.selectLanguage = selectLanguage;
+window.changeLanguage = changeLanguage;
+
+// Auto-sync dropdown value on page load
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("agriguard_lang") || "en";
+  const langSelect = document.getElementById("langSelect");
+  if (langSelect) {
+    langSelect.value = savedLang;
+  }
+  changeLanguage(savedLang);
+});
 
 // ==========================================
 // 2. ROTATING ADVISORY BOARD DATA
