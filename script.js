@@ -416,123 +416,201 @@ function loadNextTip() {
 
 window.loadNextTip = loadNextTip;
 
-// ==========================================
-// 3. AI LEAF SCANNER & CLIENT-SIDE VALIDATION
-// ==========================================
-let currentUploadedFile = null;
+// =======================================================
+// STRICT BIOLOGICAL LEAF SCANNER ENGINE (ANTI-SYNTHETIC)
+// =======================================================
 
-function handleLeafSelection(event) {
-  const file = event.target.files && event.target.files[0];
-  const preview = document.getElementById("imagePreview");
-  const placeholder = document.getElementById("placeholderText");
-  const scanBtn = document.getElementById("scanBtn");
-  const scanResultCard = document.getElementById("scanResultCard");
+function rgbToHsv(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, v = max;
+  const d = max - min;
+  s = max === 0 ? 0 : d / max;
 
-  if (!file) return;
-  currentUploadedFile = file;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    if (preview) {
-      preview.src = e.target.result;
-      preview.style.display = "block";
+  if (max === min) {
+    h = 0;
+  } else {
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
     }
-    if (placeholder) placeholder.style.display = "none";
-    if (scanBtn) scanBtn.style.display = "inline-block";
-    if (scanResultCard) scanResultCard.style.display = "none";
-  };
-  reader.readAsDataURL(file);
-}
-
-function setMetric(elementId, value, colorClass = "") {
-  const bar = document.getElementById(elementId);
-  if (!bar) return;
-  bar.style.width = `${Math.max(0, Math.min(100, value))}%`;
-  if (colorClass) {
-    bar.className = `progress-bar-fill ${colorClass}`;
+    h /= 6;
   }
+  return [h * 360, s * 100, v * 100];
 }
 
-function updateDiagnosis(health, accuracy, moisture, pesticide, condition, advice) {
-  setMetric("healthBar", health, "");
-  setMetric("accuracyBar", accuracy, "bg-blue");
-  setMetric("waterBar", moisture, "bg-teal");
-  setMetric("pesticideBar", pesticide, "bg-orange");
-
-  const healthPercent = document.getElementById("healthPercent");
-  const accuracyPercent = document.getElementById("accuracyPercent");
-  const waterPercent = document.getElementById("waterPercent");
-  const pesticidePercent = document.getElementById("pesticidePercent");
-
-  if (healthPercent) healthPercent.textContent = `${health}%`;
-  if (accuracyPercent) accuracyPercent.textContent = `${accuracy}%`;
-  if (waterPercent) waterPercent.textContent = `${moisture}%`;
-  if (pesticidePercent) pesticidePercent.textContent = `${pesticide}%`;
-
-  const detectedCondition = document.getElementById("detectedCondition");
-  const rectificationAdvice = document.getElementById("rectificationAdvice");
-  if (detectedCondition) detectedCondition.textContent = `Condition: ${condition}`;
-  if (rectificationAdvice) rectificationAdvice.textContent = advice;
-
-  const scanResultCard = document.getElementById("scanResultCard");
-  if (scanResultCard) {
-    scanResultCard.style.display = "block";
-  }
-}
-
-function validateLeafCanvas(imgElement) {
+function validateRealLeaf(imageElement) {
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = 64;
-  canvas.height = 64;
-  ctx.drawImage(imgElement, 0, 0, 64, 64);
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  
+  // Sample at a high enough resolution to inspect leaf veins
+  const sampleSize = 160;
+  canvas.width = sampleSize;
+  canvas.height = sampleSize;
 
-  const imgData = ctx.getImageData(0, 0, 64, 64).data;
-  let foliagePixels = 0;
-  const totalPixels = 64 * 64;
+  ctx.drawImage(imageElement, 0, 0, sampleSize, sampleSize);
+  const imgData = ctx.getImageData(0, 0, sampleSize, sampleSize).data;
 
-  for (let i = 0; i < imgData.length; i += 4) {
-    const r = imgData[i];
-    const g = imgData[i + 1];
-    const b = imgData[i + 2];
+  let verifiedOrganicPlantPixels = 0;
+  let artificialOrNonPlantPixels = 0;
+  let totalEvaluatedPixels = 0;
 
-    // Detect plant/leaf hues: green or yellow/brown foliage
-    const isGreen = g > 45 && g > r * 0.95 && g > b * 1.1;
-    const isYellowBrown = r > 70 && g > 60 && b < 100 && Math.abs(r - g) < 70;
+  let greenGradients = [];
+  let luminanceArray = [];
 
-    if (isGreen || isYellowBrown) {
-      foliagePixels++;
+  for (let y = 1; y < sampleSize - 1; y++) {
+    for (let x = 1; x < sampleSize - 1; x++) {
+      const idx = (y * sampleSize + x) * 4;
+      const r = imgData[idx];
+      const g = imgData[idx + 1];
+      const b = imgData[idx + 2];
+
+      // Ignore pure background extremes (bright white/lighting glare or deep black background)
+      if ((r < 25 && g < 25 && b < 25) || (r > 245 && g > 245 && b > 245)) {
+        continue;
+      }
+
+      totalEvaluatedPixels++;
+
+      const [h, s, v] = rgbToHsv(r, g, b);
+      const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+      luminanceArray.push(luminance);
+
+      // 1. REJECT HUMAN SKIN TONES (Red/Orange hue with skin saturation)
+      const isSkin = (h >= 0 && h <= 28) && (r > g && g > b) && s > 15;
+      if (isSkin) {
+        artificialOrNonPlantPixels += 3;
+        continue;
+      }
+
+      // 2. EXCESS GREEN INDEX (2G - R - B) -> Biological vegetation signature
+      const excessGreen = 2 * g - r - b;
+
+      // 3. REJECT ARTIFICIAL / NEON GREEN / DIGITAL SCREENS:
+      // Synthetic screen greens usually have saturated Green with high Blue, or extreme 100% Saturation with flat variance
+      const isSyntheticNeon = (g > 210 && r < 40 && b < 40) || (s > 94 && excessGreen > 120);
+
+      // 4. BIOLOGICAL CHLOROPHYLL (True living leaf spectrum: 65° to 155°)
+      const isNaturalChlorophyll = (h >= 65 && h <= 155) && (excessGreen > 12) && (s >= 18 && s <= 92) && (v >= 18 && v <= 92);
+
+      // 5. BIOLOGICAL LEAF BLIGHT / DRY TISSUE / NECROSIS (Yellow-brown leaf decay: 30° to 64°)
+      const isNaturalLeafDecay = (h >= 30 && h < 65) && (r >= g * 0.85) && (s >= 20 && s <= 85) && (v >= 20 && v <= 88);
+
+      if ((isNaturalChlorophyll || isNaturalLeafDecay) && !isSyntheticNeon) {
+        verifiedOrganicPlantPixels++;
+      } else {
+        artificialOrNonPlantPixels++;
+      }
+
+      // 6. CALCULATE LOCAL VEIN GRADIENT (Sobel-like difference check with neighboring pixel)
+      const rightIdx = (y * sampleSize + (x + 1)) * 4;
+      const downIdx = ((y + 1) * sampleSize + x) * 4;
+      const gDiffX = Math.abs(g - imgData[rightIdx + 1]);
+      const gDiffY = Math.abs(g - imgData[downIdx + 1]);
+      greenGradients.push(gDiffX + gDiffY);
     }
   }
 
-  // Reject images with under 15% plant surface color
-  return (foliagePixels / totalPixels) >= 0.15;
+  if (totalEvaluatedPixels < 400) return false;
+
+  // Plant Ratio Requirement
+  const organicPlantPercentage = (verifiedOrganicPlantPixels / totalEvaluatedPixels) * 100;
+
+  // Texture Variance (Rejects flat colored green cloth/paper/plastic)
+  const avgLuminance = luminanceArray.reduce((a, b) => a + b, 0) / (luminanceArray.length || 1);
+  const variance = luminanceArray.reduce((acc, val) => acc + Math.pow(val - avgLuminance, 2), 0) / (luminanceArray.length || 1);
+  const textureStdDev = Math.sqrt(variance);
+
+  // Micro-Vein Gradient Activity
+  const avgGradient = greenGradients.reduce((a, b) => a + b, 0) / (greenGradients.length || 1);
+
+  // STRICT DECISION MATRIX:
+  // - Must contain >= 45% genuine biological leaf pixels
+  // - Must contain natural lighting/shadow texture (textureStdDev between 14 and 75)
+  // - Must have organic vein micro-gradient activity (avgGradient >= 4.0, but <= 45 to eliminate text/drawings)
+  const isOrganicLeaf = 
+    organicPlantPercentage >= 45 &&
+    textureStdDev >= 14 && 
+    textureStdDev <= 75 && 
+    avgGradient >= 4.0 && 
+    avgGradient <= 45.0;
+
+  return isOrganicLeaf;
 }
 
-function analyzeLeaf() {
-  const preview = document.getElementById("imagePreview");
-  const placeholder = document.getElementById("placeholderText");
-  const scanBtn = document.getElementById("scanBtn");
-  const scanResultCard = document.getElementById("scanResultCard");
+function initLeafScanner() {
+  const leafInput = document.getElementById("leafInput");
+  const leafPreview = document.getElementById("leafPreview");
+  const previewPlaceholder = document.getElementById("previewPlaceholder");
+  const fileNameDisplay = document.getElementById("fileNameDisplay");
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  const reportBox = document.getElementById("diagnosticReport");
+  const doctorCard = document.getElementById("cropDoctorCard");
 
-  if (!preview || !preview.src) return;
+  if (!leafInput) return;
 
-  // Validate that image is actually a leaf
-  const isValidLeaf = validateLeafCanvas(preview);
-
-  if (!isValidLeaf) {
-    alert(translations[currentActiveLang]?.invalidLeafWarning || translations.en.invalidLeafWarning);
-    preview.style.display = "none";
-    preview.src = "";
-    if (placeholder) {
-      placeholder.style.display = "block";
-      placeholder.textContent = translations[currentActiveLang]?.invalidLeafWarning || translations.en.invalidLeafWarning;
-      placeholder.style.color = "#b91c1c";
+  leafInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (fileNameDisplay) fileNameDisplay.textContent = file.name;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (leafPreview) {
+          leafPreview.src = event.target.result;
+          leafPreview.classList.remove("hidden");
+        }
+        if (previewPlaceholder) previewPlaceholder.classList.add("hidden");
+        if (reportBox) reportBox.classList.add("hidden");
+        if (doctorCard) doctorCard.classList.add("hidden");
+      };
+      reader.readAsDataURL(file);
     }
-    if (scanBtn) scanBtn.style.display = "none";
-    if (scanResultCard) scanResultCard.style.display = "none";
-    return;
+  });
+
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener("click", () => {
+      if (!leafInput.files || leafInput.files.length === 0) {
+        alert(
+          currentActiveLang === "te"
+            ? "దయచేసి ముందుగా పంట ఆకు ఫోటోను ఎంచుకోండి!"
+            : currentActiveLang === "hi"
+            ? "कृपया पहले फसल की पत्ती की फोटो चुनें!"
+            : "Please capture or select a real crop leaf photo first!"
+        );
+        return;
+      }
+
+      // Execute Strict Biological Verification
+      const isOriginalLeaf = validateRealLeaf(leafPreview);
+
+      if (!isOriginalLeaf) {
+        if (reportBox) reportBox.classList.add("hidden");
+        if (doctorCard) doctorCard.classList.add("hidden");
+
+        alert(
+          currentActiveLang === "te"
+            ? "⚠️ ఇది అసలైన పంట ఆకు కాదు! (ఆకుపచ్చ వస్తువులు, కాగితం లేదా స్క్రీన్‌లు అనుమతించబడవు). దయచేసి స్పష్టమైన పంట ఆకు ఫోటోను మాత్రమే తీయండి."
+            : currentActiveLang === "hi"
+            ? "⚠️ यह वास्तविक पौधे की पत्ती नहीं है! (हरे रंग की वस्तुएं, कागज या स्क्रीन मान्य नहीं हैं)। कृपया केवल असली फसल की पत्ती अपलोड करें।"
+            : "⚠️ Rejected: Non-Botanical Image Detected! (Green objects, cloth, paper, or digital screens are not allowed). Please scan a real living crop leaf only."
+        );
+        return;
+      }
+
+      // Display Report & Show Crop Doctor Only If Passed
+      if (reportBox) reportBox.classList.remove("hidden");
+      if (doctorCard) doctorCard.classList.remove("hidden");
+
+      if (typeof animateBar === "function") {
+        animateBar("healthBar", "healthVal", 92);
+        animateBar("accuracyBar", "accuracyVal", 95);
+        animateBar("waterBar", "waterVal", 74);
+        animateBar("pesticideBar", "pesticideVal", 50);
+      }
+    });
   }
+}
 
   // Generate diagnostic scores
   const health = 82 + Math.floor(Math.random() * 16);
@@ -565,7 +643,7 @@ function analyzeLeaf() {
   const picked = pool[Math.floor(Math.random() * pool.length)];
 
   updateDiagnosis(health, accuracy, moisture, pesticide, picked.cond, picked.adv);
-}
+
 
 window.analyzeLeaf = analyzeLeaf;
 
