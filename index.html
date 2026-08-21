@@ -148,109 +148,115 @@
     </div>
   </section>
 
-  <!-- STEP 6: Localized Weather & Extreme Climate Warning -->
-  <section id="weather-section" class="weather-dashboard-section">
-    <div class="container">
-      <div class="section-title-wrap">
-        <h2 class="section-title" data-i18n="weatherSectionTitle">🌦️ Localized Weather & Climate Warning</h2>
-        <p class="section-subtitle" data-i18n="weatherSectionSubtitle">Real-time hyperlocal agricultural alerts and climate forecast for your field.</p>
-      </div>
+  <!-- ========================================== -->
+<!-- 1. LOCALIZED WEATHER SECTION -->
+<!-- ========================================== -->
+<section id="weather" style="padding: 2.5rem 1rem; max-width: 1100px; margin: 0 auto;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <h2 style="font-size: 1.8rem; font-weight: 800; color: #14532d; margin-bottom: 6px;">
+      🌧️ Localized Weather & Climate Warning
+    </h2>
+    <p style="color: #475569; font-size: 0.95rem;">
+      Real-time hyperlocal agricultural alerts and climate forecast for your field.
+    </p>
+  </div>
 
-      <!-- Real-time Warning Banner -->
-      <div id="climateAlertBox" class="climate-alert-box alert-hidden">
-        <div class="alert-icon-wrap" id="alertIcon">⚠️</div>
-        <div class="alert-content">
-          <h4 id="alertHeadline" data-i18n="climateAdvisoryTitle">Climate Advisory</h4>
-          <p id="alertDescription" data-i18n="climateMonitoringText">Monitoring current field conditions...</p>
-          <div id="alertAction" class="alert-action-tip" data-i18n="climateDefaultAction">Recommended Action: Ensure adequate irrigation.</div>
-        </div>
-      </div>
-
-      <div class="weather-grid">
-        <div class="weather-card">
-          <div class="card-icon">🌡️</div>
-          <div class="card-details">
-            <span class="card-label" data-i18n="tempLabel">Temperature</span>
-            <h3 id="currentTemp">-- °C</h3>
-            <small id="tempFeel">Feels like -- °C</small>
-          </div>
-        </div>
-
-        <div class="weather-card">
-          <div class="card-icon">💧</div>
-          <div class="card-details">
-            <span class="card-label" data-i18n="humidityLabel">Humidity</span>
-            <h3 id="currentHumidity">-- %</h3>
-            <small id="humidityStatus">Normal</small>
-          </div>
-        </div>
-
-        <div class="weather-card">
-          <div class="card-icon">🌧️</div>
-          <div class="card-details">
-            <span class="card-label" data-i18n="rainLabel">Precipitation & Rain</span>
-            <h3 id="currentRain">-- mm</h3>
-            <small id="rainChance">Chance: --%</small>
-          </div>
-        </div>
-
-        <div class="weather-card">
-          <div class="card-icon">💨</div>
-          <div class="card-details">
-            <span class="card-label" data-i18n="windLabel">Wind Speed</span>
-            <h3 id="currentWind">-- km/h</h3>
-            <small id="windStatus">Calm</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="weather-footer">
-        <span id="locationDisplay" data-i18n="detectingLocation">📍 Detecting your field location...</span>
-        <button id="refreshWeatherBtn" class="weather-refresh-btn" type="button" data-i18n="refreshWeatherBtn">🔄 Refresh Weather</button>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem;">
+    <!-- Temperature Card -->
+    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 1rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <div style="font-size: 2.2rem;">🌡️</div>
+      <div>
+        <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Temperature</span>
+        <h3 id="weatherTemp" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 2px 0;">-- °C</h3>
+        <p id="weatherFeels" style="font-size: 0.8rem; color: #64748b; margin: 0;">Feels like -- °C</p>
       </div>
     </div>
-  </section>
 
-  <!-- STEP 7: Advisory Board Section -->
-  <section id="advisory" class="advisory-section">
-    <h2 data-i18n="advisoryTitle">AgriGuard Advisory Board</h2>
-    <div class="alert-box" id="alertBox">
-      <strong data-i18n="recPrefix">Today's Recommendation: </strong>
-      <span id="advisoryText" data-i18n="advisoryTipText">Ensure adequate drainage in low-lying fields ahead of upcoming seasonal rain.</span>
-    </div>
-    <button class="btn-secondary" type="button" onclick="loadNextTip()" data-i18n="nextTipBtn">Next Farming Tip</button>
-  </section>
-  <!-- Live Mandi & Market Prices Section -->
-<section id="mandi-section" class="mandi-dashboard-section">
-  <div class="container">
-    <div class="section-title-wrap">
-      <h2 class="section-title" data-i18n="mandiSectionTitle">📊 Live Mandi Market Prices (మార్కెట్ ధరలు)</h2>
-      <p class="section-subtitle" data-i18n="mandiSectionSubtitle">Real-time daily modal market rates and MSP updates across regional agricultural markets.</p>
+    <!-- Humidity Card -->
+    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 1rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <div style="font-size: 2.2rem;">💧</div>
+      <div>
+        <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Humidity</span>
+        <h3 id="weatherHumidity" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 2px 0;">-- %</h3>
+        <p id="weatherHumidStatus" style="font-size: 0.8rem; color: #16a34a; margin: 0;">Optimal</p>
+      </div>
     </div>
 
-    <!-- Search & Filter Controls -->
-    <div class="mandi-filter-bar">
-      <input type="text" id="mandiSearchInput" data-i18n-placeholder="mandiSearchPlaceholder" placeholder="🔍 Search crop (e.g. Cotton, Chilli, Rice)..." onkeyup="filterMandiCards()">
-      <select id="mandiStateFilter" onchange="filterMandiCards()">
-        <option value="all" data-i18n="allMarkets">All Markets</option>
-        <option value="Guntur">Guntur APMC</option>
-        <option value="Warangal">Warangal APMC</option>
-        <option value="Khammam">Khammam APMC</option>
-        <option value="Kurnool">Kurnool APMC</option>
-      </select>
+    <!-- Precipitation Card -->
+    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 1rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <div style="font-size: 2.2rem;">🌧️</div>
+      <div>
+        <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Precipitation & Rain</span>
+        <h3 id="weatherRain" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 2px 0;">-- mm</h3>
+        <p id="weatherRainChance" style="font-size: 0.8rem; color: #64748b; margin: 0;">Chance: 0%</p>
+      </div>
     </div>
 
-    <!-- Live Commodity Rates Cards Grid -->
-    <div class="mandi-grid" id="mandiGrid">
-      <!-- Cards will be populated dynamically by script.js -->
+    <!-- Wind Speed Card -->
+    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 1rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <div style="font-size: 2.2rem;">💨</div>
+      <div>
+        <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Wind Speed</span>
+        <h3 id="weatherWind" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 2px 0;">-- km/h</h3>
+        <p id="weatherWindStatus" style="font-size: 0.8rem; color: #16a34a; margin: 0;">Calm</p>
+      </div>
     </div>
+  </div>
 
-    <div class="mandi-footer">
-      <small data-i18n="mandiDisclaimer">⚠️ Market rates reflect average daily modal trading prices per quintal (100 kg).</small>
-    </div>
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <p id="weatherLocationStatus" style="font-size: 0.9rem; color: #166534; font-weight: 600; margin: 0;">
+      📍 Detecting your field location...
+    </p>
+    <button id="refreshWeatherBtn" type="button" style="background: #15803d; color: #ffffff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+      🔄 Refresh Weather
+    </button>
   </div>
 </section>
 
+<!-- ========================================== -->
+<!-- 2. LIVE MANDI MARKET PRICES SECTION -->
+<!-- ========================================== -->
+<section id="mandi" style="padding: 2.5rem 1rem; max-width: 1100px; margin: 0 auto;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <h2 style="font-size: 1.8rem; font-weight: 800; color: #14532d; margin-bottom: 6px;">
+      📊 Live Mandi Market Prices
+    </h2>
+    <p style="color: #475569; font-size: 0.95rem;">
+      Real-time daily modal market rates and MSP updates across regional agricultural markets.
+    </p>
+  </div>
+
+  <!-- Search & Dropdown Filters -->
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;">
+    <input
+      type="text"
+      id="mandiSearch"
+      placeholder="🔍 Search crop (e.g. Cotton, Chilli, Rice)..."
+      style="flex: 1; min-width: 260px; max-width: 480px; padding: 0.75rem 1.2rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; outline: none;"
+    />
+    <select
+      id="mandiMarketFilter"
+      style="padding: 0.75rem 1.2rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; background: #ffffff; outline: none; cursor: pointer;"
+    >
+      <option value="all">All Markets</option>
+      <option value="Guntur">Guntur APMC</option>
+      <option value="Vijayawada">Vijayawada Yard</option>
+      <option value="Warangal">Warangal Mandi</option>
+      <option value="Nizamabad">Nizamabad Yard</option>
+      <option value="Kurnool">Kurnool APMC</option>
+      <option value="Rajkot">Rajkot Market</option>
+    </select>
+  </div>
+
+  <!-- Cards Target Grid Container -->
+  <div id="mandiCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem;">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <p style="text-align: center; font-size: 0.85rem; color: #b45309; margin-top: 1rem;">
+    ⚠️ Market rates reflect average daily modal trading prices per quintal (100 kg).
+  </p>
+</section>
   <!-- STEP 8: Ask an Agri Specialist (Contact Form) -->
   <section id="contact" class="contact-section">
     <h2 data-i18n="specialistTitle">Ask an Agri Specialist</h2>
