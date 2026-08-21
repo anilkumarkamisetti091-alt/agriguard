@@ -636,126 +636,185 @@ function initLeafScanner() {
 
 window.analyzeLeaf = analyzeLeaf;
 
-// ==========================================
-// 4. LOCALIZED WEATHER & CLIMATE SYSTEM
-// ==========================================
-function initWeatherModule() {
-  const tempEl = document.getElementById("currentTemp");
-  const feelEl = document.getElementById("tempFeel");
-  const humEl = document.getElementById("currentHumidity");
-  const humStatusEl = document.getElementById("humidityStatus");
-  const rainEl = document.getElementById("currentRain");
-  const rainChanceEl = document.getElementById("rainChance");
-  const windEl = document.getElementById("currentWind");
-  const windStatusEl = document.getElementById("windStatus");
-  const locEl = document.getElementById("locationDisplay");
+function applyLanguage(lang) {
+  window.currentActiveLang = lang || "en";
+  const dict = translations[window.currentActiveLang] || translations.en;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key]) el.textContent = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((input) => {
+    const key = input.getAttribute("data-i18n-placeholder");
+    if (dict[key]) input.setAttribute("placeholder", dict[key]);
+  });
+
+  renderMandiCards();
+}
+
+// Modal Selector
+function selectLanguage(lang) {
+  try {
+    applyLanguage(lang);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    const modal = document.getElementById("languageModalOverlay");
+    if (modal) modal.style.display = "none";
+  }
+}
+window.selectLanguage = selectLanguage;
+
+
+
+// =======================================================
+// 4. STRICT ANTI-SYNTHETIC LEAF VALIDATION
+// =======================================================
+function rgbToHsv(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, v = max;
+  const d = max - min;
+  s = max === 0 ? 0 : d / max;
+  if (max === min) {
+    h = 0;
+  } else {
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+  return [h * 360, s * 100, v * 100];
+}
+
+function validateRealLeaf(imageElement) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const sampleSize = 140;
+  canvas.width = sampleSize;
+  canvas.height = sampleSize;
+
+  ctx.drawImage(imageElement, 0, 0, sampleSize, sampleSize);
+  const imgData = ctx.getImageData(0, 0, sampleSize, sampleSize).data;
+
+  let organicPixels = 0;
+  let totalEvaluated = 0;
+  let gradients = [];
+  let luminanceList = [];
+
+  for (let y = 1; y < sampleSize - 1; y++) {
+    for (let x = 1; x < sampleSize - 1; x++) {
+      const idx = (y * sampleSize + x) * 4;
+      const r = imgData[idx], g = imgData[idx + 1], b = imgData[idx + 2];
+
+      if ((r < 25 && g < 25 && b < 25) || (r > 245 && g > 245 && b > 245)) continue;
+
+      totalEvaluated++;
+      const [h, s, v] = rgbToHsv(r, g, b);
+      const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+      luminanceList.push(luminance);
+
+      const excessGreen = 2 * g - r - b;
+      const isNaturalChlorophyll = (h >= 65 && h <= 155) && (excessGreen > 12) && (s >= 18 && s <= 92);
+      const isNaturalDecay = (h >= 30 && h < 65) && (r >= g * 0.8) && (s >= 20 && s <= 85);
+      const isSyntheticScreen = (g > 220 && r < 40 && b < 40) || (s > 95 && excessGreen > 120);
+
+      if ((isNaturalChlorophyll || isNaturalDecay) && !isSyntheticScreen) {
+        organicPixels++;
+      }
+
+      const rIdx = (y * sampleSize + (x + 1)) * 4;
+      const dIdx = ((y + 1) * sampleSize + x) * 4;
+      gradients.push(Math.abs(g - imgData[rIdx + 1]) + Math.abs(g - imgData[dIdx + 1]));
+    }
+  }
+
+  if (totalEvaluated < 400) return false;
+
+  const plantRatio = (organicPixels / totalEvaluated) * 100;
+  const avgLum = luminanceList.reduce((a, b) => a + b, 0) / luminanceList.length;
+  const variance = luminanceList.reduce((acc, v) => acc + Math.pow(v - avgLum, 2), 0) / luminanceList.length;
+  const textureStd = Math.sqrt(variance);
+  const avgGrad = gradients.reduce((a, b) => a + b, 0) / gradients.length;
+
+  return plantRatio >= 40 && textureStd >= 12 && textureStd <= 75 && avgGrad >= 3.5 && avgGrad <= 45.0;
+}
+
+// Scanner Initialization
+function initLeafScanner() {
+  const leafInput = document.getElementById("leafInput");
+  const leafPreview = document.getElementById("leafPreview");
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  const resultBox = document.getElementById("scannerResult");
+
+  if (!leafInput) return;
+
+  leafInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (leafPreview) {
+          leafPreview.src = event.target.result;
+          leafPreview.style.display = "block";
+        }
+        if (analyzeBtn) analyzeBtn.style.display = "inline-block";
+        if (resultBox) resultBox.style.display = "none";
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener("click", () => {
+      const dict = translations[window.currentActiveLang] || translations.en;
+      const isValid = validateRealLeaf(leafPreview);
+
+      if (!isValid) {
+        alert(dict.leafRejected);
+        if (resultBox) resultBox.style.display = "none";
+        return;
+      }
+
+      if (resultBox) {
+        resultBox.textContent = dict.leafVerified;
+        resultBox.style.display = "block";
+      }
+    });
+  }
+}
+
+// =======================================================
+// 5. MASTER INITIALIZATION ON DOM READY
+// =======================================================
+document.addEventListener("DOMContentLoaded", () => {
+  renderMandiCards();
+  initLiveWeather();
+  initLeafScanner();
+
+  const searchInput = document.getElementById("mandiSearch");
+  const marketFilter = document.getElementById("mandiMarketFilter");
   const refreshBtn = document.getElementById("refreshWeatherBtn");
 
-  const alertBox = document.getElementById("climateAlertBox");
-  const alertIcon = document.getElementById("alertIcon");
-  const alertHeadline = document.getElementById("alertHeadline");
-  const alertDesc = document.getElementById("alertDescription");
-  const alertAction = document.getElementById("alertAction");
-
-  function generateClimateAdvisories(temp, humidity, rain, rainProb, wind) {
-    if (!alertBox) return;
-    alertBox.classList.remove("alert-hidden", "alert-danger", "alert-warning", "alert-safe");
-
-    if (temp >= 38) {
-      alertBox.classList.add("alert-danger");
-      if (alertIcon) alertIcon.textContent = "🔥";
-      if (alertHeadline) alertHeadline.textContent = "Extreme Heatwave Warning";
-      if (alertDesc) alertDesc.textContent = `Temperature is ${temp}°C. High evaporation can cause crop wilting.`;
-      if (alertAction) alertAction.textContent = "Action: Irrigate fields early morning or evening. Halt pesticide sprays during peak afternoon.";
-    } else if (rain > 15 || rainProb >= 80) {
-      alertBox.classList.add("alert-danger");
-      if (alertIcon) alertIcon.textContent = "⛈️";
-      if (alertHeadline) alertHeadline.textContent = "Heavy Rain & Waterlogging Advisory";
-      if (alertDesc) alertDesc.textContent = `Rainfall expected (${rain} mm, ${rainProb}% probability).`;
-      if (alertAction) alertAction.textContent = "Action: Open field drainage channels immediately to prevent root rot.";
-    } else if (wind >= 30) {
-      alertBox.classList.add("alert-warning");
-      if (alertIcon) alertIcon.textContent = "💨";
-      if (alertHeadline) alertHeadline.textContent = "High Wind / Gust Alert";
-      if (alertDesc) alertDesc.textContent = `Wind speed reaching ${wind} km/h. Risk of crop lodging.`;
-      if (alertAction) alertAction.textContent = "Action: Stake tall crops (banana, maize) and pause chemical spraying.";
-    } else if (humidity >= 80) {
-      alertBox.classList.add("alert-warning");
-      if (alertIcon) alertIcon.textContent = "🍄";
-      if (alertHeadline) alertHeadline.textContent = "High Humidity & Fungal Risk";
-      if (alertDesc) alertDesc.textContent = `Humidity is at ${humidity}%. High risk of leaf spot and powdery mildew.`;
-      if (alertAction) alertAction.textContent = "Action: Scout crop leaves and keep bio-fungicide sprays ready.";
-    } else {
-      alertBox.classList.add("alert-safe");
-      if (alertIcon) alertIcon.textContent = "✅";
-      if (alertHeadline) alertHeadline.textContent = "Favorable Weather Conditions";
-      if (alertDesc) alertDesc.textContent = `Temperature (${temp}°C) and moisture are within optimal range.`;
-      if (alertAction) alertAction.textContent = "Action: Suitable for regular weeding, fertilizer top-dressing, and intercultural operations.";
-    }
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      renderMandiCards(e.target.value, marketFilter ? marketFilter.value : "all");
+    });
   }
 
-  function fetchFarmWeather(lat = 16.3067, lon = 80.4365, locationName = "Farm Region") {
-    if (locEl) locEl.textContent = `📍 Location: ${locationName}`;
-
-    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,wind_speed_10m&daily=precipitation_probability_max&timezone=auto`;
-
-    fetch(apiUrl)
-      .then(res => {
-        if (!res.ok) throw new Error("Weather request failed");
-        return res.json();
-      })
-      .then(data => {
-        const current = data.current;
-        const daily = data.daily;
-
-        const temp = current.temperature_2m;
-        const feels = current.apparent_temperature;
-        const humidity = current.relative_humidity_2m;
-        const rain = current.rain;
-        const wind = current.wind_speed_10m;
-        const rainProb = (daily && daily.precipitation_probability_max) ? daily.precipitation_probability_max[0] : 0;
-
-        if (tempEl) tempEl.textContent = `${temp} °C`;
-        if (feelEl) feelEl.textContent = `Feels like ${feels} °C`;
-        if (humEl) humEl.textContent = `${humidity} %`;
-        if (humStatusEl) humStatusEl.textContent = humidity > 70 ? "High (Fungal Risk)" : humidity < 30 ? "Dry" : "Optimal";
-        if (rainEl) rainEl.textContent = `${rain} mm`;
-        if (rainChanceEl) rainChanceEl.textContent = `Rain Chance: ${rainProb}%`;
-        if (windEl) windEl.textContent = `${wind} km/h`;
-        if (windStatusEl) windStatusEl.textContent = wind > 25 ? "Strong Winds" : "Calm";
-
-        generateClimateAdvisories(temp, humidity, rain, rainProb, wind);
-      })
-      .catch(err => {
-        console.error("Weather error:", err);
-        if (locEl) locEl.textContent = "📍 Using regional agricultural weather";
-      });
-  }
-
-  function detectLocation() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          fetchFarmWeather(lat, lon, `Field (${lat.toFixed(2)}, ${lon.toFixed(2)})`);
-        },
-        () => {
-          fetchFarmWeather();
-        },
-        { timeout: 8000 }
-      );
-    } else {
-      fetchFarmWeather();
-    }
+  if (marketFilter) {
+    marketFilter.addEventListener("change", (e) => {
+      renderMandiCards(searchInput ? searchInput.value : "", e.target.value);
+    });
   }
 
   if (refreshBtn) {
-    refreshBtn.addEventListener("click", detectLocation);
+    refreshBtn.addEventListener("click", () => initLiveWeather());
   }
-
-  detectLocation();
-}
+});
 
 // ==========================================
 // 5. SPECIALIST CONTACT FORM SUBMISSION
@@ -901,344 +960,7 @@ function initVoiceAssistant() {
   });
 }
 
-// =======================================================
-// LIVE WEATHER & MANDI REAL-TIME CONTROLLER
-// =======================================================
 
-const regionalMandiData = [
-  { crop: "Cotton (పత్తి / कपास)", market: "Guntur", state: "Andhra Pradesh", price: "₹7,650", unit: "/ Quintal", change: "+₹180 (2.4% ▲)", status: "up" },
-  { crop: "Teja Red Chilli (మిర్చి)", market: "Guntur", state: "Andhra Pradesh", price: "₹18,500", unit: "/ Quintal", change: "+₹650 (3.6% ▲)", status: "up" },
-  { crop: "Paddy BPT 5204 (వరి)", market: "Vijayawada", state: "Andhra Pradesh", price: "₹2,380", unit: "/ Quintal", change: "+₹20 (0.8% ▲)", status: "up" },
-  { crop: "Yellow Maize (మొక్కజొన్న)", market: "Warangal", state: "Telangana", price: "₹2,150", unit: "/ Quintal", change: "-₹30 (1.4% ▼)", status: "down" },
-  { crop: "Turmeric Finger (పసుపు)", market: "Nizamabad", state: "Telangana", price: "₹13,850", unit: "/ Quintal", change: "+₹450 (3.3% ▲)", status: "up" },
-  { crop: "Bengal Gram / Chana (శనగలు)", market: "Kurnool", state: "Andhra Pradesh", price: "₹5,850", unit: "/ Quintal", change: "+₹50 (0.8% ▲)", status: "up" },
-  { crop: "Groundnut Pods (వేరుశనగ)", market: "Rajkot", state: "Gujarat", price: "₹6,400", unit: "/ Quintal", change: "-₹40 (0.6% ▼)", status: "down" },
-  { crop: "Soybean (సోయాబీన్)", market: "Nizamabad", state: "Telangana", price: "₹4,600", unit: "/ Quintal", change: "+₹90 (2.0% ▲)", status: "up" }
-];
-
-function renderMandiCards(searchTerm = "", selectedMarket = "all") {
-  const container = document.getElementById("mandiCardsContainer");
-  if (!container) return;
-
-  const term = searchTerm.trim().toLowerCase();
-
-  const filtered = regionalMandiData.filter((item) => {
-    const matchesCrop = item.crop.toLowerCase().includes(term);
-    const matchesMarket = (selectedMarket === "all") || (item.market.toLowerCase() === selectedMarket.toLowerCase());
-    return matchesCrop && matchesMarket;
-  });
-
-  if (filtered.length === 0) {
-    container.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 2rem; background: #f8fafc; border-radius: 12px; color: #64748b;">
-        🔍 No crops found matching your search. Try "Cotton", "Chilli", or "Paddy".
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = filtered.map((item) => {
-    const trendColor = item.status === "up" ? "#16a34a" : "#dc2626";
-    const trendBg = item.status === "up" ? "#f0fdf4" : "#fef2f2";
-
-    return `
-      <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 1.25rem; box-shadow: 0 4px 14px rgba(0,0,0,0.04); transition: transform 0.2s ease;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
-          <h4 style="font-size: 1.05rem; font-weight: 700; color: #14532d; margin: 0;">${item.crop}</h4>
-        </div>
-        <p style="font-size: 0.85rem; color: #64748b; margin: 0 0 12px 0;">📍 ${item.market} APMC (${item.state})</p>
-        
-        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-          <div>
-            <span style="font-size: 1.45rem; font-weight: 800; color: #0f172a;">${item.price}</span>
-            <span style="font-size: 0.8rem; color: #64748b;">${item.unit}</span>
-          </div>
-          <span style="font-size: 0.8rem; font-weight: 700; color: ${trendColor}; background: ${trendBg}; padding: 4px 8px; border-radius: 6px;">
-            ${item.change}
-          </span>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-// Open-Meteo Hyperlocal Weather Fetcher
-async function fetchWeatherData(lat, lon, placeLabel) {
-  const statusEl = document.getElementById("weatherLocationStatus");
-  const tempEl = document.getElementById("weatherTemp");
-  const feelsEl = document.getElementById("weatherFeels");
-  const humidEl = document.getElementById("weatherHumidity");
-  const rainEl = document.getElementById("weatherRain");
-  const windEl = document.getElementById("weatherWind");
-
-  if (statusEl) {
-    statusEl.textContent = `📍 Fetching telemetry for ${placeLabel}...`;
-  }
-
-  try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m&timezone=auto`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const cur = data.current;
-
-    if (tempEl) tempEl.textContent = `${Math.round(cur.temperature_2m)} °C`;
-    if (feelsEl) feelsEl.textContent = `Feels like ${Math.round(cur.apparent_temperature)} °C`;
-    if (humidEl) humidEl.textContent = `${cur.relative_humidity_2m} %`;
-    if (rainEl) rainEl.textContent = `${cur.precipitation} mm`;
-    if (windEl) windEl.textContent = `${Math.round(cur.wind_speed_10m)} km/h`;
-
-    if (statusEl) {
-      statusEl.textContent = `📍 Live Field Location: ${placeLabel} (${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E)`;
-    }
-  } catch (e) {
-    console.error("Live weather failed, applying regional defaults:", e);
-    if (tempEl) tempEl.textContent = "31 °C";
-    if (feelsEl) feelsEl.textContent = "Feels like 34 °C";
-    if (humidEl) humidEl.textContent = "68 %";
-    if (rainEl) rainEl.textContent = "0.0 mm";
-    if (windEl) windEl.textContent = "12 km/h";
-    if (statusEl) statusEl.textContent = `📍 Regional Farm Station (Guntur Region)`;
-  }
-}
-
-function initLiveWeather() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        fetchWeatherData(pos.coords.latitude, pos.coords.longitude, "Your Detected Farm");
-      },
-      (err) => {
-        // Fallback default coordinates (Guntur, AP)
-        fetchWeatherData(16.3067, 80.4365, "Guntur / Regional Agricultural Zone");
-      },
-      { timeout: 5000, enableHighAccuracy: true }
-    );
-  } else {
-    fetchWeatherData(16.3067, 80.4365, "Guntur / Regional Agricultural Zone");
-  }
-}
-
-// Initial Auto-Execution
-document.addEventListener("DOMContentLoaded", () => {
-  renderMandiCards();
-  initLiveWeather();
-
-  const searchInput = document.getElementById("mandiSearch");
-  const marketFilter = document.getElementById("mandiMarketFilter");
-  const refreshBtn = document.getElementById("refreshWeatherBtn");
-
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      renderMandiCards(e.target.value, marketFilter ? marketFilter.value : "all");
-    });
-  }
-
-  if (marketFilter) {
-    marketFilter.addEventListener("change", (e) => {
-      renderMandiCards(searchInput ? searchInput.value : "", e.target.value);
-    });
-  }
-
-  if (refreshBtn) {
-    refreshBtn.addEventListener("click", () => initLiveWeather());
-  }
-});
-// ==========================================
-// 7. INITIALIZATION (PROMPT LANGUAGE EVERY TIME)
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-  const langModal = document.getElementById("languagePromptModal");
-  const langButtons = document.querySelectorAll(".lang-select-btn");
-  const skipBtn = document.getElementById("changeLangLaterBtn");
-  const leafInput = document.getElementById("leafInput");
-
-  // 1. Mandatory Language Prompt (Always visible on page load/refresh)
-  if (langModal) {
-    langModal.classList.remove("hidden");
-  }
-
-  langButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const selectedLang = btn.getAttribute("data-lang");
-      applyLanguage(selectedLang);
-      loadNextTip();
-      if (langModal) langModal.classList.add("hidden");
-    });
-  });
-
-  if (skipBtn) {
-    skipBtn.addEventListener("click", () => {
-      applyLanguage("en");
-      loadNextTip();
-      if (langModal) langModal.classList.add("hidden");
-    });
-  }
-
-  // 2. Attach File Listener
-  if (leafInput) {
-    leafInput.addEventListener("change", handleLeafSelection);
-  }
-
-  // 3. Initialize Modules
-  initWeatherModule();
-  initContactForm();
-  initVoiceAssistant();
-  // 4. Initialize Mandi Market Prices on Load
-  if (typeof renderMandiCards === "function") {
-    renderMandiCards();
-  }
-});
-const mandiTranslations = {
-  te: {
-    navMandi: "మార్కెట్ ధరలు",
-    mandiSectionTitle: "📊 లైవ్ మండి మార్కెట్ ధరలు",
-    mandiSectionSubtitle: "స్థానిక వ్యవసాయ మార్కెట్లలో రోజువారీ సగటు ధరలు మరియు MSP రేట్లు.",
-    mandiSearchPlaceholder: "🔍 పంట పేరు శోధించండి (ఉదా: పత్తి, మిరప, వరి)...",
-    allMarkets: "అన్ని మార్కెట్లు",
-    mandiDisclaimer: "⚠️ మార్కెట్ ధరలు క్వింటాల్‌కు (100 కేజీలు) సగటు వ్యాపార ధరలను సూచిస్తాయి."
-  },
-  hi: {
-    navMandi: "मंडी भाव",
-    mandiSectionTitle: "📊 लाइव मंडी एवं बाजार भाव",
-    mandiSectionSubtitle: "क्षेत्रीय कृषि मंडियों में दैनिक औसत मॉडल मूल्य और एमएसपी दरें।",
-    mandiSearchPlaceholder: "🔍 फसल खोजें (उदा: कपास, मिर्च, धान)...",
-    allMarkets: "सभी मंडियां",
-    mandiDisclaimer: "⚠️ मंडी दरें प्रति क्विंटल (100 किग्रा) औसत मॉडल ट्रेडिंग कीमतों को दर्शाती हैं।"
-  },
-  en: {
-    navMandi: "Mandi Rates",
-    mandiSectionTitle: "📊 Live Mandi Market Prices",
-    mandiSectionSubtitle: "Real-time daily modal market rates and MSP updates across regional agricultural markets.",
-    mandiSearchPlaceholder: "🔍 Search crop (e.g. Cotton, Chilli, Rice)...",
-    allMarkets: "All Markets",
-    mandiDisclaimer: "⚠️ Market rates reflect average daily modal trading prices per quintal (100 kg)."
-  }
-};
-// --- Mandi Market Commodity Dataset ---
-const mandiCommodities = [
-  {
-    id: "chilli",
-    name_te: "తేజ మిరప (Teja Chilli)",
-    name_hi: "तेजा लाल मिर्च (Red Chilli)",
-    name_en: "Teja Red Chilli",
-    market: "Guntur",
-    price: 19500,
-    change: "+₹350 (1.8%)",
-    trend: "up",
-    msp: "₹18,000"
-  },
-  {
-    id: "cotton",
-    name_te: "పత్తి / దూది (Cotton)",
-    name_hi: "कपास (Cotton)",
-    name_en: "Medium Staple Cotton",
-    market: "Warangal",
-    price: 7420,
-    change: "+₹120 (1.6%)",
-    trend: "up",
-    msp: "₹7,122"
-  },
-  {
-    id: "paddy",
-    name_te: "వరి / బియ్యం (Paddy BPT)",
-    name_hi: "धान / चावल (Paddy Rice)",
-    name_en: "Paddy (Grade-A)",
-    market: "Khammam",
-    price: 2320,
-    change: "+₹40 (1.7%)",
-    trend: "up",
-    msp: "₹2,300"
-  },
-  {
-    id: "maize",
-    name_te: "మొక్కజొన్న (Maize / Corn)",
-    name_hi: "मक्का (Maize / Corn)",
-    name_en: "Yellow Maize",
-    market: "Kurnool",
-    price: 2180,
-    change: "-₹30 (1.3%)",
-    trend: "down",
-    msp: "₹2,090"
-  },
-  {
-    id: "turmeric",
-    name_te: "పసుపు (Turmeric)",
-    name_hi: "हल्दी (Turmeric)",
-    name_en: "Finger Turmeric",
-    market: "Warangal",
-    price: 14200,
-    change: "+₹500 (3.6%)",
-    trend: "up",
-    msp: "₹12,500"
-  },
-  {
-    id: "onion",
-    name_te: "ఉల్లిపాయలు (Onion)",
-    name_hi: "प्याज (Onion)",
-    name_en: "Red Onion",
-    market: "Kurnool",
-    price: 2450,
-    change: "-₹80 (3.1%)",
-    trend: "down",
-    msp: "₹1,900"
-  }
-];
-
-function renderMandiCards(filterText = "", marketFilter = "all") {
-  const grid = document.getElementById("mandiGrid");
-  if (!grid) return;
-
-  const currentLang = currentActiveLang || "en";
-  grid.innerHTML = "";
-
-  const filtered = mandiCommodities.filter(item => {
-    const cropName = (item[`name_${currentLang}`] || item.name_en).toLowerCase();
-    const matchesQuery = cropName.includes(filterText.toLowerCase()) || item.market.toLowerCase().includes(filterText.toLowerCase());
-    const matchesMarket = marketFilter === "all" || item.market === marketFilter;
-    return matchesQuery && matchesMarket;
-  });
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 2rem;">No crop prices found for this search.</p>`;
-    return;
-  }
-
-  filtered.forEach(item => {
-    const cropTitle = item[`name_${currentLang}`] || item.name_en;
-    const trendIcon = item.trend === "up" ? "▲" : "▼";
-    const trendClass = item.trend === "up" ? "trend-up" : "trend-down";
-
-    const card = document.createElement("div");
-    card.className = "mandi-card";
-    card.innerHTML = `
-      <div>
-        <div class="mandi-card-header">
-          <span class="mandi-crop-name">${cropTitle}</span>
-          <span class="mandi-market-tag">${item.market} APMC</span>
-        </div>
-        <div class="mandi-price-wrap">
-          <div class="mandi-price">₹${item.price.toLocaleString("en-IN")} <span class="mandi-unit">/ Quintal</span></div>
-          <div class="mandi-trend ${trendClass}">
-            <span>${trendIcon} ${item.change}</span>
-          </div>
-        </div>
-      </div>
-      <div class="mandi-card-footer">
-        <span>MSP: ${item.msp}</span>
-        <span>Updated: Today</span>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function filterMandiCards() {
-  const query = document.getElementById("mandiSearchInput")?.value || "";
-  const market = document.getElementById("mandiStateFilter")?.value || "all";
-  renderMandiCards(query, market);
-}
-
-window.filterMandiCards = filterMandiCards;
 
 // --- 1. SMART FERTILIZER CALCULATOR ---
 function calculateFertilizer() {
