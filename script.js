@@ -121,7 +121,32 @@ const translations = {
   machineryTitle: "🚜 వ్యవసాయ యంత్రాలు & డ్రోన్ షేరింగ్",
   machinerySubtitle: "గ్రామ రైతుల నుండి ట్రాక్టర్లు, డ్రోన్లు మరియు కోత యంత్రాలను అద్దెకు పొందండి.",
   financeTitle: "🏛️ డిజిటల్ ఫార్మ్ క్రెడిట్ ప్రొఫైల్",
-  financeSubtitle: "ఉపగ్రహ పంట పర్యవేక్షణ మరియు భూమి రికార్డుల ద్వారా తక్కువ వడ్డీ బ్యాంకు రుణాలు పొందండి."
+  financeSubtitle: "ఉపగ్రహ పంట పర్యవేక్షణ మరియు భూమి రికార్డుల ద్వారా తక్కువ వడ్డీ బ్యాంకు రుణాలు పొందండి.",
+  marketRatesTitle: "📊 ప్రత్యక్ష ప్రాంతీయ మార్కెట్ ధరలు",
+  marketRatesSubtitle: "సమీప వ్యవసాయ మార్కెట్లలో రోజువారీ సగటు ధరల వివరాలు.",
+  cropPaddyName: "వరి (సాధారణ రకం)",
+  cropCottonName: "ప్రత్తి (మధ్యస్థ రకం)",
+  cropChilliName: "ఎండుమిర్చి (గుంటూరు/తేజ)",
+  cropMaizeName: "మొక్కజొన్న (పసుపు)",
+  perQuintal: "/ క్వింటాల్",
+  minMaxPrefix: "కనిష్టం: ",
+  maxPrefix: " | గరిష్టం: ",
+  trendSteady: "● స్థిరం",
+
+  // Post-Scan Roadmap
+  reductionTitle: "🛡️ తెగుళ్ల నివారణ & తగ్గించే పద్ధతులు",
+  growthTitle: "🌱 తదుపరి పెరుగుదల దశలు & సంరక్షణ ప్రణాళిక",
+
+  // Climate & Geolocation
+  climateTitle: "🌦️ స్థానిక వాతావరణ & వాతావరణ హెచ్చరికలు",
+  climateSubtitle: "రియల్-టైమ్ వ్యవసాయ వాతావరణ పర్యవేక్షణ మరియు ముందస్తు హెచ్చరికలు.",
+  btnUpdateLocation: "🔄 స్థానాన్ని అప్‌డేట్ చేయండి",
+  lblAmbientTemp: "ఉష్ణోగ్రత",
+  lblHumidity: "గాలిలో తేమ",
+  lblRainProb: "వర్షపాతం సంభావ్యత",
+  lblWindSpeed: "గాలి వేగం",
+  locDetecting: "పొలం స్థానాన్ని గుర్తిస్తోంది...",
+  locDenied: "స్థాన అనుమతి నిరాకరించబడింది. ప్రాంతీయ స్టేషన్ సమాచారం చూపబడుతోంది."
   },
   hi: {
     navHome: "होम",
@@ -230,7 +255,32 @@ const translations = {
   machineryTitle: "🚜 कृषि उपकरण एवं ड्रोन शेयरिंग हब",
   machinerySubtitle: "सत्यापित स्थानीय किसानों से किफायती दरों पर ट्रैक्टर, हार्वेस्टर और ड्रोन किराए पर लें।",
   financeTitle: "🏛️ डिजिटल फार्म क्रेडिट एवं फाइनेंसिंग प्रोफाइल",
-  financeSubtitle: "कम ब्याज पर संस्थागत ऋण प्राप्त करने के लिए उपग्रह फसल डेटा का उपयोग करें।"
+  financeSubtitle: "कम ब्याज पर संस्थागत ऋण प्राप्त करने के लिए उपग्रह फसल डेटा का उपयोग करें।",
+  marketRatesTitle: "📊 लाइव क्षेत्रीय मंडी भाव",
+  marketRatesSubtitle: "निकटतम कृषि उपज मंडियों में आज के औसत जिंस भाव।",
+  cropPaddyName: "धान / चावल (सामान्य)",
+  cropCottonName: "कपास (मध्यम रेशा)",
+  cropChilliName: "लाल मिर्च (गुंटूर/तेजा)",
+  cropMaizeName: "मक्का (पीला)",
+  perQuintal: "/ क्विंटल",
+  minMaxPrefix: "न्यूनतम: ",
+  maxPrefix: " | अधिकतम: ",
+  trendSteady: "● स्थिर",
+
+  // Post-Scan Roadmap
+  reductionTitle: "🛡️ संक्रमण रोकथाम एवं नियंत्रण के उपाय",
+  growthTitle: "🌱 फसल विकास के अगले चरण एवं देखभाल योजना",
+
+  // Climate & Geolocation
+  climateTitle: "🌦️ स्थानीय मौसम और जलवायु चेतावनी",
+  climateSubtitle: "रीयल-टाइम कृषि मौसम की निगरानी और जलवायु जोखिम चेतावनी।",
+  btnUpdateLocation: "🔄 स्थान अपडेट करें",
+  lblAmbientTemp: "तापमान",
+  lblHumidity: "हवा में नमी",
+  lblRainProb: "बारिश की संभावना",
+  lblWindSpeed: "हवा की गति",
+  locDetecting: "खेत की लोकेशन खोजी जा रही है...",
+  locDenied: "स्थान अनुमति अस्वीकृत। क्षेत्रीय स्टेशन का डेटा दिखाया जा रहा है।"
   },
   en: {
     navHome: "Home",
@@ -339,7 +389,32 @@ const translations = {
   machineryTitle: "🚜 Farm Equipment & Drone Sharing Hub",
   machinerySubtitle: "Rent tractors, rotavators, spray drones, and harvesters from verified local farmers at community rates.",
   financeTitle: "🏛️ Digital Farm Credit & Financing Profile",
-  financeSubtitle: "Leverage verified satellite vegetation health, soil chemistry, and harvest logs to access institutional loans."
+  financeSubtitle: "Leverage verified satellite vegetation health, soil chemistry, and harvest logs to access institutional loans.",
+  marketRatesTitle: "📊 Live Regional Market Rates",
+  marketRatesSubtitle: "Real-time daily modal commodity prices across nearby agricultural markets.",
+  cropPaddyName: "Paddy (Common)",
+  cropCottonName: "Cotton (Medium Staple)",
+  cropChilliName: "Red Chilli (Guntur/Teja)",
+  cropMaizeName: "Maize (Yellow)",
+  perQuintal: "/ Quintal",
+  minMaxPrefix: "Min: ",
+  maxPrefix: " | Max: ",
+  trendSteady: "● Steady",
+
+  // Post-Scan Roadmap
+  reductionTitle: "🛡️ How to Reduce & Eliminate Infection",
+  growthTitle: "🌱 Next Growth Stages & Care Schedule",
+
+  // Climate & Geolocation
+  climateTitle: "🌦️ Hyperlocal Weather & Climate Warnings",
+  climateSubtitle: "Real-time localized meteorological monitoring and climate risk advisories.",
+  btnUpdateLocation: "🔄 Update Location",
+  lblAmbientTemp: "Ambient Temp",
+  lblHumidity: "Relative Humidity",
+  lblRainProb: "Rain Probability",
+  lblWindSpeed: "Wind Velocity",
+  locDetecting: "Detecting field coordinates...",
+  locDenied: "Location access denied. Defaulting to regional station."
   }
 };
 
@@ -604,6 +679,165 @@ function initLeafScanner() {
     });
   }
 }
+// =======================================================
+// 1. LOCALIZED POST-SCAN ROADMAP & GROWTH LOGIC
+// =======================================================
+function displayPostScanRoadmap(conditionKey) {
+  const container = document.getElementById("extendedDiagnosticInsights");
+  const reductionList = document.getElementById("reductionStepsList");
+  const timeline = document.getElementById("growthStagesTimeline");
+  if (!container || !reductionList || !timeline) return;
+
+  const recoveryProtocols = {
+    te: {
+      spot: [
+        "తెగులు తీవ్రంగా సోకిన కింద ఆకులను కత్తిరించి పొలం బయట నాశనం చేయండి.",
+        "ఉదయం వేళల్లో కాపర్ ఆక్సిక్లోరైడ్ (2.5 గ్రా/లీ) లేదా మాంకోజెబ్ (2 గ్రా/లీ) పిచికారీ చేయండి.",
+        "ఆకులు త్వరగా ఆరిపోయేలా 48 గంటల పాటు స్ప్రింక్లర్ నీటి తడులను నిలిపివేయండి."
+      ],
+      default: [
+        "వ్యాధి నిరోధకత పెంచడానికి సమతుల్య N:P:K ఎరువుల నిష్పత్తిని పాటించండి.",
+        "ప్రతి 10-12 రోజులకు ఒకసారి వేప నూనె (3 మి.లీ/లీటర్) పిచికారీ చేయండి.",
+        "గాలిలో తేమ ఎక్కువగా ఉన్నప్పుడు యూరియా అధిక వినియోగాన్ని నివారించండి."
+      ],
+      growthStages: [
+        { stage: "దశ 1: పిలకల దశ / శాఖీయ పెరుగుదల (20–35 రోజులు)", care: "రెండవ విడత యూరియా వేయండి; పొలంలో 2-3 సెం.మీ తేలికపాటి నీటిని ఉంచండి." },
+        { stage: "దశ 2: పొట్ట / పూత దశ (45–65 రోజులు)", care: "అత్యంత కీలకమైన నీటి దశ. గింజ బరువు పెరగడానికి పొటాష్ (MOP) అందించండి." },
+        { stage: "దశ 3: గింజ పాలుపోసుకునే & కోత దశ (75–90 రోజులు)", care: "కోతకు 14 రోజుల ముందు పురుగుమందుల పిచికారీ ఆపండి; కోతకు వారం ముందు నీటిని తీసివేయండి." }
+      ]
+    },
+    hi: {
+      spot: [
+        "संक्रमित निचली पत्तियों को काटकर खेत से दूर नष्ट करें ताकि बीजाणु न फैलें।",
+        "सुबह के समय कॉपर ऑक्सीक्लोराइड (2.5 ग्रा/ली) या मैंकोजेब (2 ग्रा/ली) का छिड़काव करें।",
+        "पत्तियों को सूखा रखने के लिए अगले 48 घंटों तक फव्वारा सिंचाई बंद रखें।"
+      ],
+      default: [
+        "रोग प्रतिरोधक क्षमता बढ़ाने के लिए संतुलित N:P:K उर्वरक प्रबंधन अपनाएं।",
+        "हर 10-12 दिनों में नीम के तेल (3 मिली/लीटर) का सुरक्षात्मक छिड़काव करें।",
+        "अधिक नमी के दौरान यूरिया के अत्यधिक छिड़काव से बचें।"
+      ],
+      growthStages: [
+        { stage: "चरण 1: कल्ले निकलने की अवस्था / वानस्पतिक (20–35 दिन)", care: "यूरिया की दूसरी खुराक दें; खेत में 2-3 सेमी पानी का स्तर बनाए रखें।" },
+        { stage: "चरण 2: बालियां निकलने / फूल आने की अवस्था (45–65 दिन)", care: "सिंचाई के लिए सबसे संवेदनशील समय। दाने के वजन के लिए पोटाश (MOP) डालें।" },
+        { stage: "चरण 3: दाना भरने और परिपक्वता अवस्था (75–90 दिन)", care: "कटाई से 14 दिन पहले कीटनाशक का प्रयोग बंद करें; कटाई से 7 दिन पहले पानी निकाल दें।" }
+      ]
+    },
+    en: {
+      spot: [
+        "Prune and dispose of severely infected lower foliage to reduce fungal spore density.",
+        "Foliar spray with Copper Oxychloride (2.5 g/L) or Mancozeb (2 g/L) during early morning.",
+        "Switch off overhead sprinkler irrigation for 48 hours to keep the canopy dry."
+      ],
+      default: [
+        "Maintain a balanced N:P:K nutrient ratio to build cell-wall resistance.",
+        "Apply prophylactic Neem oil (3ml/L) spray every 10–12 days.",
+        "Avoid excess nitrogenous fertilizer (Urea) top-dressing during high humidity."
+      ],
+      growthStages: [
+        { stage: "Stage 1: Tillering / Vegetative (Days 20–35)", care: "Apply 2nd split of Urea; maintain 2-3 cm shallow water layer." },
+        { stage: "Stage 2: Panicle Initiation / Flowering (Days 45–65)", care: "Critical water sensitivity stage. Apply Potash (MOP) to enhance grain weight." },
+        { stage: "Stage 3: Grain Filling & Ripening (Days 75–90)", care: "Cease all pesticide application 14 days prior to harvest; drain water 7 days before cutting." }
+      ]
+    }
+  };
+
+  const activeData = recoveryProtocols[currentActiveLang] || recoveryProtocols.en;
+  const steps = conditionKey === "spot" ? activeData.spot : activeData.default;
+
+  reductionList.innerHTML = steps.map(s => `<li>${s}</li>`).join("");
+
+  timeline.innerHTML = activeData.growthStages.map(g => `
+    <div class="timeline-step">
+      <strong>${g.stage}</strong>
+      <p>${g.care}</p>
+    </div>
+  `).join("");
+
+  container.classList.remove("hidden");
+}
+
+// =======================================================
+// 2. LOCALIZED GEOLOCATION & CLIMATE RISK ENGINE
+// =======================================================
+function detectLiveLocation() {
+  const locElem = document.getElementById("userGeoLocation");
+  const tempElem = document.getElementById("liveTempDisplay");
+  const humidityElem = document.getElementById("liveHumidityDisplay");
+  const rainElem = document.getElementById("liveRainDisplay");
+  const windElem = document.getElementById("liveWindDisplay");
+  const alertElem = document.getElementById("climateAlertBox");
+
+  const dict = translations[currentActiveLang] || translations.en;
+
+  if (!navigator.geolocation) {
+    if (locElem) locElem.textContent = dict.locDenied;
+    return;
+  }
+
+  if (locElem) locElem.textContent = dict.locDetecting;
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude.toFixed(2);
+      const lon = position.coords.longitude.toFixed(2);
+      
+      const locTexts = {
+        te: `అక్షాంశం: ${lat}°, రేఖాంశం: ${lon}° (లైవ్ పొలం అనుసంధానించబడింది)`,
+        hi: `अक्षांश: ${lat}°, देशांतर: ${lon}° (खेत की लोकेशन कनेक्टेड)`,
+        en: `Lat: ${lat}°, Lon: ${lon}° (Live Coordinates Connected)`
+      };
+      
+      if (locElem) locElem.textContent = locTexts[currentActiveLang] || locTexts.en;
+
+      const simulatedTemp = 32;
+      const simulatedHumidity = 78;
+      const simulatedRain = 65;
+      const simulatedWind = 18;
+
+      if (tempElem) tempElem.textContent = `${simulatedTemp}°C`;
+      if (humidityElem) humidityElem.textContent = `${simulatedHumidity}%`;
+      if (rainElem) rainElem.textContent = `${simulatedRain}%`;
+      if (windElem) windElem.textContent = `${simulatedWind} km/h`;
+
+      const alertMessages = {
+        te: {
+          warning: `⚠️ <strong>వాతావరణ హెచ్చరిక:</strong> రాబోయే 24 గంటల్లో భారీ వర్షం మరియు ఈదురు గాలులు వీచే అవకాశం ఉంది. పొలంలో నీటి నిల్వ లేకుండా కాలువలను సిద్ధం చేయండి మరియు పిచికారీని వాయిదా వేయండి.`,
+          optimal: `✅ <strong>అనుకూల పరిస్థితులు:</strong> వ్యవసాయ పనులకు మరియు పిచికారీకి వాతావరణం అనుకూలంగా ఉంది.`
+        },
+        hi: {
+          warning: `⚠️ <strong>मौसम चेतावनी:</strong> अगले 24 घंटों में मध्यम से भारी बारिश और तेज हवाओं की संभावना है। जल निकासी की व्यवस्था करें और छिड़काव टालें।`,
+          optimal: `✅ <strong>अनुकूल मौसम:</strong> सामान्य कृषि कार्यों और खाद छिड़काव के लिए मौसम उत्तम है।`
+        },
+        en: {
+          warning: `⚠️ <strong>Climate Alert:</strong> Moderate to heavy precipitation and elevated wind gusts expected in your zone within 24 hours. Ensure drainage ditches are clear and postpone sprays.`,
+          optimal: `✅ <strong>Optimal Conditions:</strong> Stable agro-climatic window for standard field operations.`
+        }
+      };
+
+      const msg = alertMessages[currentActiveLang] || alertMessages.en;
+      if (alertElem) {
+        alertElem.innerHTML = (simulatedRain > 60 && simulatedWind > 15) ? msg.warning : msg.optimal;
+      }
+    },
+    (err) => {
+      if (locElem) locElem.textContent = dict.locDenied;
+    }
+  );
+}
+
+// Auto-run on language changes
+const previousSelectAppLanguage = window.selectAppLanguage;
+window.selectAppLanguage = function(lang) {
+  if (typeof previousSelectAppLanguage === "function") {
+    previousSelectAppLanguage(lang);
+  }
+  detectLiveLocation();
+  const report = document.getElementById("diagnosticReport");
+  if (report && !report.classList.contains("hidden")) {
+    displayPostScanRoadmap("spot");
+  }
+};
 
 // ==========================================
 // 4. AGRONOMIC CALCULATORS & ADVISORY

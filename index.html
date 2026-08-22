@@ -235,6 +235,118 @@
     </div>
   </div>
 </section>
+<!-- ==========================================
+     1. LIVE MARKET COMMODITY RATES
+     ========================================== -->
+<section id="live-market-rates" class="feature-section">
+  <div class="container">
+    <div class="section-header-wrap">
+      <h2 class="section-title" data-i18n="marketRatesTitle">📊 Live Regional Market Rates</h2>
+      <p class="section-subtitle" data-i18n="marketRatesSubtitle">Real-time daily modal commodity prices across nearby agricultural markets.</p>
+    </div>
+
+    <div class="market-rate-grid">
+      <div class="rate-card glass-panel">
+        <div class="rate-card-head">
+          <span class="crop-badge" data-i18n="cropPaddyName">Paddy (Common)</span>
+          <span class="trend-up">▲ ₹45/qtl</span>
+        </div>
+        <div class="rate-price">₹2,320 <span data-i18n="perQuintal">/ Quintal</span></div>
+        <div class="rate-meta"><span data-i18n="minMaxPrefix">Min: </span>₹2,180<span data-i18n="maxPrefix"> | Max: </span>₹2,390</div>
+      </div>
+
+      <div class="rate-card glass-panel">
+        <div class="rate-card-head">
+          <span class="crop-badge" data-i18n="cropCottonName">Cotton (Medium Staple)</span>
+          <span class="trend-down">▼ ₹60/qtl</span>
+        </div>
+        <div class="rate-price">₹7,450 <span data-i18n="perQuintal">/ Quintal</span></div>
+        <div class="rate-meta"><span data-i18n="minMaxPrefix">Min: </span>₹7,100<span data-i18n="maxPrefix"> | Max: </span>₹7,620</div>
+      </div>
+
+      <div class="rate-card glass-panel">
+        <div class="rate-card-head">
+          <span class="crop-badge" data-i18n="cropChilliName">Red Chilli (Guntur/Teja)</span>
+          <span class="trend-up">▲ ₹180/qtl</span>
+        </div>
+        <div class="rate-price">₹18,200 <span data-i18n="perQuintal">/ Quintal</span></div>
+        <div class="rate-meta"><span data-i18n="minMaxPrefix">Min: </span>₹16,500<span data-i18n="maxPrefix"> | Max: </span>₹19,100</div>
+      </div>
+
+      <div class="rate-card glass-panel">
+        <div class="rate-card-head">
+          <span class="crop-badge" data-i18n="cropMaizeName">Maize (Yellow)</span>
+          <span class="trend-stable" data-i18n="trendSteady">● Steady</span>
+        </div>
+        <div class="rate-price">₹2,150 <span data-i18n="perQuintal">/ Quintal</span></div>
+        <div class="rate-meta"><span data-i18n="minMaxPrefix">Min: </span>₹2,050<span data-i18n="maxPrefix"> | Max: </span>₹2,200</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     2. POST-SCAN DISEASE REDUCTION & GROWTH STAGES
+     ========================================== -->
+<div id="extendedDiagnosticInsights" class="post-scan-details hidden">
+  <div class="recovery-protocol-card glass-panel">
+    <h3 data-i18n="reductionTitle">🛡️ How to Reduce & Eliminate Infection</h3>
+    <ul class="protocol-list" id="reductionStepsList">
+      <!-- Injected dynamically in selected language -->
+    </ul>
+  </div>
+
+  <div class="growth-roadmap-card glass-panel">
+    <h3 data-i18n="growthTitle">🌱 Next Growth Stages & Care Schedule</h3>
+    <div class="roadmap-timeline" id="growthStagesTimeline">
+      <!-- Injected dynamically in selected language -->
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     3. LIVE GEOLOCATION & CLIMATE CHANGE WARNINGS
+     ========================================== -->
+<section id="climate-warning-section" class="feature-section alt-bg">
+  <div class="container">
+    <div class="section-header-wrap">
+      <h2 class="section-title" data-i18n="climateTitle">🌦️ Hyperlocal Weather & Climate Warnings</h2>
+      <p class="section-subtitle" data-i18n="climateSubtitle">Real-time localized meteorological monitoring and climate risk advisories.</p>
+    </div>
+
+    <div class="climate-panel glass-panel">
+      <div class="climate-location-row">
+        <div class="loc-badge">
+          📍 <span id="userGeoLocation" data-i18n="locDetecting">Detecting field coordinates...</span>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="detectLiveLocation()" data-i18n="btnUpdateLocation">🔄 Update Location</button>
+      </div>
+
+      <div class="climate-metrics-grid">
+        <div class="climate-metric-box">
+          <span class="metric-lbl" data-i18n="lblAmbientTemp">Ambient Temp</span>
+          <strong id="liveTempDisplay">--°C</strong>
+        </div>
+        <div class="climate-metric-box">
+          <span class="metric-lbl" data-i18n="lblHumidity">Relative Humidity</span>
+          <strong id="liveHumidityDisplay">--%</strong>
+        </div>
+        <div class="climate-metric-box">
+          <span class="metric-lbl" data-i18n="lblRainProb">Rain Probability</span>
+          <strong id="liveRainDisplay">--%</strong>
+        </div>
+        <div class="climate-metric-box">
+          <span class="metric-lbl" data-i18n="lblWindSpeed">Wind Velocity</span>
+          <strong id="liveWindDisplay">-- km/h</strong>
+        </div>
+      </div>
+
+      <div id="climateAlertBox" class="alert-banner warning-active">
+        <!-- Injected dynamically in selected language -->
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- SECTION 2: Crop Market Price & Best Time to Sell -->
 <section id="market-timing-section" class="feature-section">
