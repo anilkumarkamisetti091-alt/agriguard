@@ -188,7 +188,6 @@
               <div class="meter-bar"><div id="pesticideBar" class="meter-fill fill-amber"></div></div>
             </div>
           </div>
-
           <div class="report-actions">
             <button id="downloadPdfBtn" class="btn btn-secondary" onclick="generatePdfReport()">
               📄 <span data-i18n="btnDownloadPdf">Download Health Card (PDF)</span>
@@ -225,7 +224,7 @@
           <span class="status-indicator status-green"></span>
           <h3 id="dailyActionTitle" data-i18n="dailyActionHead">Spray Window Open</h3>
         </div>
-        <p id="dailyActionDesc" data-i18n="dailyActionBody">Wind speed (6 km/h) and low rain probability provide an optimal window for foliar nutrient sprays before 11:00 AM.</p>
+        <p id="dailyActionDesc" data-i18n="dailyActionBody">Wind speed (6-8 km/h) and low rain probability provide an optimal window for foliar nutrient sprays before 11:00 AM to 3:00 PM.</p>
         <div class="decision-metrics">
           <div class="metric-chip">💧 Soil Moisture: <strong>68%</strong></div>
           <div class="metric-chip">💨 Wind: <strong>6 km/h</strong></div>
@@ -433,6 +432,336 @@
     </div>
   </div>
 </section>
+<!-- Tank Mix, Fungicide Resistance, Secondary Infection, Pest ETL, Weed Matcher -->
+<section id="precision-crop-mgmt" class="feature-section">
+  <div class="container">
+    <h2 class="section-title" data-i18n="pcmTitle">Precision Crop & Disease Management</h2>
+    <div class="tools-grid">
+      <!-- 1. Real-Time Chemical Tank Mix Calculator -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="tankMixTitle">🧪 Tank Mix & Dilution</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblTankVol">Tank Volume (L)</label>
+          <input type="number" id="pcmTankVol" class="styled-input" value="16" min="1">
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblRecDose">Recommended Dose (/L)</label>
+          <input type="number" id="pcmDosePerL" class="styled-input" value="2.5" step="0.1">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculatePcmTankMix()" data-i18n="btnCalculate">Calculate</button>
+        <div id="pcmTankOutput" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 2. Fungicide Resistance Tracker (FRAC) -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="fracTitle">🛡️ FRAC Resistance Tracker</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblLastChem">Last Applied Group</label>
+          <select id="pcmFracGroup" class="styled-select" onchange="evaluateFracRotation()">
+            <option value="FRAC_11">FRAC 11 (Strobilurins / Azoxystrobin)</option>
+            <option value="FRAC_3">FRAC 3 (Triazoles / Hexaconazole)</option>
+            <option value="FRAC_M">FRAC M (Multi-site / Mancozeb)</option>
+          </select>
+        </div>
+        <div id="pcmFracOutput" class="calc-metric-output"></div>
+      </div>
+
+      <!-- 3. Secondary Infection Risk Forecast -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="secondaryRiskTitle">⚠️ Secondary Spore Risk</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblLeafWetHours">Consecutive Wet Hours</label>
+          <input type="number" id="pcmWetHours" class="styled-input" value="8" min="0">
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblRelHumidity">Relative Humidity (%)</label>
+          <input type="number" id="pcmHumidity" class="styled-input" value="85" min="0" max="100">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculateSecondaryRisk()" data-i18n="btnEvalRisk">Evaluate Spore Risk</button>
+        <div id="pcmRiskOutput" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 4. Pest Threshold (ETL) Ledger -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="etlTitle">🐛 Pest ETL Ledger</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblTargetPest">Target Pest</label>
+          <select id="pcmPestType" class="styled-select">
+            <option value="aphids">Aphids / Jassids</option>
+            <option value="bollworm">Bollworm / Borer</option>
+            <option value="thrips">Thrips</option>
+          </select>
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblPestCount">Avg Count Per Plant / Leaf</label>
+          <input type="number" id="pcmPestCount" class="styled-input" value="6" min="0">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculateEtlThreshold()" data-i18n="btnCheckEtl">Check Spray Threshold</button>
+        <div id="pcmEtlOutput" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 5. Weed Matcher -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="weedTitle">🌿 Weed Matcher</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblWeedType">Observed Weed Category</label>
+          <select id="pcmWeedType" class="styled-select" onchange="matchHerbicide()">
+            <option value="broadleaf">Broadleaf Weeds (Dicot)</option>
+            <option value="grassy">Grassy Weeds (Monocot)</option>
+            <option value="sedges">Sedges (Cyperus spp.)</option>
+          </select>
+        </div>
+        <div id="pcmWeedOutput" class="calc-metric-output"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- OCR Scanner, Split Alarm, Organic Recipes, Micronutrient Diagnostic -->
+<section id="smart-soil-nutrition" class="feature-section alt-bg">
+  <div class="container">
+    <h2 class="section-title" data-i18n="ssnTitle">Smart Soil & Precision Nutrition</h2>
+    <div class="tools-grid">
+      <!-- 6. Soil Health Card OCR Parser Simulator -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="ocrTitle">📄 Soil Card Digitizer</h3>
+        <p class="tool-desc" data-i18n="ocrDesc">Simulate scanning of Soil Health Card metrics.</p>
+        <button type="button" class="btn btn-secondary w-full" onclick="simulateSoilOcr()" data-i18n="btnOcrScan">Scan Card & Extract</button>
+        <div id="ocrOutputBox" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 7. Fertilizer Split Application Alarm -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="fertAlarmTitle">⏰ Split Dose Calendar</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblCropDate">Sowing / Transplant Date</label>
+          <input type="date" id="ssnSowingDate" class="styled-input">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculateFertilizerDoseCalendar()" data-i18n="btnCalcSchedule">Generate Alert Timeline</button>
+        <div id="fertAlarmOutput" class="roadmap-timeline hidden"></div>
+      </div>
+
+      <!-- 8. Organic Formulation Recipe Engine -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="organicEngineTitle">🌿 Organic Bio-Formulations</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblRecipeChoice">Select Formulation</label>
+          <select id="ssnRecipeSelect" class="styled-select" onchange="renderSsnOrganicRecipe()">
+            <option value="jeevamrutha">Jeevamrutha (జీవామృతం / जीवामृत)</option>
+            <option value="beejamrutha">Beejamrutha (బీజామృతం / बीजामृत)</option>
+            <option value="panchagavya">Panchagavya (పంచగవ్య / पंचगव्य)</option>
+            <option value="neemcake">Neem Cake Soil Enricher</option>
+          </select>
+        </div>
+        <div id="ssnRecipeOutput" class="calc-metric-output"></div>
+      </div>
+
+      <!-- 9. Micronutrient Deficiency Diagnostic Matrix -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="microTitle">🔬 Micronutrient Matrix</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblDiscoloration">Leaf Visual Symptom</label>
+          <select id="ssnMicroSymptom" class="styled-select" onchange="diagnoseMicronutrient()">
+            <option value="interveinal_young">Interveinal Chlorosis on Young Leaves</option>
+            <option value="white_bud">White/Bleached Bud Leaves (Zinc)</option>
+            <option value="cupped_mature">Interveinal Yellowing on Older Leaves</option>
+            <option value="brittle_tip">Brittle Growing Tips / Hollow Stem</option>
+          </select>
+        </div>
+        <div id="ssnMicroOutput" class="calc-metric-output"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ETc Engine, Borewell Depletion, Spray Safety Window, Climate Triggers -->
+<section id="water-climate-intel" class="feature-section">
+  <div class="container">
+    <h2 class="section-title" data-i18n="wciTitle">Water Budgeting & Climate Intelligence</h2>
+    <div class="tools-grid">
+      <!-- 10. Crop Evapotranspiration (ETc) Engine -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="etcTitle">☀️ Evapotranspiration ($ET_c$)</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblTempC">Daily Max Temp (°C)</label>
+          <input type="number" id="wciTemp" class="styled-input" value="34">
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblCropKc">Crop Coefficient ($K_c$)</label>
+          <input type="number" id="wciKc" class="styled-input" value="1.05" step="0.05">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculateCropEtc()" data-i18n="btnCalcEtc">Compute Daily Water Loss</button>
+        <div id="etcOutputBox" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 11. Borewell Depletion & Stress Indicator -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="borewellTitle">💧 Borewell Depletion Stress</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblWaterYield">Borewell Discharge (Inches / GPM)</label>
+          <input type="number" id="wciDischarge" class="styled-input" value="2.0" step="0.5">
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblAcresIrrigated">Total Farm Area (Acres)</label>
+          <input type="number" id="wciArea" class="styled-input" value="3.0">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculateBorewellStress()" data-i18n="btnCalcStress">Check Stress Index</button>
+        <div id="borewellOutputBox" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 12. Hourly Spray Safety Window -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="sprayWindowHeading">⏱️ Hourly Spray Safety Window</h3>
+        <div class="spray-timeline">
+          <div class="spray-slot slot-green"><span>06:00 - 09:00</span><strong>Optimal (Green)</strong></div>
+          <div class="spray-slot slot-yellow"><span>09:00 - 12:00</span><strong>Moderate (Yellow)</strong></div>
+          <div class="spray-slot slot-red"><span>12:00 - 16:00</span><strong>Unsafe (High Drift)</strong></div>
+          <div class="spray-slot slot-green"><span>16:00 - 18:30</span><strong>Optimal (Green)</strong></div>
+        </div>
+      </div>
+
+      <!-- 13. Extreme Weather Event SMS/Push Triggers -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="extremeWeatherTitle">🚨 48h Extreme Warning Alert</h3>
+        <div id="extremeAlertBanner" class="alert-banner warning-active">
+          <strong data-i18n="heatwaveWarning">🔥 Heatwave Alert:</strong>
+          <p data-i18n="heatwaveAction">Ambient temp exceeding 41°C in next 48h. Provide light evening irrigation to maintain root turgidity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Mandi Profit Optimizer, Grain Moisture Life, FPO Aggregator -->
+<section id="market-post-harvest" class="feature-section alt-bg">
+  <div class="container">
+    <h2 class="section-title" data-i18n="mphTitle">Market Timing & Post-Harvest Tools</h2>
+    <div class="tools-grid">
+      <!-- 14. Mandi Distance vs. Profit Optimization Engine -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="mandiOptTitle">⚖️ Mandi Profit Optimizer</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblProduceQty">Produce Volume (Quintals)</label>
+          <input type="number" id="mphQty" class="styled-input" value="40">
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblMandiA">Local Mandi Price (₹/qtl) [10 km]</label>
+          <input type="number" id="mphPriceA" class="styled-input" value="6800">
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblMandiB">Distant Mandi Price (₹/qtl) [80 km]</label>
+          <input type="number" id="mphPriceB" class="styled-input" value="7300">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="optimizeMandiProfit()" data-i18n="btnCompareMandi">Compare Net Realization</button>
+        <div id="mandiOptOutputBox" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 15. Grain Moisture & Storage Life Estimator -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="grainStorageTitle">🌾 Grain Storage Shelf-Life</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblMeasuredMoisture">Measured Moisture (%)</label>
+          <input type="number" id="mphMoisture" class="styled-input" value="13.2" step="0.1">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="calculateGrainShelfLife()" data-i18n="btnCalcStorage">Assess Storage Risk</button>
+        <div id="grainStorageOutputBox" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 16. Direct Farmer-to-FPO Aggregation Board -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="fpoBoardTitle">🤝 FPO Produce Pooling</h3>
+        <p class="tool-desc" data-i18n="fpoDesc">Join neighbors to aggregate load for commercial buyers.</p>
+        <div class="form-group-compact">
+          <label data-i18n="lblPoolCrop">Select Crop</label>
+          <select id="mphPoolCrop" class="styled-select">
+            <option value="cotton">Cotton / ప్రత్తి</option>
+            <option value="chilli">Chilli / మిరప</option>
+            <option value="paddy">Paddy / వరి</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-primary w-full" onclick="joinFpoPool()" data-i18n="btnJoinPool">Join Village Load Pool</button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Expense Ledger, CHC Locator, Drone Dispatcher -->
+<section id="equipment-operations" class="feature-section">
+  <div class="container">
+    <h2 class="section-title" data-i18n="opsTitle">Equipment, Labor & Farm Operations</h2>
+    <div class="tools-grid">
+      <!-- 17. Farm Operations Expense Ledger -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="ledgerTitle">📒 Expense Ledger</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblExpCategory">Category</label>
+          <select id="opsCategory" class="styled-select">
+            <option value="Seeds">Seeds / విత్తనాలు</option>
+            <option value="Labor">Labor / కూలీలు</option>
+            <option value="Fertilizer">Fertilizers / ఎరువులు</option>
+            <option value="Machinery">Fuel & Machinery / యంత్రాలు</option>
+          </select>
+        </div>
+        <div class="form-group-compact">
+          <label data-i18n="lblAmount">Amount (₹)</label>
+          <input type="number" id="opsAmount" class="styled-input" placeholder="e.g. 3500">
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="addExpenseEntry()" data-i18n="btnAddExpense">Log Expense</button>
+        <div id="opsLedgerTotal" class="calc-metric-output" style="margin-top:0.75rem;">Total Logged: ₹0</div>
+      </div>
+
+      <!-- 18. Custom Hiring Center (CHC) Implement Locator -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="chcTitle">🚜 CHC Implement Hub</h3>
+        <p class="tool-desc" data-i18n="chcDesc">Book subsidized tillage and harvesting implements nearby.</p>
+        <div class="form-group-compact">
+          <label data-i18n="lblSelectMachinery">Select Implement</label>
+          <select id="opsImplement" class="styled-select">
+            <option value="laser_leveler">Laser Land Leveler (₹900/hr)</option>
+            <option value="paddy_transplanter">Automatic Paddy Transplanter (₹2,400/acre)</option>
+            <option value="rotavator">Heavy Duty Rotavator (₹800/hr)</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-secondary w-full" onclick="bookChcImplement()" data-i18n="btnBookChc">Request Machine</button>
+      </div>
+
+      <!-- 19. Drone Spray Booking Dispatcher -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="droneTitle">🚁 Drone Spray Dispatch</h3>
+        <div class="form-group-compact">
+          <label data-i18n="lblAcreageDrone">Acreage to Spray</label>
+          <input type="number" id="opsDroneAcres" class="styled-input" value="3.0">
+        </div>
+        <button type="button" class="btn btn-primary w-full" onclick="bookDroneSpray()" data-i18n="btnBookDrone">Book Certified Drone Pilot</button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Voice Chem Assistant, Offline Diagnostic Cache, Single-Page Card Exporter -->
+<section id="interactive-accessibility" class="feature-section alt-bg">
+  <div class="container">
+    <h2 class="section-title" data-i18n="iaTitle">Interactive Field Accessibility</h2>
+    <div class="tools-grid">
+      <!-- 20. Voice-Guided Chemical Measuring Assistant -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="voiceGuideTitle">🔊 Voice Spray Assistant</h3>
+        <p class="tool-desc" data-i18n="voiceGuideDesc">Listen to step-by-step chemical measuring and PPE safety guidelines.</p>
+        <button type="button" class="btn btn-primary w-full" onclick="playVoiceChemGuide()" data-i18n="btnPlayGuide">Play Audio Safety Protocol</button>
+      </div>
+
+      <!-- 21. Offline Field Diagnostic Cache -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="offlineCacheTitle">💾 Offline Field Vault</h3>
+        <p class="tool-desc" data-i18n="offlineCacheDesc">Cache diagnostic matrices and emergency numbers for remote field use without cellular connection.</p>
+        <button type="button" class="btn btn-secondary w-full" onclick="saveOfflineDiagnosticCache()" data-i18n="btnSyncCache">Sync & Save to Local Memory</button>
+        <div id="cacheStatusOutput" class="calc-metric-output hidden"></div>
+      </div>
+
+      <!-- 22. Single-Page Diagnostic Card Exporter -->
+      <div class="tool-card glass-panel">
+        <h3 data-i18n="exporterTitle">🖨️ Field Diagnostic Card</h3>
+        <p class="tool-desc" data-i18n="exporterDesc">Export compact print-ready field diagnostic prescriptions for input shops.</p>
+        <button type="button" class="btn btn-secondary w-full" onclick="exportDiagnosticFieldCard()" data-i18n="btnExportCard">Export Printable PDF Sheet</button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- SECTION 4: Peer-to-Peer Farm Machinery Sharing -->
 <section id="machinery-sharing-section" class="feature-section">
@@ -466,52 +795,6 @@
         <div class="rate-tag">₹2,200 / Acre</div>
         <button class="btn btn-secondary w-full" onclick="requestMachinery('Combine Harvester')">Book Equipment</button>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 5: Data-Driven Farm Financing Profile -->
-<section id="credit-profile-section" class="feature-section alt-bg">
-  <div class="container">
-    <div class="section-header-wrap">
-      <h2 class="section-title" data-i18n="financeTitle">🏛️ Digital Farm Credit & Financing Profile</h2>
-      <p class="section-subtitle" data-i18n="financeSubtitle">Leverage verified satellite vegetation health, soil chemistry, and harvest logs to access low-interest institutional loans without excessive paperwork.</p>
-    </div>
-
-    <div class="calculator-card glass-panel">
-      <div class="credit-score-header">
-        <div class="score-dial">
-          <span class="score-num">785</span>
-          <span class="score-label">Agri-Credit Score</span>
-        </div>
-        <div class="score-summary">
-          <h4 class="text-green">Credit Rating: Prime A+</h4>
-          <p>Eligible for pre-approved Kisan Credit Card (KCC) limit enhancements and concessional crop loans up to ₹3,00,000 at 4% interest subvention.</p>
-        </div>
-      </div>
-
-      <div class="metrics-grid">
-        <div class="metric-tile">
-          <div class="metric-meta"><span>Satellite Crop Health Index</span><strong>92% (Optimal)</strong></div>
-          <div class="meter-bar"><div class="meter-fill fill-green" style="width: 92%"></div></div>
-        </div>
-        <div class="metric-tile">
-          <div class="metric-meta"><span>Field Moisture Consistency</span><strong>85% (Stable)</strong></div>
-          <div class="meter-bar"><div class="meter-fill fill-teal" style="width: 85%"></div></div>
-        </div>
-        <div class="metric-tile">
-          <div class="metric-meta"><span>Land Title Verification</span><strong>100% (Digital Record Clean)</strong></div>
-          <div class="meter-bar"><div class="meter-fill fill-blue" style="width: 100%"></div></div>
-        </div>
-        <div class="metric-tile">
-          <div class="metric-meta"><span>Historical Yield Repayment Risk</span><strong>Low Risk</strong></div>
-          <div class="meter-bar"><div class="meter-fill fill-green" style="width: 90%"></div></div>
-        </div>
-      </div>
-
-      <button type="button" class="btn btn-primary w-full" onclick="downloadCreditProfile()">
-        📄 Download Certified Farm Credit Dossier (PDF)
-      </button>
     </div>
   </div>
 </section>

@@ -120,8 +120,6 @@ const translations = {
   btnCalculatePnL: "లాభనష్టాలను లెక్కించండి",
   machineryTitle: "🚜 వ్యవసాయ యంత్రాలు & డ్రోన్ షేరింగ్",
   machinerySubtitle: "గ్రామ రైతుల నుండి ట్రాక్టర్లు, డ్రోన్లు మరియు కోత యంత్రాలను అద్దెకు పొందండి.",
-  financeTitle: "🏛️ డిజిటల్ ఫార్మ్ క్రెడిట్ ప్రొఫైల్",
-  financeSubtitle: "ఉపగ్రహ పంట పర్యవేక్షణ మరియు భూమి రికార్డుల ద్వారా తక్కువ వడ్డీ బ్యాంకు రుణాలు పొందండి.",
   marketRatesTitle: "📊 ప్రత్యక్ష ప్రాంతీయ మార్కెట్ ధరలు",
   marketRatesSubtitle: "సమీప వ్యవసాయ మార్కెట్లలో రోజువారీ సగటు ధరల వివరాలు.",
   cropPaddyName: "వరి (సాధారణ రకం)",
@@ -254,8 +252,6 @@ const translations = {
   btnCalculatePnL: "लाभ / हानि की गणना करें",
   machineryTitle: "🚜 कृषि उपकरण एवं ड्रोन शेयरिंग हब",
   machinerySubtitle: "सत्यापित स्थानीय किसानों से किफायती दरों पर ट्रैक्टर, हार्वेस्टर और ड्रोन किराए पर लें।",
-  financeTitle: "🏛️ डिजिटल फार्म क्रेडिट एवं फाइनेंसिंग प्रोफाइल",
-  financeSubtitle: "कम ब्याज पर संस्थागत ऋण प्राप्त करने के लिए उपग्रह फसल डेटा का उपयोग करें।",
   marketRatesTitle: "📊 लाइव क्षेत्रीय मंडी भाव",
   marketRatesSubtitle: "निकटतम कृषि उपज मंडियों में आज के औसत जिंस भाव।",
   cropPaddyName: "धान / चावल (सामान्य)",
@@ -388,8 +384,6 @@ const translations = {
   btnCalculatePnL: "Forecast Profit / Loss",
   machineryTitle: "🚜 Farm Equipment & Drone Sharing Hub",
   machinerySubtitle: "Rent tractors, rotavators, spray drones, and harvesters from verified local farmers at community rates.",
-  financeTitle: "🏛️ Digital Farm Credit & Financing Profile",
-  financeSubtitle: "Leverage verified satellite vegetation health, soil chemistry, and harvest logs to access institutional loans.",
   marketRatesTitle: "📊 Live Regional Market Rates",
   marketRatesSubtitle: "Real-time daily modal commodity prices across nearby agricultural markets.",
   cropPaddyName: "Paddy (Common)",
@@ -1002,6 +996,682 @@ function calculatePnL() {
   if (box) box.classList.remove("hidden");
 }
 window.calculatePnL = calculatePnL;
+// Section 1: JavaScript Implementation
+Object.assign(translations.en, {
+  pcmTitle: "Precision Crop & Disease Management",
+  tankMixTitle: "🧪 Tank Mix & Dilution",
+  lblTankVol: "Tank Volume (L)",
+  lblRecDose: "Recommended Dose (/L)",
+  btnCalculate: "Calculate",
+  fracTitle: "🛡️ FRAC Resistance Tracker",
+  lblLastChem: "Last Applied Group",
+  secondaryRiskTitle: "⚠️ Secondary Spore Risk",
+  lblLeafWetHours: "Consecutive Wet Hours",
+  lblRelHumidity: "Relative Humidity (%)",
+  btnEvalRisk: "Evaluate Spore Risk",
+  etlTitle: "🐛 Pest ETL Ledger",
+  lblTargetPest: "Target Pest",
+  lblPestCount: "Avg Count Per Plant / Leaf",
+  btnCheckEtl: "Check Spray Threshold",
+  weedTitle: "🌿 Weed Matcher",
+  lblWeedType: "Observed Weed Category"
+});
+
+Object.assign(translations.te, {
+  pcmTitle: "ఖచ్చితమైన పంట & తెగుళ్ల నిర్వహణ",
+  tankMixTitle: "🧪 ట్యాంక్ మిశ్రమం & పరిమాణం",
+  lblTankVol: "ట్యాంక్ సామర్థ్యం (లీటర్లు)",
+  lblRecDose: "సిఫార్సు చేసిన మోతాదు (/లీటరు)",
+  btnCalculate: "లెక్కించండి",
+  fracTitle: "🛡️ FRAC రెసిస్టెన్స్ ట్రాకర్",
+  lblLastChem: "చివరిగా వాడిన రసాయన గ్రూప్",
+  secondaryRiskTitle: "⚠️ ద్వితీయ తెగులు ముప్పు అంచనా",
+  lblLeafWetHours: "ఆకులు తడిగా ఉన్న గంటలు",
+  lblRelHumidity: "గాలిలో తేమ శాతం (%)",
+  btnEvalRisk: "ముప్పును లెక్కించండి",
+  etlTitle: "🐛 పురుగుల ETL లెడ్జర్",
+  lblTargetPest: "పురుగు రకం",
+  lblPestCount: "మొక్కకు సగటున ఉన్న పురుగుల సంఖ్య",
+  btnCheckEtl: "పిచికారీ పరిమితిని తనిఖీ చేయండి",
+  weedTitle: "🌿 కలుపు గుర్తింపు & మందులు",
+  lblWeedType: "కనిపిస్తున్న కలుపు రకం"
+});
+
+Object.assign(translations.hi, {
+  pcmTitle: "सटीक फसल एवं कीट प्रबंधन",
+  tankMixTitle: "🧪 टैंक मिश्रण एवं मात्रा",
+  lblTankVol: "टैंक क्षमता (लीटर)",
+  lblRecDose: "अनुशंसित खुराक (/लीटर)",
+  btnCalculate: "गणना करें",
+  fracTitle: "🛡️ FRAC प्रतिरोध ट्रैकर",
+  lblLastChem: "पिछला उपयोग किया गया समूह",
+  secondaryRiskTitle: "⚠️ द्वितीयक संक्रमण जोखिम",
+  lblLeafWetHours: "पत्तियों के गीले रहने के घंटे",
+  lblRelHumidity: "सापेक्ष आर्द्रता (%)",
+  btnEvalRisk: "जोखिम का आकलन करें",
+  etlTitle: "🐛 कीट ईटीएल (ETL) लेजर",
+  lblTargetPest: "कीट का प्रकार",
+  lblPestCount: "प्रति पौधा औसत कीट संख्या",
+  btnCheckEtl: "छिड़काव सीमा जांचें",
+  weedTitle: "🌿 खरपतवार नाशक चयन",
+  lblWeedType: "खरपतवार की श्रेणी"
+});
+
+function calculatePcmTankMix() {
+  const vol = parseFloat(document.getElementById("pcmTankVol").value) || 16;
+  const dose = parseFloat(document.getElementById("pcmDosePerL").value) || 2;
+  const total = (vol * dose).toFixed(1);
+  const out = document.getElementById("pcmTankOutput");
+  const msgs = {
+    en: `Add exactly ${total} g/ml into ${vol}L water. Stir thoroughly before spraying.`,
+    te: `${vol} లీటర్ల నీటిలో ఖచ్చితంగా ${total} గ్రా/మి.లీ మందు కలపండి.`,
+    hi: `${vol} लीटर पानी में ठीक ${total} ग्राम/मिली दवा मिलाएं।`
+  };
+  out.textContent = msgs[currentActiveLang] || msgs.en;
+  out.classList.remove("hidden");
+}
+
+function evaluateFracRotation() {
+  const group = document.getElementById("pcmFracGroup").value;
+  const out = document.getElementById("pcmFracOutput");
+  const advice = {
+    FRAC_11: {
+      en: "⚠️ High resistance risk! Rotate to FRAC 3 (Triazoles) or contact FRAC M (Mancozeb).",
+      te: "⚠️ నిరోధకత ముప్పు ఎక్కువ! తదుపరి పిచికారీలో FRAC 3 లేదా FRAC M మందులను వాడండి.",
+      hi: "⚠️ उच्च प्रतिरोध जोखिम! अगले चक्र में FRAC 3 या FRAC M समूह का उपयोग करें।"
+    },
+    FRAC_3: {
+      en: "Moderate resistance risk. Rotate to FRAC 7 or multi-site contact fungicide.",
+      te: "మధ్యస్థ ముప్పు. తదుపరి దశలో FRAC 7 లేదా కాంటాక్ట్ శిలీంద్ర సంహారిణిని వాడండి.",
+      hi: "मध्यम जोखिम। अगले छिड़काव में FRAC 7 या कांटेक्ट फफूंदनाशक का प्रयोग करें।"
+    },
+    FRAC_M: {
+      en: "Low resistance risk (Multi-site action). Safe for repeat prophylactic spray.",
+      te: "తక్కువ ముప్పు (మల్టీ-సైట్ యాక్షన్). పునరావృత పిచికారీకి అనుకూలం.",
+      hi: "कम जोखिम। निवारक छिड़काव के लिए सुरक्षित।"
+    }
+  };
+  const active = advice[group] || advice.FRAC_11;
+  out.textContent = active[currentActiveLang] || active.en;
+}
+
+function calculateSecondaryRisk() {
+  const hours = parseFloat(document.getElementById("pcmWetHours").value) || 0;
+  const rh = parseFloat(document.getElementById("pcmHumidity").value) || 0;
+  const out = document.getElementById("pcmRiskOutput");
+  const isHigh = hours >= 7 && rh >= 80;
+  const msgs = {
+    en: isHigh ? "🚨 High Spore Release: Fungal spores multiplying rapidly. Apply protective foliar barrier." : "✅ Low Spore Release Risk: Micro-climate currently dry.",
+    te: isHigh ? "🚨 తీవ్ర ముప్పు: శిలీంధ్ర బీజాలు వేగంగా విస్తరిస్తున్నాయి. రక్షణ మందులను పిచికారీ చేయండి." : "✅ తక్కువ ముప్పు: వాతావరణం పొడిగా ఉంది.",
+    hi: isHigh ? "🚨 उच्च जोखिम: फफूंद बीजाणु तेजी से फैल रहे हैं। सुरक्षात्मक छिड़काव करें।" : "✅ कम जोखिम: वातावरण अनुकूल और सूखा है।"
+  };
+  out.textContent = msgs[currentActiveLang] || msgs.en;
+  out.className = `calc-metric-output ${isHigh ? "alert-danger" : ""}`;
+  out.classList.remove("hidden");
+}
+
+function calculateEtlThreshold() {
+  const pest = document.getElementById("pcmPestType").value;
+  const count = parseFloat(document.getElementById("pcmPestCount").value) || 0;
+  const out = document.getElementById("pcmEtlOutput");
+  
+  const thresholds = { aphids: 5, bollworm: 1, thrips: 5 };
+  const limit = thresholds[pest] || 5;
+  const breached = count >= limit;
+
+  const msgs = {
+    en: breached ? `🚨 Above ETL (Limit: ${limit}). Economic damage initiated. Chemical spray advised.` : `✅ Below ETL (Limit: ${limit}). Spray not required yet. Monitor again in 48h.`,
+    te: breached ? `🚨 పరిమితి దాటింది (పరిమితి: ${limit}). ఆర్థిక నష్టం మొదలైంది. పిచికారీ అవసరం.` : `✅ పరిమితి లోపే ఉంది (పరిమితి: ${limit}). పిచికారీ అవసరం లేదు. 48 గంటల తర్వాత పరిశీలించండి.`,
+    hi: breached ? `🚨 सीमा से अधिक (सीमा: ${limit})। आर्थिक नुकसान शुरू। रासायनिक छिड़काव की सलाह दी जाती है।` : `✅ सुरक्षित सीमा में (सीमा: ${limit})। अभी छिड़काव की आवश्यकता नहीं है।`
+  };
+  out.textContent = msgs[currentActiveLang] || msgs.en;
+  out.className = `calc-metric-output ${breached ? "alert-danger" : ""}`;
+  out.classList.remove("hidden");
+}
+
+function matchHerbicide() {
+  const weed = document.getElementById("pcmWeedType").value;
+  const out = document.getElementById("pcmWeedOutput");
+  const herbicides = {
+    broadleaf: {
+      en: "Recommendation: 2,4-D Ethyl Ester or Chlorimuron-ethyl (Post-emergence).",
+      te: "సిఫార్సు: 2,4-D ఇథైల్ ఈస్టర్ లేదా క్లోరిమ్యూరాన్-ఇథైల్ (మొలకెత్తిన తర్వాత వాడే మందులు).",
+      hi: "सिफारिश: 2,4-डी इथाइल एस्टर या क्लोरीम्यूरॉन-इथाइल (उगने के बाद का शाकनाशी)।"
+    },
+    grassy: {
+      en: "Recommendation: Quizalofop-p-ethyl or Fenoxaprop-p-ethyl (Post-emergence).",
+      te: "సిఫార్సు: క్విజాలోఫాప్-పి-ఇథైల్ లేదా ఫెనాక్సాప్రాప్-పి-ఇథైల్.",
+      hi: "सिफारिश: क्विज़ालोफॉप-पी-इथाइल या फेनोक्साप्रॉप-पी-इथाइल।"
+    },
+    sedges: {
+      en: "Recommendation: Halosulfuron-methyl 75% WG (Targeted nutgrass control).",
+      te: "సిఫార్సు: హాలోసల్ఫ్యూరాన్-మిథైల్ 75% WG (తుంగ కలుపు నివారణకు).",
+      hi: "सिफारिश: हेलोसुल्फ्यूरॉन-मिथाइल 75% WG (मोथा घास नियंत्रण हेतु)।"
+    }
+  };
+  const item = herbicides[weed] || herbicides.broadleaf;
+  out.textContent = item[currentActiveLang] || item.en;
+}
+// Section 2: JavaScript Implementation
+Object.assign(translations.en, {
+  ssnTitle: "Smart Soil & Precision Nutrition",
+  ocrTitle: "📄 Soil Card Digitizer",
+  ocrDesc: "Simulate scanning of Soil Health Card metrics.",
+  btnOcrScan: "Scan Card & Extract",
+  fertAlarmTitle: "⏰ Split Dose Calendar",
+  lblCropDate: "Sowing / Transplant Date",
+  btnCalcSchedule: "Generate Alert Timeline",
+  organicEngineTitle: "🌿 Organic Bio-Formulations",
+  lblRecipeChoice: "Select Formulation",
+  microTitle: "🔬 Micronutrient Matrix",
+  lblDiscoloration: "Leaf Visual Symptom"
+});
+
+Object.assign(translations.te, {
+  ssnTitle: "స్మార్ట్ నేల ఆరోగ్యం & ఖచ్చితమైన పోషణ",
+  ocrTitle: "📄 సాయిల్ హెల్త్ కార్డ్ డిజిటైజర్",
+  ocrDesc: "సాయిల్ కార్డ్ డేటాను స్కాన్ చేసి విశ్లేషించండి.",
+  btnOcrScan: "కార్డును స్కాన్ చేయండి",
+  fertAlarmTitle: "⏰ ఎరువుల విభజన క్యాలెండర్",
+  lblCropDate: "విత్తిన / నాటిన తేదీ",
+  btnCalcSchedule: "షెడ్యూల్‌ను రూపొందించండి",
+  organicEngineTitle: "🌿 సేంద్రీయ ఎరువుల ఫార్ములాలు",
+  lblRecipeChoice: "ఫార్ములా ఎంపిక",
+  microTitle: "🔬 సూక్ష్మ పోషక లోప నిర్ధారణ",
+  lblDiscoloration: "ఆకుల రంగు మార్పు లక్షణం"
+});
+
+Object.assign(translations.hi, {
+  ssnTitle: "मृदा स्वास्थ्य एवं सटीक पोषण प्रबंधन",
+  ocrTitle: "📄 मृदा स्वास्थ्य कार्ड डिजिटाइज़र",
+  ocrDesc: "मृदा स्वास्थ्य कार्ड को स्कैन कर डेटा निकालें।",
+  btnOcrScan: "कार्ड स्कैन करें",
+  fertAlarmTitle: "⏰ उर्वरक खुराक कैलेंडर",
+  lblCropDate: "बुवाई / रोपाई की तारीख",
+  btnCalcSchedule: "अलर्ट शेड्यूल बनाएं",
+  organicEngineTitle: "🌿 जैविक जैव-उत्पाद निर्माण",
+  lblRecipeChoice: "उत्पाद चुनें",
+  microTitle: "🔬 सूक्ष्म पोषक तत्व मैट्रिक्स",
+  lblDiscoloration: "पत्तियों के लक्षण"
+});
+
+function simulateSoilOcr() {
+  const out = document.getElementById("ocrOutputBox");
+  const extracted = {
+    en: "✅ Extracted Metrics: N: Low (180 kg/ha), P: Medium (18 kg/ha), K: High (310 kg/ha), pH: 7.6, OC: 0.42% (Deficient). Recommendation: Apply extra FYM/Compost.",
+    te: "✅ సాయిల్ కార్డ్ వివరాలు: నత్రజని: తక్కువ (180 kg/ha), భాస్వరం: మధ్యస్థం, పొటాష్: సమృద్ధి, pH: 7.6, సేంద్రీయ కర్బనం: లోపం. సిఫార్సు: పశువుల ఎరువును పెంచండి.",
+    hi: "✅ प्राप्त डेटा: नाइट्रोजन: कम (180 किग्रा/हे.), फास्फोरस: मध्यम, पोटाश: उच्च, पीएच: 7.6, जैविक कार्बन: कम (0.42%)। अतिरिक्त गोबर की खाद डालें।"
+  };
+  out.textContent = extracted[currentActiveLang] || extracted.en;
+  out.classList.remove("hidden");
+}
+
+function calculateFertilizerDoseCalendar() {
+  const dateInput = document.getElementById("ssnSowingDate").value;
+  const out = document.getElementById("fertAlarmOutput");
+  if (!dateInput) {
+    alert("Please select a valid date.");
+    return;
+  }
+  const base = new Date(dateInput);
+  const add = (d, n) => {
+    const res = new Date(d);
+    res.setDate(res.getDate() + n);
+    return res.toLocaleDateString();
+  };
+
+  const steps = {
+    en: [
+      `🔔 Day 0 (${add(base, 0)}): Basal Application - 100% DAP, 50% Potash, 25% Urea.`,
+      `🔔 Day 21 (${add(base, 21)}): 1st Top Dressing - 50% Urea + Zinc Sulphate.`,
+      `🔔 Day 50 (${add(base, 50)}): 2nd Top Dressing (Panicle/Bloom) - 25% Urea + 50% Potash.`
+    ],
+    te: [
+      `🔔 రోజు 0 (${add(base, 0)}): ప్రాథమిక మోతాదు - 100% DAP, 50% పొటాష్, 25% యూరియా.`,
+      `🔔 రోజు 21 (${add(base, 21)}): మొదటి విడత - 50% యూరియా + జింక్ సల్ఫేట్.`,
+      `🔔 రోజు 50 (${add(base, 50)}): రెండవ విడత (పూత దశ) - 25% యూరియా + 50% పొటాష్.`
+    ],
+    hi: [
+      `🔔 दिन 0 (${add(base, 0)}): बेसल डोज - 100% डीएपी, 50% पोटाश, 25% यूरिया।`,
+      `🔔 दिन 21 (${add(base, 21)}): पहला छिड़काव - 50% यूरिया + जिंक सल्फेट।`,
+      `🔔 दिन 50 (${add(base, 50)}): दूसरा छिड़काव (बाली अवस्था) - 25% यूरिया + 50% पोटाश।`
+    ]
+  };
+  const list = steps[currentActiveLang] || steps.en;
+  out.innerHTML = list.map(item => `<div class="timeline-step"><p>${item}</p></div>`).join("");
+  out.classList.remove("hidden");
+}
+
+function renderSsnOrganicRecipe() {
+  const type = document.getElementById("ssnRecipeSelect").value;
+  const out = document.getElementById("ssnRecipeOutput");
+  const recipes = {
+    jeevamrutha: {
+      en: "Jeevamrutha: 10kg dung + 10L urine + 2kg jaggery + 2kg pulse flour + 200L water. Ferment 48h.",
+      te: "జీవామృతం: 10కేజీల పేడ + 10లీ మూత్రం + 2కేజీల బెల్లం + 2కేజీల పిండి + 200లీ నీరు. 48 గంటలు నానబెట్టండి.",
+      hi: "जीवामृत: 10 किग्रा गोबर + 10 ली गोमूत्र + 2 किग्रा गुड़ + 2 किग्रा बेसन + 200 ली पानी। 48 घंटे किण्वन करें।"
+    },
+    beejamrutha: {
+      en: "Beejamrutha: 5kg dung + 5L urine + 50g lime + handful soil. Seed treatment slurry for 100kg seeds.",
+      te: "బీజామృతం: 5కేజీల పేడ + 5లీ మూత్రం + 50గ్రా సున్నం. విత్తన శుద్ధికి అనుకూలం.",
+      hi: "बीजामृत: 5 किग्रा गोबर + 5 ली गोमूत्र + 50 ग्राम चूना। 100 किग्रा बीजोपचार हेतु उपयुक्त।"
+    },
+    panchagavya: {
+      en: "Panchagavya: Dung, Ghee, Urine, Milk, Curd fermented for 21 days. Foliar spray @ 30ml/L.",
+      te: "పంచగవ్య: ఆవు పేడ, నెయ్యి, మూత్రం, పాలు, పెరుగు మిశ్రమం. పిచికారీకి 30మి.లీ/లీటరు వాడండి.",
+      hi: "पंचगव्य: गोबर, घी, गोमूत्र, दूध, दही को 21 दिन सड़ाएं। 30 मिली/लीटर स्प्रे करें।"
+    },
+    neemcake: {
+      en: "Neem Cake: Apply 100-150 kg/acre to control root nematodes and slow down nitrogen leaching.",
+      te: "వేప పిండి: ఎకరాకు 100-150 కేజీలు వాడండి. నెమటోడ్లను అరికడుతుంది మరియు నత్రజని స్థిరీకరిస్తుంది.",
+      hi: "नीम की खली: 100-150 किग्रा/एकड़ डालें। सूत्रकृमि नियंत्रण और नाइट्रोजन स्थिरता हेतु उत्तम।"
+    }
+  };
+  const pick = recipes[type] || recipes.jeevamrutha;
+  out.textContent = pick[currentActiveLang] || pick.en;
+}
+
+function diagnoseMicronutrient() {
+  const sym = document.getElementById("ssnMicroSymptom").value;
+  const out = document.getElementById("ssnMicroOutput");
+  const diagnoses = {
+    interveinal_young: {
+      en: "Diagnosis: Iron (Fe) Deficiency. Remedy: Foliar spray Ferrous Sulphate (FeSO4) @ 5g/L + Citric Acid (1g/L).",
+      te: "నిర్ధారణ: ఇనుము (Iron) లోపం. నివారణ: ఫెర్రస్ సల్ఫేట్ 5గ్రా/లీటరు + నిమ్మ ఉప్పు 1గ్రా/లీటరు పిచికారీ చేయండి.",
+      hi: "निदान: आयरन (Fe) की कमी। उपचार: फेरस सल्फेट (5 ग्राम/लीटर) + साइट्रिक एसिड (1 ग्राम/लीटर) का छिड़काव करें।"
+    },
+    white_bud: {
+      en: "Diagnosis: Zinc (Zn) Deficiency. Remedy: Spray Zinc Sulphate 21% @ 2g/L or Chelated Zn EDTA @ 1g/L.",
+      te: "నిర్ధారణ: జింక్ (Zinc) లోపం. నివారణ: జింక్ సల్ఫేట్ 2గ్రా/లీటరు లేదా జింక్ EDTA 1గ్రా/లీటరు పిచికారీ చేయండి.",
+      hi: "निदान: जिंक (Zn) की कमी। उपचार: जिंक सल्फेट (2 ग्राम/लीटर) या चिलेटेड जिंक (1 ग्राम/लीटर) का प्रयोग करें।"
+    },
+    cupped_mature: {
+      en: "Diagnosis: Magnesium (Mg) Deficiency. Remedy: Foliar spray Magnesium Sulphate (MgSO4) @ 10g/L.",
+      te: "నిర్ధారణ: మెగ్నీషియం (Mg) లోపం. నివారణ: మెగ్నీషియం సల్ఫేట్ 10గ్రా/లీటరు పిచికారీ చేయండి.",
+      hi: "निदान: मैग्नीशियम (Mg) की कमी। उपचार: मैग्नीशियम सल्फेट (10 ग्राम/लीटर) का छिड़काव करें।"
+    },
+    brittle_tip: {
+      en: "Diagnosis: Boron (B) Deficiency. Remedy: Spray Solubor (Boron 20%) @ 1-1.5g/L during pre-bloom.",
+      te: "నిర్ధారణ: బోరాన్ (Boron) లోపం. నివారణ: సాల్యుబార్ బోరాన్ 1-1.5గ్రా/లీటరు పూతకు ముందు పిచికారీ చేయండి.",
+      hi: "निदान: बोरॉन (B) की कमी। उपचार: बोरॉन 20% (1-1.5 ग्राम/लीटर) का फूल आने से पहले छिड़काव करें।"
+    }
+  };
+  const pick = diagnoses[sym] || diagnoses.interveinal_young;
+  out.textContent = pick[currentActiveLang] || pick.en;
+}
+// Section 3: JavaScript Implementation
+Object.assign(translations.en, {
+  wciTitle: "Water Budgeting & Climate Intelligence",
+  etcTitle: "☀️ Evapotranspiration (ETc)",
+  lblTempC: "Daily Max Temp (°C)",
+  lblCropKc: "Crop Coefficient (Kc)",
+  btnCalcEtc: "Compute Daily Water Loss",
+  borewellTitle: "💧 Borewell Depletion Stress",
+  lblWaterYield: "Borewell Discharge (Inches / GPM)",
+  lblAcresIrrigated: "Total Farm Area (Acres)",
+  btnCalcStress: "Check Stress Index",
+  sprayWindowHeading: "⏱️ Hourly Spray Safety Window",
+  extremeWeatherTitle: "🚨 48h Extreme Warning Alert",
+  heatwaveWarning: "🔥 Heatwave Alert:",
+  heatwaveAction: "Ambient temp exceeding 41°C in next 48h. Provide light evening irrigation to maintain root turgidity."
+});
+
+Object.assign(translations.te, {
+  wciTitle: "నీటి బడ్జెట్ & వాతావరణ ఇంటెలిజెన్స్",
+  etcTitle: "☀️ బాష్పీభవన నీటి నష్టం (ETc)",
+  lblTempC: "గరిష్ట ఉష్ణోగ్రత (°C)",
+  lblCropKc: "పంట గుణకం (Kc)",
+  btnCalcEtc: "రోజువారీ నీటి నష్టాన్ని లెక్కించండి",
+  borewellTitle: "💧 బోరుబావి నీటి ఎద్దడి సూచిక",
+  lblWaterYield: "బోరు నీటి సామర్థ్యం (అంగుళాలు)",
+  lblAcresIrrigated: "మొత్తం పొలం విస్తీర్ణం (ఎకరాలు)",
+  btnCalcStress: "ఎద్దడి సూచికను లెక్కించండి",
+  sprayWindowHeading: "⏱️ గంటల వారీ పిచికారీ భద్రతా సమయం",
+  extremeWeatherTitle: "🚨 48 గంటల తీవ్ర వాతావరణ హెచ్చరిక",
+  heatwaveWarning: "🔥 వడగాల్పుల హెచ్చరిక:",
+  heatwaveAction: "రాబోయే 48 గంటల్లో ఉష్ణోగ్రత 41°C దాటే అవకాశం ఉంది. వేరు ఒత్తిడి తగ్గించడానికి సాయంత్రం వేళల్లో తేలికపాటి నీటి తడులు ఇవ్వండి."
+});
+
+Object.assign(translations.hi, {
+  wciTitle: "जल बजट एवं मौसम विश्लेषण",
+  etcTitle: "☀️ वाष्पोत्सर्जन जल हानि (ETc)",
+  lblTempC: "अधिकतम तापमान (°C)",
+  lblCropKc: "फसल गुणांक (Kc)",
+  btnCalcEtc: "दैनिक जल हानि की गणना करें",
+  borewellTitle: "💧 बोरवेल जल संकट सूचकांक",
+  lblWaterYield: "बोरवेल प्रवाह (इंच)",
+  lblAcresIrrigated: "कुल खेत क्षेत्रफल (एकड़)",
+  btnCalcStress: "जल संकट की जांच करें",
+  sprayWindowHeading: "⏱️ प्रति घंटा स्प्रे सुरक्षा विंडो",
+  extremeWeatherTitle: "🚨 48 घंटे की मौसम चेतावनी",
+  heatwaveWarning: "🔥 लू (Heatwave) चेतावनी:",
+  heatwaveAction: "अगले 48 घंटों में तापमान 41°C से ऊपर जाने की संभावना है। शाम के समय हल्की सिंचाई करें।"
+});
+
+function calculateCropEtc() {
+  const t = parseFloat(document.getElementById("wciTemp").value) || 30;
+  const kc = parseFloat(document.getElementById("wciKc").value) || 1.0;
+  const et0 = 0.0023 * (t + 17.8) * Math.sqrt(12) * 4.5;
+  const etc = (et0 * kc).toFixed(2);
+  const litersPerAcre = Math.round(etc * 4046.86);
+  const out = document.getElementById("etcOutputBox");
+  const msgs = {
+    en: `Daily Crop Water Loss: ${etc} mm/day (~${litersPerAcre.toLocaleString()} Liters/Acre/Day).`,
+    te: `రోజువారీ పంట నీటి నష్టం: ${etc} మి.మీ/రోజు (~${litersPerAcre.toLocaleString()} లీటర్లు/ఎకరా/రోజు).`,
+    hi: `दैनिक फसल जल हानि: ${etc} मिमी/दिन (~${litersPerAcre.toLocaleString()} लीटर/एकड़/दिन)।`
+  };
+  out.textContent = msgs[currentActiveLang] || msgs.en;
+  out.classList.remove("hidden");
+}
+
+function calculateBorewellStress() {
+  const discharge = parseFloat(document.getElementById("wciDischarge").value) || 1.5;
+  const acres = parseFloat(document.getElementById("wciArea").value) || 1.0;
+  const ratio = discharge / acres;
+  const out = document.getElementById("borewellOutputBox");
+  let status = "";
+  if (ratio < 0.6) {
+    status = {
+      en: "🚨 Severe Deficit: Borewell yield insufficient for flood irrigation. Strictly switch to Drip/Micro-irrigation.",
+      te: "🚨 తీవ్ర నీటి లోటు: వరద పారుదలకు నీరు సరిపోదు. తప్పనిసరిగా డ్రిప్ పద్ధతిని వాడండి.",
+      hi: "🚨 गंभीर संकट: खुली सिंचाई हेतु पानी अपर्याप्त है। केवल ड्रिप प्रणाली का उपयोग करें।"
+    };
+  } else {
+    status = {
+      en: "✅ Sustainable Balance: Borewell discharge matches crop acreage requirements under normal rotation.",
+      te: "✅ స్థిరమైన సమతుల్యత: ప్రస్తుత విస్తీర్ణానికి బోరు నీరు సరిపోతుంది.",
+      hi: "✅ संतुलित जल उपलब्धता: वर्तमान क्षेत्रफल के लिए जल आपूर्ति पर्याप्त है।"
+    };
+  }
+  out.textContent = status[currentActiveLang] || status.en;
+  out.className = `calc-metric-output ${ratio < 0.6 ? "alert-danger" : ""}`;
+  out.classList.remove("hidden");
+}
+// Section 4: JavaScript Implementation
+Object.assign(translations.en, {
+  mphTitle: "Market Timing & Post-Harvest Tools",
+  mandiOptTitle: "⚖️ Mandi Profit Optimizer",
+  lblProduceQty: "Produce Volume (Quintals)",
+  lblMandiA: "Local Mandi Price (₹/qtl) [10 km]",
+  lblMandiB: "Distant Mandi Price (₹/qtl) [80 km]",
+  btnCompareMandi: "Compare Net Realization",
+  grainStorageTitle: "🌾 Grain Storage Shelf-Life",
+  lblMeasuredMoisture: "Measured Moisture (%)",
+  btnCalcStorage: "Assess Storage Risk",
+  fpoBoardTitle: "🤝 FPO Produce Pooling",
+  fpoDesc: "Join neighbors to aggregate load for commercial buyers.",
+  lblPoolCrop: "Select Crop",
+  btnJoinPool: "Join Village Load Pool"
+});
+
+Object.assign(translations.te, {
+  mphTitle: "మార్కెట్ సమయం & పంట కోత అనంతర సాధనాలు",
+  mandiOptTitle: "⚖️ మార్కెట్ లాభాల పోలిక",
+  lblProduceQty: "దిగుబడి పరిమాణం (క్వింటాళ్ళు)",
+  lblMandiA: "స్థానిక మార్కెట్ ధర (₹/క్వింటాల్) [10 కి.మీ]",
+  lblMandiB: "దూరపు మార్కెట్ ధర (₹/క్వింటాల్) [80 కి.మీ]",
+  btnCompareMandi: "నికర లాభాన్ని పోల్చండి",
+  grainStorageTitle: "🌾 ధాన్య నిల్వ సామర్థ్య అంచనా",
+  lblMeasuredMoisture: "ధాన్యంలో తేమ శాతం (%)",
+  btnCalcStorage: "నిల్వ ముప్పును లెక్కించండి",
+  fpoBoardTitle: "🤝 FPO పంట పూలింగ్ బోర్డు",
+  fpoDesc: "మెరుగైన ధర కోసం ఇతర రైతులతో కలిసి పంటను అమ్మండి.",
+  lblPoolCrop: "పంట ఎంపిక",
+  btnJoinPool: "విలేజ్ పూలింగ్‌లో చేరండి"
+});
+
+Object.assign(translations.hi, {
+  mphTitle: "मंडी समय निर्धारण एवं फसल कटाई उपरांत प्रबंधन",
+  mandiOptTitle: "⚖️ मंडी लाभ विश्लेषक",
+  lblProduceQty: "उपज की मात्रा (क्विंटल)",
+  lblMandiA: "स्थानीय मंडी भाव (₹/क्विंटल) [10 किमी]",
+  lblMandiB: "दूर की मंडी भाव (₹/क्विंटल) [80 किमी]",
+  btnCompareMandi: "शुद्ध लाभ की तुलना करें",
+  grainStorageTitle: "🌾 अनाज भंडारण शेल्फ-लाइफ",
+  lblMeasuredMoisture: "नमी का प्रतिशत (%)",
+  btnCalcStorage: "भंडारण जोखिम जांचें",
+  fpoBoardTitle: "🤝 FPO उपज एकत्रीकरण बोर्ड",
+  fpoDesc: "थोक खरीदारों से बेहतर मूल्य हेतु समूह में फसल बेचें।",
+  lblPoolCrop: "फसल चुनें",
+  btnJoinPool: "लोड पूल में शामिल हों"
+});
+
+function optimizeMandiProfit() {
+  const qty = parseFloat(document.getElementById("mphQty").value) || 10;
+  const pA = parseFloat(document.getElementById("mphPriceA").value) || 6000;
+  const pB = parseFloat(document.getElementById("mphPriceB").value) || 6500;
+  
+  const transportCostA = 500 + (qty * 15);
+  const transportCostB = 3500 + (qty * 45);
+
+  const netA = (qty * pA) - transportCostA;
+  const netB = (qty * pB) - transportCostB;
+  const diff = netB - netA;
+
+  const out = document.getElementById("mandiOptOutputBox");
+  let res = "";
+  if (diff > 0) {
+    res = {
+      en: `💡 Distant Mandi yields +₹${diff.toLocaleString()} higher net profit after deducting transport.`,
+      te: `💡 రవాణా ఖర్చులు పోనూ దూరపు మార్కెట్ ద్వారా ₹${diff.toLocaleString()} అదనపు లాభం లభిస్తుంది.`,
+      hi: `💡 परिवहन लागत काटने के बाद भी दूर की मंडी में ₹${diff.toLocaleString()} अधिक शुद्ध लाभ मिलेगा।`
+    };
+  } else {
+    res = {
+      en: `💡 Local Mandi yields +₹${Math.abs(diff).toLocaleString()} higher net profit due to zero logistics loss.`,
+      te: `💡 రవాణా ఖర్చులు లేనందున స్థానిక మార్కెట్‌లోనే ₹${Math.abs(diff).toLocaleString()} ఎక్కువ నికర లాభం వస్తుంది.`,
+      hi: `💡 स्थानीय मंडी में बेचना बेहतर है, ₹${Math.abs(diff).toLocaleString()} अधिक बचत होगी।`
+    };
+  }
+  out.textContent = res[currentActiveLang] || res.en;
+  out.classList.remove("hidden");
+}
+
+function calculateGrainShelfLife() {
+  const m = parseFloat(document.getElementById("mphMoisture").value) || 14;
+  const out = document.getElementById("grainStorageOutputBox");
+  let status = "";
+  if (m <= 12.5) {
+    status = {
+      en: "✅ Safe for 9-12 Months: No risk of mold or insect emergence under dry aeration.",
+      te: "✅ 9-12 నెలలు సురక్షితం: బూజు పట్టే అవకాశం లేదు.",
+      hi: "✅ 9-12 महीने सुरक्षित: फफूंद और घुन का कोई खतरा नहीं।"
+    };
+  } else if (m <= 14.5) {
+    status = {
+      en: "⚠️ Moderate Risk (3-4 Months): Sun-dry before bagging to prevent aflatoxin contamination.",
+      te: "⚠️ మధ్యస్థ ముప్పు (3-4 నెలలు): బస్తాల్లో వేసే ముందు ఎండబెట్టండి.",
+      hi: "⚠️ मध्यम जोखिम (3-4 महीने): बोरियों में भरने से पहले धूप में सुखाएं।"
+    };
+  } else {
+    status = {
+      en: "🛑 Immediate Spoilage Risk: Internal heating and fungal rotting will start within 7 days. Dry immediately.",
+      te: "🛑 తీవ్ర ముప్పు: వారం రోజుల్లో బూజు పడుతుంది. వెంటనే ఆరబెట్టండి.",
+      hi: "🛑 तत्काल खतरा: 7 दिनों के भीतर सड़ांध शुरू हो जाएगी। तुरंत सुखाएं।"
+    };
+  }
+  out.textContent = status[currentActiveLang] || status.en;
+  out.classList.remove("hidden");
+}
+
+function joinFpoPool() {
+  const crop = document.getElementById("mphPoolCrop").value;
+  const msgs = {
+    en: `✅ Joined ${crop.toUpperCase()} Pooling Group! 140 Quintals pooled nearby. Buyer negotiation active.`,
+    te: `✅ ${crop.toUpperCase()} పూలింగ్ గ్రూప్‌లో చేరారు! సమీపంలో 140 క్వింటాళ్లు జమయ్యాయి.`,
+    hi: `✅ ${crop.toUpperCase()} समूह में शामिल हुए! आसपास 140 क्विंटल उपज एकत्रित।`
+  };
+  alert(msgs[currentActiveLang] || msgs.en);
+}
+// Section 5: JavaScript Implementation
+Object.assign(translations.en, {
+  opsTitle: "Equipment, Labor & Farm Operations",
+  ledgerTitle: "📒 Expense Ledger",
+  lblExpCategory: "Category",
+  lblAmount: "Amount (₹)",
+  btnAddExpense: "Log Expense",
+  chcTitle: "🚜 CHC Implement Hub",
+  chcDesc: "Book subsidized tillage and harvesting implements nearby.",
+  lblSelectMachinery: "Select Implement",
+  btnBookChc: "Request Machine",
+  droneTitle: "🚁 Drone Spray Dispatch",
+  lblAcreageDrone: "Acreage to Spray",
+  btnBookDrone: "Book Certified Drone Pilot"
+});
+
+Object.assign(translations.te, {
+  opsTitle: "యంత్రాలు, కూలీలు & వ్యవసాయ ఖర్చులు",
+  ledgerTitle: "📒 వ్యవసాయ ఖర్చుల లెడ్జర్",
+  lblExpCategory: "ఖర్చు విభాగం",
+  lblAmount: "మొత్తం (₹)",
+  btnAddExpense: "ఖర్చును నమోదు చేయండి",
+  chcTitle: "🚜 CHC యంత్రాల అద్దె కేంద్రం",
+  chcDesc: "సమీపంలోని సబ్సిడీ యంత్రాలను బుక్ చేసుకోండి.",
+  lblSelectMachinery: "యంత్రం ఎంపిక",
+  btnBookChc: "యంత్రం కోసం దరఖాస్తు చేయండి",
+  droneTitle: "🚁 డ్రోన్ స్ప్రే బుకింగ్",
+  lblAcreageDrone: "పిచికారీ చేయాల్సిన విస్తీర్ణం",
+  btnBookDrone: "డ్రోన్ పైలట్‌ను బుక్ చేయండి"
+});
+
+Object.assign(translations.hi, {
+  opsTitle: "कृषि उपकरण, श्रमिक एवं संचालन",
+  ledgerTitle: "📒 दैनिक कृषि व्यय लेजर",
+  lblExpCategory: "श्रेणी",
+  lblAmount: "राशि (₹)",
+  btnAddExpense: "खर्च दर्ज करें",
+  chcTitle: "🚜 कस्टम हायरिंग केंद्र (CHC)",
+  chcDesc: "किफायती दरों पर आधुनिक कृषि उपकरण किराए पर लें।",
+  lblSelectMachinery: "उपकरण चुनें",
+  btnBookChc: "मशीन बुक करें",
+  droneTitle: "🚁 ड्रोन स्प्रे बुकिंग",
+  lblAcreageDrone: "स्प्रे हेतु क्षेत्रफल (एकड़)",
+  btnBookDrone: "ड्रोन पायलट बुक करें"
+});
+
+let totalFarmExpenses = 0;
+function addExpenseEntry() {
+  const amt = parseFloat(document.getElementById("opsAmount").value) || 0;
+  if (amt <= 0) return;
+  totalFarmExpenses += amt;
+  document.getElementById("opsAmount").value = "";
+  const out = document.getElementById("opsLedgerTotal");
+  const msgs = {
+    en: `Total Logged: ₹${totalFarmExpenses.toLocaleString()}`,
+    te: `మొత్తం నమోదైన ఖర్చు: ₹${totalFarmExpenses.toLocaleString()}`,
+    hi: `कुल दर्ज खर्च: ₹${totalFarmExpenses.toLocaleString()}`
+  };
+  out.textContent = msgs[currentActiveLang] || msgs.en;
+}
+
+function bookChcImplement() {
+  const imp = document.getElementById("opsImplement").value;
+  const msgs = {
+    en: `✅ Booking request dispatched to nearest CHC for ${imp.toUpperCase()}. Confirmation SMS sent.`,
+    te: `✅ ${imp.toUpperCase()} కోసం సమీప CHC కేంద్రానికి బుకింగ్ పంపబడింది.`,
+    hi: `✅ ${imp.toUpperCase()} हेतु निकटतम सीएचसी केंद्र को अनुरोध भेजा गया।`
+  };
+  alert(msgs[currentActiveLang] || msgs.en);
+}
+
+function bookDroneSpray() {
+  const acres = document.getElementById("opsDroneAcres").value;
+  const cost = acres * 450;
+  const msgs = {
+    en: `🚁 Drone Slot Reserved for ${acres} Acres. Est. Cost: ₹${cost}. Pilot assigned.`,
+    te: `🚁 ${acres} ఎకరాలకు డ్రోన్ స్లాట్ బుక్ చేయబడింది. అంచనా ఖర్చు: ₹${cost}.`,
+    hi: `🚁 ${acres} एकड़ के लिए ड्रोन स्लॉट आरक्षित। अनुमानित लागत: ₹${cost}।`
+  };
+  alert(msgs[currentActiveLang] || msgs.en);
+}
+// Section 6: JavaScript Implementation
+Object.assign(translations.en, {
+  iaTitle: "Interactive Field Accessibility",
+  voiceGuideTitle: "🔊 Voice Spray Assistant",
+  voiceGuideDesc: "Listen to step-by-step chemical measuring and PPE safety guidelines.",
+  btnPlayGuide: "Play Audio Safety Protocol",
+  offlineCacheTitle: "💾 Offline Field Vault",
+  offlineCacheDesc: "Cache diagnostic matrices and emergency numbers for remote field use without cellular connection.",
+  btnSyncCache: "Sync & Save to Local Memory",
+  exporterTitle: "🖨️ Field Diagnostic Card",
+  exporterDesc: "Export compact print-ready field diagnostic prescriptions for input shops.",
+  btnExportCard: "Export Printable PDF Sheet"
+});
+
+Object.assign(translations.te, {
+  iaTitle: "రైతు సహాయక & వాయిస్ ఫీచర్లు",
+  voiceGuideTitle: "🔊 వాయిస్ స్ప్రే గైడ్",
+  voiceGuideDesc: "రసాయన కొలతలు మరియు భద్రతా సూచనలను ఆడియో రూపంలో వినండి.",
+  btnPlayGuide: "ఆడియో సూచనలను వినండి",
+  offlineCacheTitle: "💾 ఆఫ్‌లైన్ ఫీల్డ్ వాల్ట్",
+  offlineCacheDesc: "ఇంటర్నెట్ లేనప్పుడు కూడా వాడుకోవడానికి సమాచారాన్ని భద్రపరచండి.",
+  btnSyncCache: "ఆఫ్‌లైన్ మెమరీకి సేవ్ చేయండి",
+  exporterTitle: "🖨️ ఫీల్డ్ డయాగ్నోస్టిక్ కార్డ్",
+  exporterDesc: "ఎరువుల దుకాణంలో చూపించడానికి ప్రింట్ తీసుకోదగిన ప్రిస్క్రిప్షన్.",
+  btnExportCard: "PDF షీట్‌ను డౌన్‌లోడ్ చేయండి"
+});
+
+Object.assign(translations.hi, {
+  iaTitle: "इंटरैक्टिव फील्ड एक्सेसिबिलिटी",
+  voiceGuideTitle: "🔊 वॉयस स्प्रे सहायक",
+  voiceGuideDesc: "दवा नापने और सुरक्षा प्रोटोकॉल को ऑडियो के रूप में सुनें।",
+  btnPlayGuide: "ऑडियो सुरक्षा नियम सुनें",
+  offlineCacheTitle: "💾 ऑफ़लाइन फील्ड वॉल्ट",
+  offlineCacheDesc: "इंटरनेट के बिना उपयोग करने के लिए डायग्नोस्टिक डेटा सहेजें।",
+  btnSyncCache: "लोकल मेमोरी में सेव करें",
+  exporterTitle: "🖨️ फील्ड डायग्नोस्टिक कार्ड",
+  exporterDesc: "दुकानदार को दिखाने हेतु प्रिंट करने योग्य पर्ची तैयार करें।",
+  btnExportCard: "प्रिंट करने योग्य पीडीएफ निकालें"
+});
+
+function playVoiceChemGuide() {
+  const texts = {
+    en: "Wear chemical-resistant gloves and face mask. Fill half tank with water, dissolve the recommended dosage completely, then add remaining water. Never spray against the wind direction.",
+    te: "రసాయన మందులు కలిపేటప్పుడు చేతి తొడుగులు మరియు మాస్క్ ధరించండి. సగం ట్యాంక్ నీటితో నింపి మందు కలపండి. గాలి వీచే దిశకు ఎదురుగా ఎప్పుడూ పిచికారీ చేయవద్దు.",
+    hi: "दवा मिलाते समय दस्ताने और मास्क पहनें। आधा टैंक पानी भरकर दवा घोलें, फिर पूरा पानी भरें। हवा की विपरीत दिशा में कभी भी छिड़काव न करें।"
+  };
+  const speakText = texts[currentActiveLang] || texts.en;
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(speakText);
+    u.lang = currentActiveLang === "te" ? "te-IN" : currentActiveLang === "hi" ? "hi-IN" : "en-US";
+    window.speechSynthesis.speak(u);
+  } else {
+    alert(speakText);
+  }
+}
+
+function saveOfflineDiagnosticCache() {
+  const data = {
+    cachedAt: new Date().toISOString(),
+    status: "All 22 Diagnostic rules & calculation algorithms cached locally."
+  };
+  localStorage.setItem("agriguard_field_cache", JSON.stringify(data));
+  const out = document.getElementById("cacheStatusOutput");
+  const msgs = {
+    en: "✅ Success: Offline database active. Full calculation engines available without network.",
+    te: "✅ విజయవంతమైంది: ఆఫ్‌లైన్ డేటాబేస్ సేవ్ చేయబడింది. ఇంటర్నెట్ లేకుండా పని చేస్తుంది.",
+    hi: "✅ सफल: ऑफ़लाइन डेटाबेस सक्रिय। बिना नेटवर्क के सभी कैलकुलेटर उपलब्ध हैं।"
+  };
+  out.textContent = msgs[currentActiveLang] || msgs.en;
+  out.classList.remove("hidden");
+}
+
+function exportDiagnosticFieldCard() {
+  const opt = {
+    margin: 10,
+    filename: `AgriGuard_Prescription_${new Date().toISOString().slice(0, 10)}.pdf`,
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+  };
+  const el = document.getElementById("interactive-accessibility");
+  if (typeof html2pdf !== "undefined" && el) {
+    html2pdf().set(opt).from(el).save();
+  } else {
+    window.print();
+  }
+}
 
 // =======================================================
 // 5. MACHINERY SHARING & BOOKING REQUEST
@@ -1013,30 +1683,6 @@ function requestMachinery(equipmentName) {
   );
 }
 window.requestMachinery = requestMachinery;
-
-// =======================================================
-// 6. CERTIFIED FARM CREDIT DOSSIER EXPORT
-// =======================================================
-function downloadCreditProfile() {
-  const section = document.getElementById("credit-profile-section");
-  if (!section) return;
-
-  const opt = {
-    margin: 10,
-    filename: `AgriGuard_Farm_Credit_Dossier_${new Date().toISOString().slice(0, 10)}.pdf`,
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  };
-
-  if (typeof html2pdf !== "undefined") {
-    html2pdf().set(opt).from(section).save();
-    triggerNotification("📄 Credit Dossier", "Official bank credit report generated successfully.");
-  } else {
-    alert("PDF library loading. Please try again.");
-  }
-}
-window.downloadCreditProfile = downloadCreditProfile;
 
 // =======================================================
 // 7. PERSONALIZED TOAST NOTIFICATION ENGINE
